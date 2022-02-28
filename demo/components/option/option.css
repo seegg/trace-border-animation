@@ -1,0 +1,21 @@
+.Option-container{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 5px;
+  flex-wrap: nowrap;
+}
+
+.Option-title{
+  display: flex;
+  align-items: flex-end;
+  height: 1.5rem;
+  padding-left: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.Option-input{
+  height: 1.5rem;
+  border-radius: 5px;
+  outline: none;
+}
