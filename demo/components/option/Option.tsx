@@ -14,20 +14,22 @@ interface IOptionProp {
 
 const Option = ({ title, name, placeHolder, defaultValue, valueType, id, onChangeCB }: IOptionProp) => {
 
-  const numberRegex = /^(0|[1-9]\d*)(\.\d*)?$/;
+  const numberRegex = /^(^$|0|[1-9]\d*)(\.\d*)?$/;
 
   const handleChange = (evt: React.ChangeEvent) => {
     const { name, value, checked } = evt.target as HTMLInputElement;
-    if (valueType === 'number') {
 
+    if (valueType === 'number') {
+      if (!numberRegex.test(value)) return;
     }
+
     if (valueType === 'check') {
       onChangeCB(name, checked);
     } else {
       onChangeCB(name, value);
     }
   }
-  console.log('default', defaultValue);
+
   return (
     <div className="Option">
       <label className="Option-title" htmlFor={id}>{title}</label>
@@ -38,7 +40,7 @@ const Option = ({ title, name, placeHolder, defaultValue, valueType, id, onChang
           type={valueType === 'check' ? 'checkbox' : 'text'}
           placeholder={placeHolder}
           value={valueType !== 'check' ? defaultValue?.toString() : ''}
-          checked={valueType === 'check' ? !!defaultValue : false}
+          checked={valueType === 'check' ? defaultValue as boolean : false}
           onChange={handleChange}
         />
 
