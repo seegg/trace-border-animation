@@ -90,7 +90,7 @@ const PropOptions = () => {
         <Option id="speed" name="speed" title="Speed" defaultValue={placeHolderProp.speed} placeHolder="px per second" valueType="number" onChangeCB={handleFormChange} />
       </div>
       <div className="prop-options-item">
-        <Option id="square-window" name="squareWindow" title="Square Window" defaultValue={placeHolderProp.squreWindow} placeHolder="inner border is square" valueType="check" onChangeCB={handleFormChange} />
+        <Option id="square-window" name="squareWindow" title="Square Window" defaultValue={placeHolderProp.squareWindow} placeHolder="inner border is square" valueType="check" onChangeCB={handleFormChange} />
       </div>
       <div className="prop-options-item">
         <Option id="inset" name="inset" title="Inset" defaultValue={placeHolderProp.inset} placeHolder="" valueType="check" onChangeCB={handleFormChange} />
