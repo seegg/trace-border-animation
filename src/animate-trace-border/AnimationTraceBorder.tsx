@@ -79,7 +79,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     //recalculate the borderdimensions on resize.
     resizeObserver.observe(containerRef.current!);
     setContainerDimesion();
-    setSpeed();
     //set trace and retrace functions, onece per render.
     if (trace === null && retrace === null) {
       const traceFuncs = build(borderTopRef.current!, borderRightRef.current!, borderBotRef.current!, borderLeftRef.current!, borderRadius, borderWidth, borderRadiusBuffer);
@@ -122,6 +121,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
     widthRef.current = Number(boundingRect.width.toFixed(3));
     heightRef.current = Number(boundingRect.height.toFixed(3));
+
+    setSpeed();
   };
 
   //reset the borders stybles back to default.
