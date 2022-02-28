@@ -71,7 +71,7 @@ const PropOptions = () => {
 
   return (
     <div className="prop-options">
-      <div className="prop-options-item">squareWindo
+      <div className="prop-options-item">
         <Option id="border-radius" name="borderRadius" title="Border Radius" defaultValue={placeHolderProp.borderRadius} placeHolder="" valueType="number" onChangeCB={handleFormChange} />
       </div>
       <div className="prop-options-item">

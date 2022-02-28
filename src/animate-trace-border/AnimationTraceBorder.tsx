@@ -87,6 +87,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       setRetraceFn(() => traceFuncs[1]);
     }
 
+    if (triggers.focus) containerRef.current.tabIndex = 1;
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
