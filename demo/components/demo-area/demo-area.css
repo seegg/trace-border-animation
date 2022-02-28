@@ -1,0 +1,15 @@
+.demo-area{
+  height: auto;
+}
+
+
+.demo-item{
+  height: 500px;
+  width: 500px;
+}
+
+@media screen and (min-width: 900px) {
+  .demo-area{
+    width: 700px;
+  }
+}
