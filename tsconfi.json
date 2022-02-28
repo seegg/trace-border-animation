@@ -1,0 +1,17 @@
+{
+  "include": [
+    "./demo/**/*",
+    "./src/**/*"
+  ],
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "preserve",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "lib": [
+      "DOM",
+      "ES2020"
+    ]
+  }
+}
