@@ -5,6 +5,8 @@
   ],
   "compilerOptions": {
     "strict": true,
+    "jsx": "react-jsx",
+    "allowJS": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "removeComments": true,

@@ -3,19 +3,26 @@ import { build } from './traceBorderHelper';
 
 interface ITraceBorderProps {
   children?: React.ReactNode,
-  borderWidth: number,
-  borderRadius: number,
-  borderColour: string,
+  borderWidth?: number,
+  borderRadius?: number,
+  borderColour?: string,
   animationDuration?: number,
   speed?: number,
   borderStyle?: string,
   squreWindow?: boolean,
   inset?: boolean,
+  trigger?: string
+
+}
+
+interface Trigger {
+  hover?: boolean,
+  focus?: boolean
 }
 
 type TraceFn = (width: number, height: number, speed: number) => Boolean;
 
-const AnimationTraceBorder = ({ borderWidth, borderRadius, borderColour, animationDuration = 1000, children, borderStyle = 'solid', squreWindow = false, inset = false, speed, }: ITraceBorderProps) => {
+const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black', animationDuration = 1000, children, borderStyle = 'solid', squreWindow = false, inset = false, speed, trigger = 'hover' }: ITraceBorderProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const borderTopRef = useRef<HTMLDivElement | null>(null);
   const borderLeftRef = useRef<HTMLDivElement | null>(null);
@@ -29,6 +36,9 @@ const AnimationTraceBorder = ({ borderWidth, borderRadius, borderColour, animati
   const [retrace, setRetraceFn] = useState<TraceFn | null>(null);
   const [traceSpeed, setTraceSpeed] = useState(0);
 
+  const availableTriggers = ['hover', 'focus'];
+
+  //extract border colours
   const borderColourArr = useMemo(() => {
     let colourArr = borderColour.split(' ');
     if (colourArr.length < 4) {
@@ -39,7 +49,21 @@ const AnimationTraceBorder = ({ borderWidth, borderRadius, borderColour, animati
       colourArr = colourArr.slice(0, 4);
     }
     return colourArr;
-  }, [borderColour])
+  }, [borderColour]);
+
+  //events that'll trigger the animation
+  const triggers: Trigger = useMemo(() => {
+    const triggers = {};
+
+    const propTriggers = trigger.split(' ');
+    availableTriggers.forEach(trigger => {
+      triggers[trigger] = false;
+      propTriggers.forEach(k => {
+        if (trigger === k) triggers[trigger] = true;
+      })
+    })
+    return triggers;
+  }, [trigger])
 
 
   //weird animation artifacts withouth this on Chrome. does nothing on firefox.
@@ -199,25 +223,44 @@ const AnimationTraceBorder = ({ borderWidth, borderRadius, borderColour, animati
     margin: '0'
   };
 
-  const handlePointerEnter = () => {
+  const handlePointerEnter = (evt: React.PointerEvent) => {
+    evt.preventDefault();
+    if (!triggers.hover) return;
     traceRef.current = true;
-    traceBorder(new Date().getTime());
+    traceBorder();
   };
 
-  const handlePointerLeave = () => {
+  const handlePointerLeave = (evt: React.PointerEvent) => {
+    evt.preventDefault();
+    if (!triggers.hover) return;
     traceRef.current = false;
-    retraceBorder(new Date().getTime());
+    retraceBorder();
   };
 
-  const handlePointerCancel = () => {
+  const handlePointerCancel = (evt: React.PointerEvent) => {
+    evt.preventDefault();
+    if (!triggers.hover) return;
     traceRef.current = false;
-    retraceBorder(new Date().getTime());
+    retraceBorder();
   };
+
+  const handleBlur = (evt: React.FocusEvent) => {
+    evt.preventDefault();
+    traceRef.current = false;
+    retraceBorder();
+  }
+
+  const handleFocus = (evt: React.FocusEvent) => {
+    evt.preventDefault();
+    if (!triggers.focus) return;
+    traceRef.current = true;
+    traceBorder();
+  }
 
   /**
    * Trace the border
    */
-  const traceBorder = (previousTime: number) => {
+  const traceBorder = (previousTime: number = new Date().getTime()) => {
     try {
       //get ellapse time and multiply by traceSpeed to get border size delta.
       const currentTime = new Date().getTime();
@@ -235,7 +278,7 @@ const AnimationTraceBorder = ({ borderWidth, borderRadius, borderColour, animati
   /**
    * Backtrace from tracing the border
    */
-  const retraceBorder = (previousTime: number) => {
+  const retraceBorder = (previousTime: number = new Date().getTime()) => {
     try {
       //get ellapse time and multiply by traceSpeed to get border size delta.
       const currentTime = new Date().getTime();
@@ -259,7 +302,10 @@ const AnimationTraceBorder = ({ borderWidth, borderRadius, borderColour, animati
       style={container}
       onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
-      onPointerCancel={handlePointerCancel}>
+      onPointerCancel={handlePointerCancel}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+    >
 
       {/* Child elements */}
       {inset ? children : (<div>{children}</div>)}
