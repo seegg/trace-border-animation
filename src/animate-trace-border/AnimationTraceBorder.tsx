@@ -15,12 +15,6 @@ interface ITraceBorderProps {
 
 type TraceFn = (width: number, height: number, speed: number) => Boolean;
 
-/**
- * 
- * @param borderWidth width in px
- * @param borderRadius 
- * @returns 
- */
 const AnimationTraceBorder = ({ borderWidth, borderRadius, borderColour, animationDuration = 1000, children, borderStyle = 'solid', squreWindow = false, inset = false, speed, }: ITraceBorderProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const borderTopRef = useRef<HTMLDivElement | null>(null);

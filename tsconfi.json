@@ -5,7 +5,6 @@
   ],
   "compilerOptions": {
     "strict": true,
-    "jsx": "preserve",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "removeComments": true,
