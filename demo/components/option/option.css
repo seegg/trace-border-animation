@@ -16,6 +16,17 @@
 
 .Option-input{
   height: 1.5rem;
+  width: 10rem;
   border-radius: 5px;
   outline: none;
+  box-shadow: 0 0 0 none;
+  transition: all 0.25s linear;
+}
+
+.Option-input:hover{
+  box-shadow: 2px 2px 2px gray;
+}
+
+.Option-input:focus{
+  box-shadow: 2px 2px 2px gray;
 }

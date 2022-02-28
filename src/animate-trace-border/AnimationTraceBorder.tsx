@@ -36,6 +36,10 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const [retrace, setRetraceFn] = useState<TraceFn | null>(null);
   const [traceSpeed, setTraceSpeed] = useState(0);
 
+  //keeps track of the triggers than has been triggers. 
+  //retrace will only be call if this is empty.
+  const currentTriggers = useRef<Set<keyof Trigger>>(new Set());
+
   const availableTriggers = ['hover', 'focus'];
 
   //extract border colours
@@ -226,6 +230,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const handlePointerEnter = (evt: React.PointerEvent) => {
     evt.preventDefault();
     if (!triggers.hover) return;
+    currentTriggers.current.add('hover');
     traceRef.current = true;
     traceBorder();
   };
@@ -233,6 +238,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const handlePointerLeave = (evt: React.PointerEvent) => {
     evt.preventDefault();
     if (!triggers.hover) return;
+    currentTriggers.current.delete('hover');
     traceRef.current = false;
     retraceBorder();
   };
@@ -240,12 +246,14 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const handlePointerCancel = (evt: React.PointerEvent) => {
     evt.preventDefault();
     if (!triggers.hover) return;
+    currentTriggers.current.delete('hover');
     traceRef.current = false;
     retraceBorder();
   };
 
   const handleBlur = (evt: React.FocusEvent) => {
     evt.preventDefault();
+    currentTriggers.current.delete('focus');
     traceRef.current = false;
     retraceBorder();
   }
@@ -253,6 +261,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const handleFocus = (evt: React.FocusEvent) => {
     evt.preventDefault();
     if (!triggers.focus) return;
+    currentTriggers.current.add('focus');
     traceRef.current = true;
     traceBorder();
   }
@@ -280,6 +289,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
    */
   const retraceBorder = (previousTime: number = new Date().getTime()) => {
     try {
+      if (currentTriggers.current.size > 0) return;
       //get ellapse time and multiply by traceSpeed to get border size delta.
       const currentTime = new Date().getTime();
       const speed = traceSpeed * (currentTime - previousTime);

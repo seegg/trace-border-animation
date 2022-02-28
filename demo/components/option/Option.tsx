@@ -7,16 +7,25 @@ interface IOptionProp {
   valueType: string | number,
   placeHolder: string,
   id: string,
-  callback: () => void
+  onChangeCB: () => void
 }
 
-const Option = ({ title, placeHolder, valueType, id, callback }: IOptionProp) => {
+const Option = ({ title, placeHolder, valueType, id, onChangeCB }: IOptionProp) => {
+
+  const handleChange = (evt: React.ChangeEvent) => {
+
+  }
 
   return (
     <div className="Option-container">
       <label className="Option-title" htmlFor={id}>{title}</label>
       <AnimateTraceBorder inset trigger="focus">
-        <input className="Option-input" type="text" placeholder={placeHolder} />
+        <input
+          className="Option-input"
+          type="text"
+          placeholder={placeHolder}
+          onChange={handleChange}
+        />
       </AnimateTraceBorder>
     </div>
   )
