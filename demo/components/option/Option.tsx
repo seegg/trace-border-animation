@@ -5,19 +5,29 @@ import { AnimateTraceBorder } from '../../../src/animate-trace-border';
 interface IOptionProp {
   title: string,
   name: string,
-  valueType: string | number,
+  valueType: 'text' | 'number' | 'check',
   placeHolder: string,
   id: string,
   defaultValue?: string | boolean,
-  onChangeCB: () => void
+  onChangeCB: (name: string, value: string | boolean) => void
 }
 
-const Option = ({ title, name, placeHolder, valueType, id, onChangeCB }: IOptionProp) => {
+const Option = ({ title, name, placeHolder, defaultValue, valueType, id, onChangeCB }: IOptionProp) => {
+
+  const numberRegex = /^(0|[1-9]\d*)(\.\d*)?$/;
 
   const handleChange = (evt: React.ChangeEvent) => {
-    evt.preventDefault();
+    const { name, value, checked } = evt.target as HTMLInputElement;
+    if (valueType === 'number') {
+
+    }
+    if (valueType === 'check') {
+      onChangeCB(name, checked);
+    } else {
+      onChangeCB(name, value);
+    }
   }
-  console.log(valueType);
+  console.log('default', defaultValue);
   return (
     <div className="Option">
       <label className="Option-title" htmlFor={id}>{title}</label>
@@ -27,6 +37,8 @@ const Option = ({ title, name, placeHolder, valueType, id, onChangeCB }: IOption
           name={name}
           type={valueType === 'check' ? 'checkbox' : 'text'}
           placeholder={placeHolder}
+          value={valueType !== 'check' ? defaultValue?.toString() : ''}
+          checked={valueType === 'check' ? !!defaultValue : false}
           onChange={handleChange}
         />
 
