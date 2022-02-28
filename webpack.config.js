@@ -6,7 +6,8 @@ module.exports = {
   entry: ['./demo/index.tsx'],
   output: {
     path: path.join(__dirname, 'demo'),
-    filename: 'bundle.js'
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].bundle.js'
   },
   watch: true,
   mode: 'development',
