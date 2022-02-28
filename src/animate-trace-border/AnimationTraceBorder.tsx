@@ -1,0 +1,284 @@
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { build } from './traceBorderHelper';
+
+interface ITraceBorderProps {
+  children?: React.ReactNode,
+  borderWidth: number,
+  borderRadius: number,
+  borderColour: string,
+  animationDuration?: number,
+  speed?: number,
+  borderStyle?: string,
+  squreWindow?: boolean,
+  inset?: boolean,
+}
+
+type TraceFn = (width: number, height: number, speed: number) => Boolean;
+
+/**
+ * 
+ * @param borderWidth width in px
+ * @param borderRadius 
+ * @returns 
+ */
+const AnimationTraceBorder = ({ borderWidth, borderRadius, borderColour, animationDuration = 1000, children, borderStyle = 'solid', squreWindow = false, inset = false, speed, }: ITraceBorderProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const borderTopRef = useRef<HTMLDivElement | null>(null);
+  const borderLeftRef = useRef<HTMLDivElement | null>(null);
+  const borderRightRef = useRef<HTMLDivElement | null>(null);
+  const borderBotRef = useRef<HTMLDivElement | null>(null);
+  const traceRef = useRef<boolean>(false);
+  const heightRef = useRef<number | null>(null);
+  const widthRef = useRef<number | null>(null);
+
+  const [trace, setTraceFn] = useState<TraceFn | null>(null);
+  const [retrace, setRetraceFn] = useState<TraceFn | null>(null);
+  const [traceSpeed, setTraceSpeed] = useState(0);
+
+  const borderColourArr = useMemo(() => {
+    let colourArr = borderColour.split(' ');
+    if (colourArr.length < 4) {
+      while (colourArr.length < 4) {
+        colourArr.push(colourArr[colourArr.length - 1]);
+      }
+    } else if (colourArr.length > 4) {
+      colourArr = colourArr.slice(0, 4);
+    }
+    return colourArr;
+  }, [borderColour])
+
+
+  //weird animation artifacts withouth this on Chrome. does nothing on firefox.
+  //value is added to initial order size.
+  const borderRadiusBuffer = borderRadius - 1 <= borderWidth ? 0 : Math.max(borderWidth - 1, 1);
+
+  useEffect(() => {
+    //recalculate the borderdimensions on resize.
+    window.addEventListener('resize', () => { setContainerDimesion(); reset(); });
+    resizeObserver.observe(containerRef.current!);
+    setContainerDimesion();
+    setSpeed();
+    //set trace and retrace functions, onece per render.
+    if (trace === null && retrace === null) {
+      const traceFuncs = build(borderTopRef.current!, borderRightRef.current!, borderBotRef.current!, borderLeftRef.current!, borderRadius, borderWidth, borderRadiusBuffer);
+      setTraceFn(() => traceFuncs[0]);
+      setRetraceFn(() => traceFuncs[1]);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /**
+   * set the value to increase the border by each millisecond.
+   */
+  const setSpeed = () => {
+    try {
+      if (speed) {
+        setTraceSpeed(speed / 1000);
+      } else {
+        const total = (heightRef.current! * 2) + (widthRef.current! * 2) - ((borderRadius + borderRadiusBuffer) * 4);
+        setTraceSpeed(total / animationDuration);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  /**
+   * Set the bounding rect height and width, these are the
+   * final sizes of the borders.
+   */
+  const setContainerDimesion = () => {
+    let boundingRect = containerRef.current!.getBoundingClientRect();
+
+    widthRef.current = Number(boundingRect.width.toFixed(3));
+    heightRef.current = Number(boundingRect.height.toFixed(3));
+  };
+
+  //reset the borders stybles back to default.
+  const reset = () => {
+    resetBorderStyle(borderTopRef.current, borderTop);
+    resetBorderStyle(borderBotRef.current, borderBot);
+    resetBorderStyle(borderLeftRef.current, borderLeft);
+    resetBorderStyle(borderRightRef.current, borderRight);
+  }
+
+  /**
+   * 
+   * @param border one of the four html elements use to draw the border.
+   * @param styleProperties style object corresponding to that element.
+   */
+  const resetBorderStyle = (border: HTMLElement | null, styleProperties: React.CSSProperties) => {
+    if (border instanceof HTMLElement) {
+      try {
+
+        for (const prop in styleProperties) {
+          //@ts-ignore
+          border.style[prop] = styleProperties[prop];
+        }
+
+      } catch (err) {
+        console.error(err);
+      };
+    }
+  };
+
+  const resizeObserver = new ResizeObserver(() => {
+    setContainerDimesion();
+    reset();
+  });
+
+  //the container to hold the 4 borders
+  const container: React.CSSProperties = {
+    position: 'relative',
+    boxSizing: 'border-box',
+    borderRadius,
+    //borders on the outside instead of inside
+    ...(!inset && { display: 'flex', justifyContent: 'center', alignItems: 'center', padding: borderWidth })
+  };
+
+  //base border styling
+  const border: React.CSSProperties = {
+    boxSizing: 'border-box',
+    position: 'absolute',
+    borderWidth,
+    borderStyle,
+    width: '0',
+    height: '0',
+    pointerEvents: 'none',
+  };
+
+  //top and bottom shared styling
+  const borderTopBot: React.CSSProperties = {
+    ...border,
+    ...(squreWindow && { borderLeft: 'none', borderRight: 'none' }),
+    borderRightColor: 'transparent',
+    borderLeftColor: 'transparent',
+    width: (squreWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
+  }
+
+  //left and right shared styling
+  const borderLeftRight: React.CSSProperties = {
+    ...border,
+    ...(squreWindow && { borderTop: 'none', borderBottom: 'none' }),
+    borderTopColor: 'transparent',
+    borderBottomColor: 'transparent',
+    height: (squreWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
+  }
+
+  //styling for individual borders, borderwith set to 0 initially to stop it showing
+  const borderTop: React.CSSProperties = {
+    ...borderTopBot,
+    ...(!squreWindow && { borderBottom: 'none', height: `${borderRadius}px` }),
+    borderTop: `0px ${borderStyle} ${borderColourArr[0]}`,
+    borderTopLeftRadius: `${borderRadius}px`,
+    left: '0',
+    top: '0',
+    margin: '0px'
+  };
+
+  const borderLeft: React.CSSProperties = {
+    ...borderLeftRight,
+    ...(!squreWindow && { borderRight: 'none', width: `${borderRadius}px` }),
+    borderLeft: `0px ${borderStyle} ${borderColourArr[1]}`,
+    borderBottomLeftRadius: `${borderRadius}px`,
+    left: '0',
+    bottom: '0',
+  };
+
+  const borderBot: React.CSSProperties = {
+    ...borderTopBot,
+    ...(!squreWindow && { borderTop: 'none', height: `${borderRadius}px` }),
+    borderBottom: `0px ${borderStyle} ${borderColourArr[2]}`,
+    borderBottomRightRadius: `${borderRadius}px`,
+    right: '0',
+    bottom: '0',
+  };
+
+  const borderRight: React.CSSProperties = {
+    ...borderLeftRight,
+    ...(!squreWindow && { borderLeft: 'none', width: `${borderRadius}px` }),
+    borderRight: `0px ${borderStyle} ${borderColourArr[3]}`,
+    borderTopRightRadius: `${borderRadius}px`,
+    right: '0',
+    top: '0',
+    margin: '0'
+  };
+
+  const handlePointerEnter = () => {
+    traceRef.current = true;
+    traceBorder(new Date().getTime());
+  };
+
+  const handlePointerLeave = () => {
+    traceRef.current = false;
+    retraceBorder(new Date().getTime());
+  };
+
+  const handlePointerCancel = () => {
+    traceRef.current = false;
+    retraceBorder(new Date().getTime());
+  };
+
+  /**
+   * Trace the border
+   */
+  const traceBorder = (previousTime: number) => {
+    try {
+      //get ellapse time and multiply by traceSpeed to get border size delta.
+      const currentTime = new Date().getTime();
+      const speed = traceSpeed * (currentTime - previousTime);
+      if (trace === null) return;
+      const complete = trace(widthRef.current!, heightRef.current!, speed);
+      if (traceRef.current && !complete) {
+        requestAnimationFrame(() => { traceBorder(currentTime) });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  /**
+   * Backtrace from tracing the border
+   */
+  const retraceBorder = (previousTime: number) => {
+    try {
+      //get ellapse time and multiply by traceSpeed to get border size delta.
+      const currentTime = new Date().getTime();
+      const speed = traceSpeed * (currentTime - previousTime);
+      if (!traceRef.current && !retrace!(widthRef.current!, heightRef.current!, speed)) {
+        requestAnimationFrame(() => { retraceBorder(currentTime) });
+      }
+      //refresh the border styles at the end of retracing.
+      if (Number((borderTopRef.current! as HTMLElement).style.width.slice(0, -2)) <= borderRadius + borderRadiusBuffer) {
+        reset();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  return (
+
+    <div
+      ref={containerRef}
+      style={container}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
+      onPointerCancel={handlePointerCancel}>
+
+      {/* Child elements */}
+      {inset ? children : (<div>{children}</div>)}
+      {/* Elements use to draw the borders on the four sides */}
+
+      <div id='anim-trace-bT' style={borderTop} ref={borderTopRef}></div>
+      <div id='anim-trace-bR' style={borderRight} ref={borderRightRef}></div>
+      <div id='anim-trace-bB' style={borderBot} ref={borderBotRef}></div>
+      <div id='anim-trace-bL' style={borderLeft} ref={borderLeftRef}></div>
+
+    </div>
+  )
+
+}
+
+export default AnimationTraceBorder;
