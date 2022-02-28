@@ -10,7 +10,7 @@ interface TempProp {
   animationDuration?: string,
   speed?: string,
   borderStyle?: string,
-  squreWindow?: boolean,
+  squareWindow?: boolean,
   inset?: boolean,
   trigger?: string
 
@@ -22,7 +22,7 @@ interface FinalProp {
   animationDuration?: number,
   speed?: number,
   borderStyle?: string,
-  squreWindow?: boolean,
+  squareWindow?: boolean,
   inset?: boolean,
   trigger?: string
 
@@ -38,7 +38,7 @@ const PropOptions = () => {
       animationDuration: '1000',
       speed: '',
       borderStyle: 'solid',
-      squreWindow: false,
+      squareWindow: false,
       inset: true,
       trigger: 'hover'
     }
@@ -51,7 +51,7 @@ const PropOptions = () => {
       borderColour: '#2a5766',
       animationDuration: 1000,
       borderStyle: 'solid',
-      squreWindow: false,
+      squareWindow: false,
       inset: true,
       trigger: 'hover'
     }
@@ -71,7 +71,7 @@ const PropOptions = () => {
 
   return (
     <div className="prop-options">
-      <div className="prop-options-item">
+      <div className="prop-options-item">squareWindo
         <Option id="border-radius" name="borderRadius" title="Border Radius" defaultValue={placeHolderProp.borderRadius} placeHolder="" valueType="number" onChangeCB={handleFormChange} />
       </div>
       <div className="prop-options-item">

@@ -9,7 +9,7 @@ interface ITraceBorderProps {
   animationDuration?: number,
   speed?: number,
   borderStyle?: string,
-  squreWindow?: boolean,
+  squareWindow?: boolean,
   inset?: boolean,
   trigger?: string
 
@@ -22,7 +22,7 @@ interface Trigger {
 
 type TraceFn = (width: number, height: number, speed: number) => Boolean;
 
-const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black', animationDuration = 1000, children, borderStyle = 'solid', squreWindow = false, inset = false, speed, trigger = 'hover' }: ITraceBorderProps) => {
+const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black', animationDuration = 1000, children, borderStyle = 'solid', squareWindow = false, inset = false, speed, trigger = 'hover' }: ITraceBorderProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const borderTopRef = useRef<HTMLDivElement | null>(null);
   const borderLeftRef = useRef<HTMLDivElement | null>(null);
@@ -173,25 +173,25 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //top and bottom shared styling
   const borderTopBot: React.CSSProperties = {
     ...border,
-    ...(squreWindow && { borderLeft: 'none', borderRight: 'none' }),
+    ...(squareWindow && { borderLeft: 'none', borderRight: 'none' }),
     borderRightColor: 'transparent',
     borderLeftColor: 'transparent',
-    width: (squreWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
+    width: (squareWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
   }
 
   //left and right shared styling
   const borderLeftRight: React.CSSProperties = {
     ...border,
-    ...(squreWindow && { borderTop: 'none', borderBottom: 'none' }),
+    ...(squareWindow && { borderTop: 'none', borderBottom: 'none' }),
     borderTopColor: 'transparent',
     borderBottomColor: 'transparent',
-    height: (squreWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
+    height: (squareWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
   }
 
   //styling for individual borders, borderwith set to 0 initially to stop it showing
   const borderTop: React.CSSProperties = {
     ...borderTopBot,
-    ...(!squreWindow && { borderBottom: 'none', height: `${borderRadius}px` }),
+    ...(!squareWindow && { borderBottom: 'none', height: `${borderRadius}px` }),
     borderTop: `0px ${borderStyle} ${borderColourArr[0]}`,
     borderTopLeftRadius: `${borderRadius}px`,
     left: '0',
@@ -201,7 +201,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const borderLeft: React.CSSProperties = {
     ...borderLeftRight,
-    ...(!squreWindow && { borderRight: 'none', width: `${borderRadius}px` }),
+    ...(!squareWindow && { borderRight: 'none', width: `${borderRadius}px` }),
     borderLeft: `0px ${borderStyle} ${borderColourArr[1]}`,
     borderBottomLeftRadius: `${borderRadius}px`,
     left: '0',
@@ -210,7 +210,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const borderBot: React.CSSProperties = {
     ...borderTopBot,
-    ...(!squreWindow && { borderTop: 'none', height: `${borderRadius}px` }),
+    ...(!squareWindow && { borderTop: 'none', height: `${borderRadius}px` }),
     borderBottom: `0px ${borderStyle} ${borderColourArr[2]}`,
     borderBottomRightRadius: `${borderRadius}px`,
     right: '0',
@@ -219,7 +219,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const borderRight: React.CSSProperties = {
     ...borderLeftRight,
-    ...(!squreWindow && { borderLeft: 'none', width: `${borderRadius}px` }),
+    ...(!squareWindow && { borderLeft: 'none', width: `${borderRadius}px` }),
     borderRight: `0px ${borderStyle} ${borderColourArr[3]}`,
     borderTopRightRadius: `${borderRadius}px`,
     right: '0',
