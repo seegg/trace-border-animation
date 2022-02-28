@@ -34,7 +34,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const [trace, setTraceFn] = useState<TraceFn | null>(null);
   const [retrace, setRetraceFn] = useState<TraceFn | null>(null);
-  const [traceSpeed, setTraceSpeed] = useState(0);
+  // const [traceSpeed, setTraceSpeed] = useState(0);
+  const traceSpeed = useRef(0);
 
   //keeps track of the triggers than has been triggers. 
   //retrace will only be call if this is empty.
@@ -76,7 +77,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   useEffect(() => {
     //recalculate the borderdimensions on resize.
-    window.addEventListener('resize', () => { setContainerDimesion(); reset(); });
     resizeObserver.observe(containerRef.current!);
     setContainerDimesion();
     setSpeed();
@@ -87,7 +87,12 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       setRetraceFn(() => traceFuncs[1]);
     }
 
+    console.log(containerRef.current.tabIndex);
+    //if trigger is focus, make container focusable if it's not already.
     if (triggers.focus) containerRef.current.tabIndex = 1;
+
+
+
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -98,10 +103,10 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const setSpeed = () => {
     try {
       if (speed) {
-        setTraceSpeed(speed / 1000);
+        traceSpeed.current = (speed / 1000);
       } else {
         const total = (heightRef.current! * 2) + (widthRef.current! * 2) - ((borderRadius + borderRadiusBuffer) * 4);
-        setTraceSpeed(total / animationDuration);
+        traceSpeed.current = (total / animationDuration);
       }
     } catch (err) {
       console.error(err);
@@ -125,8 +130,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     resetBorderStyle(borderBotRef.current, borderBot);
     resetBorderStyle(borderLeftRef.current, borderLeft);
     resetBorderStyle(borderRightRef.current, borderRight);
+    if (traceRef.current) console.log('maybe');
   }
-
   /**
    * 
    * @param border one of the four html elements use to draw the border.
@@ -261,6 +266,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   }
 
   const handleFocus = (evt: React.FocusEvent) => {
+    console.log('focused');
     evt.preventDefault();
     if (!triggers.focus) return;
     currentTriggers.current.add('focus');
@@ -275,7 +281,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     try {
       //get ellapse time and multiply by traceSpeed to get border size delta.
       const currentTime = new Date().getTime();
-      const speed = traceSpeed * (currentTime - previousTime);
+      const speed = traceSpeed.current * (currentTime - previousTime);
       if (trace === null) return;
       const complete = trace(widthRef.current!, heightRef.current!, speed);
       if (traceRef.current && !complete) {
@@ -294,7 +300,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       if (currentTriggers.current.size > 0) return;
       //get ellapse time and multiply by traceSpeed to get border size delta.
       const currentTime = new Date().getTime();
-      const speed = traceSpeed * (currentTime - previousTime);
+      const speed = traceSpeed.current * (currentTime - previousTime);
       if (!traceRef.current && !retrace!(widthRef.current!, heightRef.current!, speed)) {
         requestAnimationFrame(() => { retraceBorder(currentTime) });
       }

@@ -4,6 +4,7 @@
   align-items: flex-start;
   border-radius: 5px;
   flex-wrap: nowrap;
+  flex-shrink: 1;
 }
 
 .Option-title{
@@ -16,7 +17,7 @@
 
 .Option-input{
   height: 1.5rem;
-  width: 10rem;
+  width:140px;
   border-radius: 5px;
   outline: none;
   box-shadow: 0 0 0 none;

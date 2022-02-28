@@ -9,12 +9,16 @@ interface IDemoAreaProps {
 
 const DemoArea = ({ animateBorderProp }: IDemoAreaProps) => {
 
+  const handleClick = (evt: React.MouseEvent) => {
+    const elem = evt.target as HTMLDivElement;
+    elem.style.height = '300px';
+    elem.style.width = '300px';
+  }
 
   return (
     <div className="demo-area">
-      <AnimateTraceBorder>
-        <div className="demo-item">
-          bob
+      <AnimateTraceBorder trigger="focus" animationDuration={3000}>
+        <div className="demo-item" onClick={handleClick}>
         </div>
       </AnimateTraceBorder>
     </div>

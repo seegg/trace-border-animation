@@ -58,7 +58,6 @@ const PropOptions = () => {
   );
 
   useEffect(() => {
-    console.log('stuff');
   })
 
   const handleFormChange = (name: string, value: string | boolean) => {
