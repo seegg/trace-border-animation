@@ -1,0 +1,13 @@
+.Demo{
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  box-shadow: 3px 3px 3px 3px gray;
+}
+
+@media screen and (min-width: 900px) {
+  .Demo{
+    flex-direction: row;
+    box-shadow: 5px 5px 5px 5px gray;
+  }
+}

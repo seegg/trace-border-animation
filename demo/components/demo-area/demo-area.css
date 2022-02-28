@@ -1,11 +1,21 @@
 .demo-area{
   height: auto;
+  min-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(223, 225, 226);
+  flex-shrink: 1 1;
 }
 
 
 .demo-item{
-  height: 500px;
-  width: 500px;
+  min-width: 300px;
+  min-height: 300px;
+  height: 50%;
+  width: 50%;
+  flex-shrink: 1 1;
+
 }
 
 @media screen and (min-width: 900px) {
