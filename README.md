@@ -1,2 +1,2 @@
 # trace-border-animation
-A ReactJS wrapper component to play an animation drawing a border around the child components.
+A ReactJS wrapper component to animate tracing the border around content.
