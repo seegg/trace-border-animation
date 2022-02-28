@@ -4,7 +4,8 @@
   "description": "react wrapper component to animate tracing the border around wrapped contents",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "babel": {
     "presets": [

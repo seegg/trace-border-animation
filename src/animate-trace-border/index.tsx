@@ -1,1 +1,1 @@
-export { default as AnimationTraceBorder } from './AnimationTraceBorder';
+export { default as AnimateTraceBorder } from './AnimationTraceBorder';

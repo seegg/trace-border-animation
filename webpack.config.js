@@ -4,9 +4,9 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 
 module.exports = {
-  entry: ['./scripts/index.tsx'],
+  entry: ['./demo/index.tsx'],
   output: {
-    path: path.join(__dirname, 'scripts'),
+    path: path.join(__dirname, 'demo'),
     filename: 'bundle.js'
   },
   watch: true,
