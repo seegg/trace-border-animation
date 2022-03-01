@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { build } from './traceBorderHelper';
 import * as CSS from 'csstype';
 
+
 interface ITraceBorderProps {
   children?: React.ReactNode,
   borderWidth?: number,
@@ -45,7 +46,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const availableTriggers = ['hover', 'focus'];
 
-
   //extract border colours
   const borderColourArr = useMemo(() => {
     let colourArr = borderColour.split(' ');
@@ -73,7 +73,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     return triggers;
   }, [trigger])
 
-
+  console.log('speed', animationDuration);
   //weird animation artifacts withouth this on Chrome. does nothing on firefox.
   //value is added to initial order size.
   const borderRadiusBuffer = borderRadius - 1 <= borderWidth ? 0 : Math.max(borderWidth - 1, 1);
@@ -89,12 +89,15 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       retraceFnRef.current = traceFuncs[1];
     }
 
-    console.log(containerRef.current.tabIndex);
     //if trigger is focus, make container focusable if it's not already.
     if (triggers.focus) containerRef.current.tabIndex = -1;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+
+  })
 
   /**
    * set the value to increase the border by each millisecond.
@@ -179,7 +182,12 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     borderBottomWidth: borderWidth,
     borderRightWidth: borderWidth,
     borderLeftWidth: borderWidth,
-    borderStyle,
+    borderTopStyle: borderStyle as CSS.Property.BorderTopStyle,
+    borderLeftStyle: borderStyle as CSS.Property.BorderTopStyle,
+    borderRightStyle: borderStyle as CSS.Property.BorderTopStyle,
+    borderBottomStyle: borderStyle as CSS.Property.BorderTopStyle,
+
+    // borderStyle,
     width: '0',
     height: '0',
     pointerEvents: 'none',
@@ -188,7 +196,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //top and bottom shared styling
   const borderTopBot: React.CSSProperties = {
     ...border,
-    ...(squareWindow && { borderLeft: 'none', borderRight: 'none' }),
+    ...(squareWindow && { borderLeftStyle: 'none', borderRightStyle: 'none' }),
     borderRightColor: 'transparent',
     borderLeftColor: 'transparent',
     width: (squareWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
@@ -197,7 +205,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //left and right shared styling
   const borderLeftRight: React.CSSProperties = {
     ...border,
-    ...(squareWindow && { borderTop: 'none', borderBottom: 'none' }),
+    ...(squareWindow && { borderTopStyle: 'none', borderBottomStyle: 'none' }),
     borderTopColor: 'transparent',
     borderBottomColor: 'transparent',
     height: (squareWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
@@ -206,10 +214,10 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //styling for individual borders, borderwith set to 0 initially to stop it showing
   const borderTop: React.CSSProperties = {
     ...borderTopBot,
-    ...(!squareWindow && { borderBottom: 'none', height: `${borderRadius}px` }),
+    ...(!squareWindow && { borderBottomStyle: 'none', height: `${borderRadius}px` }),
     // borderTop: `0px ${borderStyle} ${borderColourArr[0]}`,
     borderTopWidth: '0px',
-    borderTopStyle: `${borderStyle}` as any,
+    borderTopStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
     borderTopColor: `${borderColourArr[0]}`,
     borderTopLeftRadius: `${borderRadius}px`,
     left: '0',
@@ -219,8 +227,11 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const borderLeft: React.CSSProperties = {
     ...borderLeftRight,
-    ...(!squareWindow && { borderRight: 'none', width: `${borderRadius}px` }),
-    borderLeft: `0px ${borderStyle} ${borderColourArr[1]}`,
+    ...(!squareWindow && { borderRightStyle: 'none', width: `${borderRadius}px` }),
+    // borderLeft: `0px ${borderStyle} ${borderColourArr[1]}`,
+    borderLeftWidth: '0px',
+    borderLeftStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
+    borderLeftColor: `${borderColourArr[1]}`,
     borderBottomLeftRadius: `${borderRadius}px`,
     left: '0',
     bottom: '0',
@@ -228,10 +239,10 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const borderBot: React.CSSProperties = {
     ...borderTopBot,
-    ...(!squareWindow && { borderTop: 'none', height: `${borderRadius}px` }),
+    ...(!squareWindow && { borderTopStyle: 'none', height: `${borderRadius}px` }),
     // borderBottom: `0px ${borderStyle} ${borderColourArr[2]}`,
     borderBottomWidth: '0px',
-    borderBottomStyle: `${borderStyle}` as any,
+    borderBottomStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
     borderBottomColor: `${borderColourArr[2]}`,
     borderBottomRightRadius: `${borderRadius} px`,
     right: '0',
@@ -240,8 +251,11 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const borderRight: React.CSSProperties = {
     ...borderLeftRight,
-    ...(!squareWindow && { borderLeft: 'none', width: `${borderRadius} px` }),
-    borderRight: `0px ${borderStyle} ${borderColourArr[3]} `,
+    ...(!squareWindow && { borderLeftStyle: 'none', width: `${borderRadius} px` }),
+    // borderRight: `0px ${borderStyle} ${borderColourArr[3]} `,
+    borderRightWidth: '0px',
+    borderRightStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
+    borderRightColor: `${borderColourArr[3]}`,
     borderTopRightRadius: `${borderRadius} px`,
     right: '0',
     top: '0',
@@ -286,6 +300,10 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     currentTriggers.current.add('focus');
     traceRef.current = true;
     traceBorder();
+  }
+
+  const emptyBorder = () => {
+
   }
 
   /**
