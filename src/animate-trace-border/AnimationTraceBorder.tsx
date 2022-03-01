@@ -28,8 +28,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //Avoid useState in this component when possible to avoid undesirable effects.
   //use useRef to keep values consistant across rerenders.
 
-  console.log(inset);
-
   //HTML elements representing the 4 sides of the border and the container.
   const containerRef = useRef<HTMLDivElement | null>(null);
   const borderTopRef = useRef<HTMLDivElement | null>(null);
@@ -99,10 +97,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     //recalculate the borderdimensions on element resize.
     window.addEventListener('resize', () => { setContainerDimesion(); reset(); });
     resizeObserver.observe(containerRef.current);
-    // initialiseBorderStyles();
-    //if the triggers include focus, add tab index to container.
-    console.log(containerRef.current.getBoundingClientRect().width);
 
+    //if the triggers include focus, add tab index to container.
     if (triggers.focus) containerRef.current.tabIndex = -1;
   }, []);
 
@@ -172,8 +168,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     }
   };
 
+  //recalculate borderdimensions if element resizes.
   const resizeObserver = new ResizeObserver(() => {
-    console.log('resized', containerRef.current.getBoundingClientRect().width);
     setContainerDimesion();
     reset();
     if (completeTrace.current) {
@@ -322,7 +318,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   }
 
   const handleFocus = (evt: React.FocusEvent) => {
-    console.log('focused');
     evt.preventDefault();
     if (!triggers.focus) return;
     currentTriggers.current.add('focus');
@@ -337,12 +332,11 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     try {
 
       //get ellapse time and multiply by traceSpeed to get border size delta.
-      console.log(widthRef.current);
       const currentTime = new Date().getTime();
       const speed = traceSpeed.current * (currentTime - previousTime);
       if (traceFnRef.current === null) return;
       const isComplete = traceFnRef.current(widthRef.current!, heightRef.current!, speed);
-      // console.log('got here', isComplete);
+
       if (traceRef.current && !isComplete) {
         requestAnimationFrame(() => { traceBorder(currentTime) });
       }
