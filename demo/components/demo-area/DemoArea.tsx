@@ -4,10 +4,10 @@ import { AnimateTraceBorder } from "../../../src/animate-trace-border";
 import { ITraceBorderProps } from "../../type";
 
 interface IDemoAreaProps {
-  animateBorderProp?: ITraceBorderProps,
+  animateBorderProps?: ITraceBorderProps,
 }
 
-const DemoArea = ({ animateBorderProp }: IDemoAreaProps) => {
+const DemoArea = ({ animateBorderProps }: IDemoAreaProps) => {
 
   const handleClick = (evt: React.MouseEvent) => {
     const elem = evt.target as HTMLDivElement;
@@ -16,7 +16,7 @@ const DemoArea = ({ animateBorderProp }: IDemoAreaProps) => {
 
   return (
     <div className="demo-area">
-      <AnimateTraceBorder>
+      <AnimateTraceBorder {...animateBorderProps}>
         Trace Borders
         <div className="demo-item" onClick={handleClick}>
           Click

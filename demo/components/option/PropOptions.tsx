@@ -35,6 +35,7 @@ interface IProps {
 
 const PropOptions = ({ optionCallBack }: IProps) => {
 
+  //String values used for displaying incomplete float numbers
   const [placeHolderProp, setPlaceHolderProp] = useState<TempProp>(
     {
       borderWidth: '5',
@@ -49,6 +50,7 @@ const PropOptions = ({ optionCallBack }: IProps) => {
     }
   );
 
+  //convert place holder into proper values.
   const [finalProp, setFinalProp] = useState<ITraceBorderProps>(
     {
       borderWidth: 5,
@@ -64,12 +66,12 @@ const PropOptions = ({ optionCallBack }: IProps) => {
   );
 
   useEffect(() => {
-    //map the values in temp prop to finalProp, with default values being 0 if input is no valid.
+    //map the values in temp prop to finalProp, with default values input is not valid.
     const temp: ITraceBorderProps = {
       ...placeHolderProp,
-      borderWidth: Number(placeHolderProp.borderWidth) || 0,
+      borderWidth: Number(placeHolderProp.borderWidth) || 2,
       borderRadius: Number(placeHolderProp.borderRadius) || 0,
-      ...(placeHolderProp.animationDuration && { animationDuration: Number(placeHolderProp.animationDuration) || 0, }),
+      ...(placeHolderProp.animationDuration && { animationDuration: Number(placeHolderProp.animationDuration) || 500, }),
       speed: Number(placeHolderProp.speed) || 0,
     };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { build } from './traceBorderHelper';
 import * as CSS from 'csstype';
 
@@ -25,20 +25,35 @@ interface Trigger {
 type TraceFn = (width: number, height: number, speed: number) => boolean;
 
 const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black', animationDuration = 1000, children, borderStyle = 'solid', squareWindow = false, inset = false, speed, trigger = 'hover' }: ITraceBorderProps) => {
+  //Avoid useState in this component when possible to avoid undesirable effects.
+  //use useRef to keep values consistant across rerenders.
+
+  //HTML elements representing the 4 sides of the border and the container.
   const containerRef = useRef<HTMLDivElement | null>(null);
   const borderTopRef = useRef<HTMLDivElement | null>(null);
   const borderLeftRef = useRef<HTMLDivElement | null>(null);
   const borderRightRef = useRef<HTMLDivElement | null>(null);
   const borderBotRef = useRef<HTMLDivElement | null>(null);
+
+  //keeping track of the current tracing state, whether it's trace or retrace.
   const traceRef = useRef<boolean>(false);
+  //height and width of the container use for drawing the borders.
   const heightRef = useRef<number | null>(null);
   const widthRef = useRef<number | null>(null);
+  //tracing speed in px/ms
+  const traceSpeed = useRef(0);
+  //true when the border is fully drawn.
+  const completeTrace = useRef(false);
 
+  //references for the styles of the four borders to keep it consistant.
+  const topStyleRef = useRef<React.CSSProperties | null>(null);
+  const rightStyleRef = useRef<React.CSSProperties | null>(null);
+  const botStyleRef = useRef<React.CSSProperties | null>(null);
+  const leftStyleRef = useRef<React.CSSProperties | null>(null);
+
+  //the trace and retrace functions.
   const traceFnRef = useRef<TraceFn | null>(null);
   const retraceFnRef = useRef<TraceFn | null>(null);
-  // const [traceSpeed, setTraceSpeed] = useState(0);
-  const traceSpeed = useRef(0);
-  const completeTrace = useRef(false);
 
   //keeps track of the triggers than has been triggered. 
   //retrace will only be call if this is empty.
@@ -73,7 +88,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     return triggers;
   }, [trigger])
 
-  console.log('speed', animationDuration);
   //weird animation artifacts withouth this on Chrome. does nothing on firefox.
   //value is added to initial order size.
   const borderRadiusBuffer = borderRadius - 1 <= borderWidth ? 0 : Math.max(borderWidth - 1, 1);
@@ -81,22 +95,23 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   useEffect(() => {
     //recalculate the borderdimensions on element resize.
     resizeObserver.observe(containerRef.current!);
-    //set refrences for trace and retrace functions
-    if (traceFnRef.current === null || retraceFnRef.current === null) {
 
-    }
-
-    //if trigger is focus, make container focusable if it's not already.
+    //if the triggers include focus, add tab index to container.
     if (triggers.focus) containerRef.current.tabIndex = -1;
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  //update the references if any of the style props changes.
   useEffect(() => {
     setContainerDimesion();
     const traceFuncs = build(borderTopRef.current!, borderRightRef.current!, borderBotRef.current!, borderLeftRef.current!, borderRadius, borderWidth, borderRadiusBuffer);
     traceFnRef.current = traceFuncs[0];
     retraceFnRef.current = traceFuncs[1];
+    // topStyleRef.current = borderTop;
+    // rightStyleRef.current = borderRight;
+    // botStyleRef.current = borderBot;
+    // leftStyleRef.current = borderLeft;
+    initialiseBorderStyles();
   }, [animationDuration, borderWidth, borderRadius, borderColour, speed, borderStyle, squareWindow, inset, , trigger])
 
   /**
@@ -130,10 +145,10 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   //reset the borders stybles back to default.
   const reset = () => {
-    resetBorderStyle(borderTopRef.current, borderTop);
-    resetBorderStyle(borderBotRef.current, borderBot);
-    resetBorderStyle(borderLeftRef.current, borderLeft);
-    resetBorderStyle(borderRightRef.current, borderRight);
+    resetBorderStyle(borderTopRef.current, topStyleRef.current);
+    resetBorderStyle(borderBotRef.current, botStyleRef.current);
+    resetBorderStyle(borderLeftRef.current, leftStyleRef.current);
+    resetBorderStyle(borderRightRef.current, rightStyleRef.current);
   }
   /**
    * 
@@ -163,103 +178,112 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     }
   });
 
-  //the container to hold the 4 borders
-  const container: React.CSSProperties = {
-    position: 'relative',
-    boxSizing: 'border-box',
-    outline: 'none',
-    borderRadius,
-    //borders on the outside instead of inside
-    ...(!inset && { display: 'flex', justifyContent: 'center', alignItems: 'center', padding: borderWidth })
-  };
+  const initialiseBorderStyles = () => {
 
-  //base border styling
-  const border: React.CSSProperties = {
-    boxSizing: 'border-box',
-    position: 'absolute',
-    // borderWidth
-    borderTopWidth: borderWidth,
-    borderBottomWidth: borderWidth,
-    borderRightWidth: borderWidth,
-    borderLeftWidth: borderWidth,
-    borderTopStyle: borderStyle as CSS.Property.BorderTopStyle,
-    borderLeftStyle: borderStyle as CSS.Property.BorderTopStyle,
-    borderRightStyle: borderStyle as CSS.Property.BorderTopStyle,
-    borderBottomStyle: borderStyle as CSS.Property.BorderTopStyle,
+    //the container to hold the 4 borders
+    const container: React.CSSProperties = {
+      position: 'relative',
+      boxSizing: 'border-box',
+      outline: 'none',
+      borderRadius,
+      //borders on the outside instead of inside
+      ...(!inset && { display: 'flex', justifyContent: 'center', alignItems: 'center', padding: borderWidth })
+    };
 
-    // borderStyle,
-    width: '0',
-    height: '0',
-    pointerEvents: 'none',
-  };
+    //base border styling
+    const border: React.CSSProperties = {
+      boxSizing: 'border-box',
+      position: 'absolute',
+      // borderWidth
+      borderTopWidth: borderWidth,
+      borderBottomWidth: borderWidth,
+      borderRightWidth: borderWidth,
+      borderLeftWidth: borderWidth,
+      borderTopStyle: borderStyle as CSS.Property.BorderTopStyle,
+      borderLeftStyle: borderStyle as CSS.Property.BorderTopStyle,
+      borderRightStyle: borderStyle as CSS.Property.BorderTopStyle,
+      borderBottomStyle: borderStyle as CSS.Property.BorderTopStyle,
 
-  //top and bottom shared styling
-  const borderTopBot: React.CSSProperties = {
-    ...border,
-    ...(squareWindow && { borderLeftStyle: 'none', borderRightStyle: 'none' }),
-    borderRightColor: 'transparent',
-    borderLeftColor: 'transparent',
-    width: (squareWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
-  }
+      // borderStyle,
+      width: '0',
+      height: '0',
+      pointerEvents: 'none',
+    };
 
-  //left and right shared styling
-  const borderLeftRight: React.CSSProperties = {
-    ...border,
-    ...(squareWindow && { borderTopStyle: 'none', borderBottomStyle: 'none' }),
-    borderTopColor: 'transparent',
-    borderBottomColor: 'transparent',
-    height: (squareWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
-  }
+    //top and bottom shared styling
+    const borderTopBot: React.CSSProperties = {
+      ...border,
+      ...(squareWindow && { borderLeftStyle: 'none', borderRightStyle: 'none' }),
+      borderRightColor: 'transparent',
+      borderLeftColor: 'transparent',
+      width: (squareWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
+    }
 
-  //styling for individual borders, borderwith set to 0 initially to stop it showing
-  const borderTop: React.CSSProperties = {
-    ...borderTopBot,
-    ...(!squareWindow && { borderBottomStyle: 'none', height: `${borderRadius}px` }),
-    // borderTop: `0px ${borderStyle} ${borderColourArr[0]}`,
-    borderTopWidth: '0px',
-    borderTopStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
-    borderTopColor: `${borderColourArr[0]}`,
-    borderTopLeftRadius: `${borderRadius}px`,
-    left: '0',
-    top: '0',
-    margin: '0px'
-  };
+    //left and right shared styling
+    const borderLeftRight: React.CSSProperties = {
+      ...border,
+      ...(squareWindow && { borderTopStyle: 'none', borderBottomStyle: 'none' }),
+      borderTopColor: 'transparent',
+      borderBottomColor: 'transparent',
+      height: (squareWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
+    }
 
-  const borderLeft: React.CSSProperties = {
-    ...borderLeftRight,
-    ...(!squareWindow && { borderRightStyle: 'none', width: `${borderRadius}px` }),
-    // borderLeft: `0px ${borderStyle} ${borderColourArr[1]}`,
-    borderLeftWidth: '0px',
-    borderLeftStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
-    borderLeftColor: `${borderColourArr[1]}`,
-    borderBottomLeftRadius: `${borderRadius}px`,
-    left: '0',
-    bottom: '0',
-  };
+    //styling for individual borders, borderwith set to 0 initially to stop it showing
+    const borderTop: React.CSSProperties = {
+      ...borderTopBot,
+      ...(!squareWindow && { borderBottomStyle: 'none', height: `${borderRadius}px` }),
+      // borderTop: `0px ${borderStyle} ${borderColourArr[0]}`,
+      borderTopWidth: '0px',
+      borderTopStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
+      borderTopColor: `${borderColourArr[0]}`,
+      borderTopLeftRadius: `${borderRadius}px`,
+      left: '0',
+      top: '0',
+      margin: '0px'
+    };
 
-  const borderBot: React.CSSProperties = {
-    ...borderTopBot,
-    ...(!squareWindow && { borderTopStyle: 'none', height: `${borderRadius}px` }),
-    // borderBottom: `0px ${borderStyle} ${borderColourArr[2]}`,
-    borderBottomWidth: '0px',
-    borderBottomStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
-    borderBottomColor: `${borderColourArr[2]}`,
-    borderBottomRightRadius: `${borderRadius}px`,
-    right: '0',
-    bottom: '0',
-  };
+    const borderLeft: React.CSSProperties = {
+      ...borderLeftRight,
+      ...(!squareWindow && { borderRightStyle: 'none', width: `${borderRadius}px` }),
+      // borderLeft: `0px ${borderStyle} ${borderColourArr[1]}`,
+      borderLeftWidth: '0px',
+      borderLeftStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
+      borderLeftColor: `${borderColourArr[1]}`,
+      borderBottomLeftRadius: `${borderRadius}px`,
+      left: '0',
+      bottom: '0',
+    };
 
-  const borderRight: React.CSSProperties = {
-    ...borderLeftRight,
-    ...(!squareWindow && { borderLeftStyle: 'none', width: `${borderRadius}px` }),
-    // borderRight: `0px ${borderStyle} ${borderColourArr[3]} `,
-    borderRightWidth: '0px',
-    borderRightStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
-    borderRightColor: `${borderColourArr[3]}`,
-    borderTopRightRadius: `${borderRadius}px`,
-    right: '0',
-    top: '0',
-    margin: '0'
+    const borderBot: React.CSSProperties = {
+      ...borderTopBot,
+      ...(!squareWindow && { borderTopStyle: 'none', height: `${borderRadius}px` }),
+      // borderBottom: `0px ${borderStyle} ${borderColourArr[2]}`,
+      borderBottomWidth: '0px',
+      borderBottomStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
+      borderBottomColor: `${borderColourArr[2]}`,
+      borderBottomRightRadius: `${borderRadius}px`,
+      right: '0',
+      bottom: '0',
+    };
+
+    const borderRight: React.CSSProperties = {
+      ...borderLeftRight,
+      ...(!squareWindow && { borderLeftStyle: 'none', width: `${borderRadius}px` }),
+      // borderRight: `0px ${borderStyle} ${borderColourArr[3]} `,
+      borderRightWidth: '0px',
+      borderRightStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
+      borderRightColor: `${borderColourArr[3]}`,
+      borderTopRightRadius: `${borderRadius}px`,
+      right: '0',
+      top: '0',
+      margin: '0'
+    };
+
+    topStyleRef.current = borderTop;
+    rightStyleRef.current = borderRight;
+    botStyleRef.current = borderBot;
+    leftStyleRef.current = borderLeft;
+
   };
 
   const handlePointerEnter = (evt: React.PointerEvent) => {
@@ -302,10 +326,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     traceBorder();
   }
 
-  const emptyBorder = () => {
-
-  }
-
   /**
    * Trace the border
    */
@@ -321,7 +341,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       if (traceRef.current && !isComplete) {
         requestAnimationFrame(() => { traceBorder(currentTime) });
       }
-      completeTrace.current = isComplete as boolean;
+      completeTrace.current = isComplete;
     } catch (err) {
       console.error(err);
     }

@@ -6,9 +6,9 @@ import './demo.css';
 
 const Demo = () => {
 
-  const [demoProps, setDemoProps] = useState<ITraceBorderProps>({
-    borderWidth: 10,
-    borderRadius: 15,
+  const [animateBorderProps, setAnimateBorderProps] = useState<ITraceBorderProps>({
+    borderWidth: 5,
+    borderRadius: 5,
     borderColour: '#2a5766',
     animationDuration: 1000,
     speed: 0,
@@ -22,13 +22,13 @@ const Demo = () => {
    * get the constructed options from PropOptions
    */
   const getOptions = (propsObj: ITraceBorderProps) => {
-    setDemoProps(propsObj);
+    setAnimateBorderProps(propsObj);
   }
 
   return (
     <div className="Demo">
       <PropOptions optionCallBack={getOptions} />
-      <DemoArea animateBorderProp={demoProps} />
+      <DemoArea animateBorderProps={animateBorderProps} />
     </div>
   )
 
