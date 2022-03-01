@@ -6,7 +6,6 @@ const App = () => {
 
   return (
     <div className="App">
-      <h3>Trace Border</h3>
       <Demo />
     </div>
   )
