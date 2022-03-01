@@ -91,7 +91,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   //weird animation artifacts withouth this on Chrome. does nothing on firefox.
   //value is added to initial order size.
-  const borderRadiusBuffer = useRef(0);
+  const borderRadiusBuffer = useRef(borderRadius - 1 <= borderWidth ? 0 : Math.max(borderWidth - 1, 1));
 
   useEffect(() => {
     //recalculate the borderdimensions on element resize.
