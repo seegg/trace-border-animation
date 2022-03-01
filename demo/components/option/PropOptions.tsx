@@ -46,7 +46,7 @@ const PropOptions = ({ optionCallBack }: IProps) => {
       borderStyle: 'solid',
       squareWindow: false,
       inset: true,
-      trigger: 'focus'
+      trigger: 'hover'
     }
   );
 

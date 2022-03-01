@@ -91,7 +91,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     return triggers;
   }, [trigger.trim()]);
 
-  console.log(triggers.focus);
   //weird animation artifacts withouth this on Chrome. does nothing on firefox.
   //value is added to initial order size.
   const borderRadiusBuffer = useRef(borderWidth);
@@ -212,7 +211,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const handleFocus = (evt: React.FocusEvent) => {
     evt.preventDefault();
-    console.log(triggers.focus);
     if (!triggers.focus) return;
     currentTriggers.current.add('focus');
     traceRef.current = true;
