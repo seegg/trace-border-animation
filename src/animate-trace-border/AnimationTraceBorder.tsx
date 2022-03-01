@@ -45,7 +45,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //true when the border is fully drawn.
   const completeTrace = useRef(false);
 
-  //references for the styles of the four borders to keep it consistant.
+  //references for the styles of the four borders and the container to keep it consistant.
+  const containerStyleRef = useRef<React.CSSProperties | null>(null);
   const topStyleRef = useRef<React.CSSProperties | null>(null);
   const rightStyleRef = useRef<React.CSSProperties | null>(null);
   const botStyleRef = useRef<React.CSSProperties | null>(null);
@@ -90,27 +91,23 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   //weird animation artifacts withouth this on Chrome. does nothing on firefox.
   //value is added to initial order size.
-  const borderRadiusBuffer = borderRadius - 1 <= borderWidth ? 0 : Math.max(borderWidth - 1, 1);
+  const borderRadiusBuffer = useRef(0);
 
   useEffect(() => {
     //recalculate the borderdimensions on element resize.
     resizeObserver.observe(containerRef.current!);
-
+    initialiseBorderStyles();
     //if the triggers include focus, add tab index to container.
     if (triggers.focus) containerRef.current.tabIndex = -1;
-
   }, []);
 
   //update the references if any of the style props changes.
   useEffect(() => {
     setContainerDimesion();
-    const traceFuncs = build(borderTopRef.current!, borderRightRef.current!, borderBotRef.current!, borderLeftRef.current!, borderRadius, borderWidth, borderRadiusBuffer);
+    const traceFuncs = build(borderTopRef.current!, borderRightRef.current!, borderBotRef.current!, borderLeftRef.current!, borderRadius, borderWidth, borderRadiusBuffer.current);
     traceFnRef.current = traceFuncs[0];
     retraceFnRef.current = traceFuncs[1];
-    // topStyleRef.current = borderTop;
-    // rightStyleRef.current = borderRight;
-    // botStyleRef.current = borderBot;
-    // leftStyleRef.current = borderLeft;
+    borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : Math.max(borderWidth - 1, 1);
     initialiseBorderStyles();
   }, [animationDuration, borderWidth, borderRadius, borderColour, speed, borderStyle, squareWindow, inset, , trigger])
 
@@ -122,7 +119,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       if (speed && speed > 0) {
         traceSpeed.current = (speed / 1000);
       } else {
-        const total = (heightRef.current! * 2) + (widthRef.current! * 2) - ((borderRadius + borderRadiusBuffer) * 4);
+        const total = (heightRef.current! * 2) + (widthRef.current! * 2) - ((borderRadius + borderRadiusBuffer.current) * 4);
         traceSpeed.current = (total / animationDuration);
       }
     } catch (err) {
@@ -178,6 +175,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     }
   });
 
+  //initialise the styles for the various elements and 
   const initialiseBorderStyles = () => {
 
     //the container to hold the 4 borders
@@ -216,7 +214,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       ...(squareWindow && { borderLeftStyle: 'none', borderRightStyle: 'none' }),
       borderRightColor: 'transparent',
       borderLeftColor: 'transparent',
-      width: (squareWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
+      width: (squareWindow ? 0 : borderRadius + borderRadiusBuffer.current) + 'px',
     }
 
     //left and right shared styling
@@ -225,7 +223,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       ...(squareWindow && { borderTopStyle: 'none', borderBottomStyle: 'none' }),
       borderTopColor: 'transparent',
       borderBottomColor: 'transparent',
-      height: (squareWindow ? 0 : borderRadius + borderRadiusBuffer) + 'px',
+      height: (squareWindow ? 0 : borderRadius + borderRadiusBuffer.current) + 'px',
     }
 
     //styling for individual borders, borderwith set to 0 initially to stop it showing
@@ -279,11 +277,12 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       margin: '0'
     };
 
+    containerStyleRef.current = container;
     topStyleRef.current = borderTop;
     rightStyleRef.current = borderRight;
     botStyleRef.current = borderBot;
     leftStyleRef.current = borderLeft;
-
+    reset();
   };
 
   const handlePointerEnter = (evt: React.PointerEvent) => {
@@ -360,7 +359,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
         requestAnimationFrame(() => { retraceBorder(currentTime) });
       }
       //refresh the border styles at the end of retracing.
-      if (Number((borderTopRef.current! as HTMLElement).style.width.slice(0, -2)) <= borderRadius + borderRadiusBuffer) {
+      if (Number((borderTopRef.current! as HTMLElement).style.width.slice(0, -2)) <= borderRadius + borderRadiusBuffer.current) {
         reset();
       }
     } catch (err) {
@@ -372,7 +371,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
     <div
       ref={containerRef}
-      style={container}
+      style={containerStyleRef.current}
       onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
       onPointerCancel={handlePointerCancel}
@@ -384,10 +383,10 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       {inset ? children : (<div>{children}</div>)}
       {/* Elements use to draw the borders on the four sides */}
 
-      <div id='anim-trace-bT' style={borderTop} ref={borderTopRef}></div>
-      <div id='anim-trace-bR' style={borderRight} ref={borderRightRef}></div>
-      <div id='anim-trace-bB' style={borderBot} ref={borderBotRef}></div>
-      <div id='anim-trace-bL' style={borderLeft} ref={borderLeftRef}></div>
+      <div id='anim-trace-bT' style={topStyleRef.current} ref={borderTopRef}></div>
+      <div id='anim-trace-bR' style={rightStyleRef.current} ref={borderRightRef}></div>
+      <div id='anim-trace-bB' style={botStyleRef.current} ref={borderBotRef}></div>
+      <div id='anim-trace-bL' style={leftStyleRef.current} ref={borderLeftRef}></div>
 
     </div>
   )
