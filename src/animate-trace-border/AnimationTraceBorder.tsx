@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { build } from './traceBorderHelper';
+import * as CSS from 'csstype';
 
 interface ITraceBorderProps {
   children?: React.ReactNode,
@@ -173,7 +174,11 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const border: React.CSSProperties = {
     boxSizing: 'border-box',
     position: 'absolute',
-    borderWidth,
+    // borderWidth
+    borderTopWidth: borderWidth,
+    borderBottomWidth: borderWidth,
+    borderRightWidth: borderWidth,
+    borderLeftWidth: borderWidth,
     borderStyle,
     width: '0',
     height: '0',
@@ -202,7 +207,10 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const borderTop: React.CSSProperties = {
     ...borderTopBot,
     ...(!squareWindow && { borderBottom: 'none', height: `${borderRadius}px` }),
-    borderTop: `0px ${borderStyle} ${borderColourArr[0]}`,
+    // borderTop: `0px ${borderStyle} ${borderColourArr[0]}`,
+    borderTopWidth: '0px',
+    borderTopStyle: `${borderStyle}` as any,
+    borderTopColor: `${borderColourArr[0]}`,
     borderTopLeftRadius: `${borderRadius}px`,
     left: '0',
     top: '0',
@@ -221,17 +229,20 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const borderBot: React.CSSProperties = {
     ...borderTopBot,
     ...(!squareWindow && { borderTop: 'none', height: `${borderRadius}px` }),
-    borderBottom: `0px ${borderStyle} ${borderColourArr[2]}`,
-    borderBottomRightRadius: `${borderRadius}px`,
+    // borderBottom: `0px ${borderStyle} ${borderColourArr[2]}`,
+    borderBottomWidth: '0px',
+    borderBottomStyle: `${borderStyle}` as any,
+    borderBottomColor: `${borderColourArr[2]}`,
+    borderBottomRightRadius: `${borderRadius} px`,
     right: '0',
     bottom: '0',
   };
 
   const borderRight: React.CSSProperties = {
     ...borderLeftRight,
-    ...(!squareWindow && { borderLeft: 'none', width: `${borderRadius}px` }),
-    borderRight: `0px ${borderStyle} ${borderColourArr[3]}`,
-    borderTopRightRadius: `${borderRadius}px`,
+    ...(!squareWindow && { borderLeft: 'none', width: `${borderRadius} px` }),
+    borderRight: `0px ${borderStyle} ${borderColourArr[3]} `,
+    borderTopRightRadius: `${borderRadius} px`,
     right: '0',
     top: '0',
     margin: '0'
