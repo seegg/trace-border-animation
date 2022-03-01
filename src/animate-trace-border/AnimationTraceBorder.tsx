@@ -99,7 +99,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     //recalculate the borderdimensions on element resize.
     window.addEventListener('resize', () => { setContainerDimesion(); reset(); });
     resizeObserver.observe(containerRef.current);
-
     //if the triggers include focus, add tab index to container.
     if (triggers.focus) containerRef.current.tabIndex = -1;
   }, []);
@@ -113,7 +112,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : borderWidth;
     if (triggers.focus) containerRef.current.tabIndex = -1;
     initialiseStyles();
-  }, [animationDuration, borderWidth, borderRadius, borderColour, speed, borderStyle, squareWindow, inset, trigger])
+  }, [animationDuration, borderWidth, borderRadius, borderColour, speed, borderStyle, squareWindow, inset, trigger]);
 
   /**
    * set the value to increase the border by each millisecond.
@@ -175,6 +174,44 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     }
   });
 
+  /**
+   * Trace the border
+   */
+  const traceBorder = (previousTime: number = new Date().getTime()) => {
+    try {
+
+      //get ellapse time and multiply by traceSpeed to get border size delta.
+      const currentTime = new Date().getTime();
+      const speed = traceSpeed.current * (currentTime - previousTime);
+      if (traceFnRef.current === null) return;
+      const isComplete = traceFnRef.current(widthRef.current!, heightRef.current!, speed);
+
+      if (traceRef.current && !isComplete) {
+        requestAnimationFrame(() => { traceBorder(currentTime) });
+      }
+      completeTrace.current = isComplete;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  /**
+   * Backtrace from tracing the border
+   */
+  const retraceBorder = (previousTime: number = new Date().getTime()) => {
+    try {
+      if (currentTriggers.current.size > 0) return;
+      //get ellapse time and multiply by traceSpeed to get border size delta.
+      const currentTime = new Date().getTime();
+      const speed = traceSpeed.current * (currentTime - previousTime);
+      if (!traceRef.current && !retraceFnRef.current(widthRef.current!, heightRef.current!, speed, reset)) {
+        requestAnimationFrame(() => { retraceBorder(currentTime) });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   initialiseStyles();
 
   const handlePointerEnter = (evt: React.PointerEvent) => {
@@ -217,44 +254,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     traceBorder();
   }
 
-  /**
-   * Trace the border
-   */
-  const traceBorder = (previousTime: number = new Date().getTime()) => {
-    try {
-
-      //get ellapse time and multiply by traceSpeed to get border size delta.
-      const currentTime = new Date().getTime();
-      const speed = traceSpeed.current * (currentTime - previousTime);
-      if (traceFnRef.current === null) return;
-      const isComplete = traceFnRef.current(widthRef.current!, heightRef.current!, speed);
-
-      if (traceRef.current && !isComplete) {
-        requestAnimationFrame(() => { traceBorder(currentTime) });
-      }
-      completeTrace.current = isComplete;
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  /**
-   * Backtrace from tracing the border
-   */
-  const retraceBorder = (previousTime: number = new Date().getTime()) => {
-    try {
-      if (currentTriggers.current.size > 0) return;
-      //get ellapse time and multiply by traceSpeed to get border size delta.
-      const currentTime = new Date().getTime();
-      const speed = traceSpeed.current * (currentTime - previousTime);
-      if (!traceRef.current && !retraceFnRef.current(widthRef.current!, heightRef.current!, speed, reset)) {
-        requestAnimationFrame(() => { retraceBorder(currentTime) });
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
   return (
 
     <div
@@ -271,7 +270,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       {children}
       {/* Elements use to draw the borders on the four sides */}
 
-      <div id='anim-trace-bT' style={topStyleRef.current} ref={borderTopRef}></div>
+      {borderTopRef.current || <div id='anim-trace-bT' style={topStyleRef.current} ref={borderTopRef}></div>}
       <div id='anim-trace-bR' style={rightStyleRef.current} ref={borderRightRef}></div>
       <div id='anim-trace-bB' style={botStyleRef.current} ref={borderBotRef}></div>
       <div id='anim-trace-bL' style={leftStyleRef.current} ref={borderLeftRef}></div>

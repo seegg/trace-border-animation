@@ -84,7 +84,7 @@ const PropOptions = ({ optionCallBack }: IProps) => {
       <div className="prop-options-item">
         <Option id="border-radius" name="borderRadius" title="Border Radius" defaultValue={placeHolderProp.borderRadius} placeHolder="" valueType="number" onChangeCB={handleFormChange} />
       </div>
-      <div className="prop-options-item">
+      {/* <div className="prop-options-item">
         <Option id="border-width" name="borderWidth" title="Border Width" defaultValue={placeHolderProp.borderWidth} placeHolder="" valueType="number" onChangeCB={handleFormChange} />
       </div>
       <div className="prop-options-item">
@@ -107,7 +107,7 @@ const PropOptions = ({ optionCallBack }: IProps) => {
       </div>
       <div className="prop-options-item">
         <Option id="inset" name="inset" title="Inset" defaultValue={placeHolderProp.inset} placeHolder="" valueType="check" onChangeCB={handleFormChange} />
-      </div>
+      </div> */}
 
     </div>
   )
