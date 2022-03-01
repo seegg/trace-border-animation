@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import buildTraceFunctions from './traceBorder';
 import { initialiseBorderStyles } from './initialise-styles';
+import { assignStyling as resetBorderStyle } from './util';
 import * as CSS from 'csstype';
 
 
@@ -164,25 +165,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     resetBorderStyle(borderLeftRef.current, leftStyleRef.current);
     resetBorderStyle(borderRightRef.current, rightStyleRef.current);
   }
-  /**
-   * 
-   * @param border one of the four html elements use to draw the border.
-   * @param styleProperties style object corresponding to that element.
-   */
-  const resetBorderStyle = (border: HTMLElement | null, styleProperties: React.CSSProperties) => {
-    if (border instanceof HTMLElement) {
-      try {
-
-        for (const prop in styleProperties) {
-
-          border.style[prop] = styleProperties[prop];
-        }
-
-      } catch (err) {
-        console.error(err);
-      };
-    }
-  };
 
   //recalculate borderdimensions if element resizes.
   const resizeObserver = new ResizeObserver(() => {
