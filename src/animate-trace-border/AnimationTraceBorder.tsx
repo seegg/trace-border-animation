@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { build } from './traceBorderHelper';
+import { build } from './traceBorder';
 import * as CSS from 'csstype';
 
 
