@@ -65,7 +65,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   //extract border colours
   const borderColourArr = useMemo(() => {
-    let colourArr = borderColour.split(' ');
+    let colourArr = borderColour.trim().split(/\s+/);
     if (colourArr.length < 4) {
       const index = colourArr.length - 1;
       while (colourArr.length < 4) {
@@ -75,7 +75,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       colourArr = colourArr.slice(0, 4);
     }
     return colourArr;
-  }, [borderColour]);
+  }, [borderColour.trim()]);
 
   //events that'll trigger the animation
   const triggers: Trigger = useMemo(() => {
