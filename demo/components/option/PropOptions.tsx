@@ -45,25 +45,13 @@ const PropOptions = ({ optionCallBack }: IProps) => {
       speed: '',
       borderStyle: 'solid',
       squareWindow: false,
-      inset: true,
+      inset: false,
       trigger: 'hover'
     }
   );
 
   //convert place holder into proper values.
-  const [finalProp, setFinalProp] = useState<ITraceBorderProps>(
-    {
-      borderWidth: 5,
-      borderRadius: 5,
-      borderColour: '#2a5766',
-      animationDuration: 1000,
-      speed: 0,
-      borderStyle: 'solid',
-      squareWindow: false,
-      inset: true,
-      trigger: 'hover'
-    }
-  );
+  const [finalProp, setFinalProp] = useState<ITraceBorderProps | null>(null);
 
   useEffect(() => {
     //map the values in temp prop to finalProp, with default values input is not valid.

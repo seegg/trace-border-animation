@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { build } from './traceBorderHelper';
 import * as CSS from 'csstype';
 
@@ -87,7 +87,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       })
     })
     return triggers;
-  }, [trigger])
+  }, [trigger]);
 
   //weird animation artifacts withouth this on Chrome. does nothing on firefox.
   //value is added to initial order size.
@@ -109,7 +109,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     retraceFnRef.current = traceFuncs[1];
     borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : Math.max(borderWidth - 1, 1);
     initialiseBorderStyles();
-  }, [animationDuration, borderWidth, borderRadius, borderColour, speed, borderStyle, squareWindow, inset, , trigger])
+  }, [animationDuration, borderWidth, borderRadius, borderColour, speed, borderStyle, squareWindow, inset, trigger])
 
   /**
    * set the value to increase the border by each millisecond.
@@ -146,6 +146,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     resetBorderStyle(borderBotRef.current, botStyleRef.current);
     resetBorderStyle(borderLeftRef.current, leftStyleRef.current);
     resetBorderStyle(borderRightRef.current, rightStyleRef.current);
+    console.log('reset');
   }
   /**
    * 
@@ -185,7 +186,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       outline: 'none',
       borderRadius,
       //borders on the outside instead of inside
-      ...(!inset && { display: 'flex', justifyContent: 'center', alignItems: 'center', padding: borderWidth })
+      ...(!inset && { padding: borderWidth })
     };
 
     //base border styling
@@ -230,7 +231,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     const borderTop: React.CSSProperties = {
       ...borderTopBot,
       ...(!squareWindow && { borderBottomStyle: 'none', height: `${borderRadius}px` }),
-      // borderTop: `0px ${borderStyle} ${borderColourArr[0]}`,
       borderTopWidth: '0px',
       borderTopStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
       borderTopColor: `${borderColourArr[0]}`,
@@ -243,7 +243,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     const borderLeft: React.CSSProperties = {
       ...borderLeftRight,
       ...(!squareWindow && { borderRightStyle: 'none', width: `${borderRadius}px` }),
-      // borderLeft: `0px ${borderStyle} ${borderColourArr[1]}`,
       borderLeftWidth: '0px',
       borderLeftStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
       borderLeftColor: `${borderColourArr[1]}`,
@@ -255,7 +254,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     const borderBot: React.CSSProperties = {
       ...borderTopBot,
       ...(!squareWindow && { borderTopStyle: 'none', height: `${borderRadius}px` }),
-      // borderBottom: `0px ${borderStyle} ${borderColourArr[2]}`,
       borderBottomWidth: '0px',
       borderBottomStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
       borderBottomColor: `${borderColourArr[2]}`,
@@ -267,7 +265,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     const borderRight: React.CSSProperties = {
       ...borderLeftRight,
       ...(!squareWindow && { borderLeftStyle: 'none', width: `${borderRadius}px` }),
-      // borderRight: `0px ${borderStyle} ${borderColourArr[3]} `,
       borderRightWidth: '0px',
       borderRightStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
       borderRightColor: `${borderColourArr[3]}`,
@@ -380,7 +377,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     >
 
       {/* Child elements */}
-      {inset ? children : (<div>{children}</div>)}
+      {children}
       {/* Elements use to draw the borders on the four sides */}
 
       <div id='anim-trace-bT' style={topStyleRef.current} ref={borderTopRef}></div>
