@@ -7,8 +7,8 @@ import './demo.css';
 const Demo = () => {
 
   const [demoProps, setDemoProps] = useState<ITraceBorderProps>({
-    borderWidth: 5,
-    borderRadius: 5,
+    borderWidth: 10,
+    borderRadius: 15,
     borderColour: '#2a5766',
     animationDuration: 1000,
     speed: 0,

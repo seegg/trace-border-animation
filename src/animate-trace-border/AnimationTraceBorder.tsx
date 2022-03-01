@@ -81,12 +81,9 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   useEffect(() => {
     //recalculate the borderdimensions on element resize.
     resizeObserver.observe(containerRef.current!);
-    setContainerDimesion();
     //set refrences for trace and retrace functions
     if (traceFnRef.current === null || retraceFnRef.current === null) {
-      const traceFuncs = build(borderTopRef.current!, borderRightRef.current!, borderBotRef.current!, borderLeftRef.current!, borderRadius, borderWidth, borderRadiusBuffer);
-      traceFnRef.current = traceFuncs[0];
-      retraceFnRef.current = traceFuncs[1];
+
     }
 
     //if trigger is focus, make container focusable if it's not already.
@@ -96,8 +93,11 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   }, []);
 
   useEffect(() => {
-
-  })
+    setContainerDimesion();
+    const traceFuncs = build(borderTopRef.current!, borderRightRef.current!, borderBotRef.current!, borderLeftRef.current!, borderRadius, borderWidth, borderRadiusBuffer);
+    traceFnRef.current = traceFuncs[0];
+    retraceFnRef.current = traceFuncs[1];
+  }, [animationDuration, borderWidth, borderRadius, borderColour, speed, borderStyle, squareWindow, inset, , trigger])
 
   /**
    * set the value to increase the border by each millisecond.
@@ -244,19 +244,19 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     borderBottomWidth: '0px',
     borderBottomStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
     borderBottomColor: `${borderColourArr[2]}`,
-    borderBottomRightRadius: `${borderRadius} px`,
+    borderBottomRightRadius: `${borderRadius}px`,
     right: '0',
     bottom: '0',
   };
 
   const borderRight: React.CSSProperties = {
     ...borderLeftRight,
-    ...(!squareWindow && { borderLeftStyle: 'none', width: `${borderRadius} px` }),
+    ...(!squareWindow && { borderLeftStyle: 'none', width: `${borderRadius}px` }),
     // borderRight: `0px ${borderStyle} ${borderColourArr[3]} `,
     borderRightWidth: '0px',
     borderRightStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
     borderRightColor: `${borderColourArr[3]}`,
-    borderTopRightRadius: `${borderRadius} px`,
+    borderTopRightRadius: `${borderRadius}px`,
     right: '0',
     top: '0',
     margin: '0'
