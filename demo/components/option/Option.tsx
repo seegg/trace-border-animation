@@ -33,18 +33,18 @@ const Option = ({ title, name, placeHolder, defaultValue, valueType, id, onChang
   return (
     <div className="Option">
       <label className="Option-title" htmlFor={id}>{title}</label>
-      {/* <AnimateTraceBorder inset trigger={valueType === 'check' ? 'hover' : 'focus'} borderWidth={3} animationDuration={500}> */}
-      <input
-        className={`${'Option-input'}${valueType === 'check' ? ' Option-input-check' : ''}`}
-        name={name}
-        type={valueType === 'check' ? 'checkbox' : 'text'}
-        placeholder={placeHolder}
-        value={valueType !== 'check' ? defaultValue?.toString() : ''}
-        checked={valueType === 'check' ? defaultValue as boolean : false}
-        onChange={handleChange}
-      />
+      <AnimateTraceBorder inset trigger={valueType === 'check' ? 'hover' : 'focus'} borderWidth={3} animationDuration={500}>
+        <input
+          className={`${'Option-input'}${valueType === 'check' ? ' Option-input-check' : ''}`}
+          name={name}
+          type={valueType === 'check' ? 'checkbox' : 'text'}
+          placeholder={placeHolder}
+          value={valueType !== 'check' ? defaultValue?.toString() : ''}
+          checked={valueType === 'check' ? defaultValue as boolean : false}
+          onChange={handleChange}
+        />
 
-      {/* </AnimateTraceBorder> */}
+      </AnimateTraceBorder>
     </div>
   )
 }
