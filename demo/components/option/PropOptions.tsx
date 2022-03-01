@@ -44,7 +44,7 @@ const PropOptions = ({ optionCallBack }: IProps) => {
       animationDuration: '1000',
       speed: '',
       borderStyle: 'solid',
-      squareWindow: true,
+      squareWindow: false,
       inset: true,
       trigger: 'hover'
     }
