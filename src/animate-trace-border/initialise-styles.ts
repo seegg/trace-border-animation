@@ -1,5 +1,4 @@
 import { ITraceBorderProps } from "./AnimationTraceBorder";
-import * as CSS from 'csstype';
 
 export const initialiseBorderStyles = ({ borderRadius, borderWidth, borderStyle, inset, squareWindow, }: ITraceBorderProps, borderRadiusBuffer: React.MutableRefObject<number>, borderColourArr: string[],) => {
 
@@ -22,10 +21,10 @@ export const initialiseBorderStyles = ({ borderRadius, borderWidth, borderStyle,
     borderBottomWidth: borderWidth,
     borderRightWidth: borderWidth,
     borderLeftWidth: borderWidth,
-    borderTopStyle: borderStyle as CSS.Property.BorderBlockStyle,
-    borderLeftStyle: borderStyle as CSS.Property.BorderBlockStyle,
-    borderRightStyle: borderStyle as CSS.Property.BorderBlockStyle,
-    borderBottomStyle: borderStyle as CSS.Property.BorderBlockStyle,
+    borderTopStyle: borderStyle as any,
+    borderLeftStyle: borderStyle as any,
+    borderRightStyle: borderStyle as any,
+    borderBottomStyle: borderStyle as any,
 
     // borderStyle,
     width: '0',
@@ -57,7 +56,7 @@ export const initialiseBorderStyles = ({ borderRadius, borderWidth, borderStyle,
     ...(!squareWindow && { borderBottomStyle: 'none', height: `${borderRadius}px` }),
     ...(squareWindow && { borderBottomColor: `${borderColourArr[0]}` }),
     borderTopWidth: '0px',
-    borderTopStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
+    borderTopStyle: `${borderStyle}` as any,
     borderTopColor: `${borderColourArr[0]}`,
     borderTopLeftRadius: `${borderRadius}px`,
     left: '0',
@@ -70,7 +69,7 @@ export const initialiseBorderStyles = ({ borderRadius, borderWidth, borderStyle,
     ...(!squareWindow && { borderRightStyle: 'none', width: `${borderRadius}px` }),
     ...(squareWindow && { borderRightColor: `${borderColourArr[1]}` }),
     borderLeftWidth: '0px',
-    borderLeftStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
+    borderLeftStyle: `${borderStyle}` as any,
     borderLeftColor: `${borderColourArr[1]}`,
     borderBottomLeftRadius: `${borderRadius}px`,
     left: '0',
@@ -82,7 +81,7 @@ export const initialiseBorderStyles = ({ borderRadius, borderWidth, borderStyle,
     ...(!squareWindow && { borderTopStyle: 'none', height: `${borderRadius}px` }),
     ...(squareWindow && { borderTopColor: `${borderColourArr[2]}` }),
     borderBottomWidth: '0px',
-    borderBottomStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
+    borderBottomStyle: `${borderStyle}` as any,
     borderBottomColor: `${borderColourArr[2]}`,
     borderBottomRightRadius: `${borderRadius}px`,
     right: '0',
@@ -94,7 +93,7 @@ export const initialiseBorderStyles = ({ borderRadius, borderWidth, borderStyle,
     ...(!squareWindow && { borderLeftStyle: 'none', width: `${borderRadius}px` }),
     ...(squareWindow && { borderLeftColor: `${borderColourArr[3]}` }),
     borderRightWidth: '0px',
-    borderRightStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
+    borderRightStyle: `${borderStyle}` as any,
     borderRightColor: `${borderColourArr[3]}`,
     borderTopRightRadius: `${borderRadius}px`,
     right: '0',
@@ -110,11 +109,4 @@ export const initialiseBorderStyles = ({ borderRadius, borderWidth, borderStyle,
     borderLeft,
     borderRight
   }
-
-  // containerStyleRef.current = container;
-  // topStyleRef.current = borderTop;
-  // rightStyleRef.current = borderRight;
-  // botStyleRef.current = borderBot;
-  // leftStyleRef.current = borderLeft;
-  // reset();
 };

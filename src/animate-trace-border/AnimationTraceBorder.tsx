@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import buildTraceFunctions from './traceBorder';
 import { initialiseBorderStyles } from './initialise-styles';
 import { assignStyling as resetBorderStyle } from './util';
-import * as CSS from 'csstype';
 
 
 export interface ITraceBorderProps {
