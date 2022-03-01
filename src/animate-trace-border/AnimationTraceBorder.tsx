@@ -287,7 +287,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const handlePointerEnter = (evt: React.PointerEvent) => {
     evt.preventDefault();
-    console.log(containerRef.current.getBoundingClientRect().width);
     if (!triggers.hover) return;
     currentTriggers.current.add('hover');
     traceRef.current = true;
