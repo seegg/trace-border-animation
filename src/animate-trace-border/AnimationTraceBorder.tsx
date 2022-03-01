@@ -81,7 +81,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const triggers: Trigger = useMemo(() => {
     const triggers = {};
 
-    const propTriggers = trigger.split(' ');
+    const propTriggers = trigger.trim().split(/\s+/);
     availableTriggers.forEach(trigger => {
       triggers[trigger] = false;
       propTriggers.forEach(k => {
@@ -89,8 +89,9 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       })
     })
     return triggers;
-  }, [trigger]);
+  }, [trigger.trim()]);
 
+  console.log(triggers.focus);
   //weird animation artifacts withouth this on Chrome. does nothing on firefox.
   //value is added to initial order size.
   const borderRadiusBuffer = useRef(borderWidth);
@@ -111,6 +112,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     traceFnRef.current = trace;
     retraceFnRef.current = retrace;
     borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : borderWidth;
+    if (triggers.focus) containerRef.current.tabIndex = -1;
     initialiseStyles();
   }, [animationDuration, borderWidth, borderRadius, borderColour, speed, borderStyle, squareWindow, inset, trigger])
 
@@ -196,6 +198,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     evt.preventDefault();
     if (!triggers.hover) return;
     currentTriggers.current.delete('hover');
+    currentTriggers.current.delete('focus');
     traceRef.current = false;
     retraceBorder();
   };
@@ -209,6 +212,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const handleFocus = (evt: React.FocusEvent) => {
     evt.preventDefault();
+    console.log(triggers.focus);
     if (!triggers.focus) return;
     currentTriggers.current.add('focus');
     traceRef.current = true;

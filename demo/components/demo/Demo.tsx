@@ -13,7 +13,7 @@ const Demo = () => {
     if (animateBorderProps !== null) {
       const { borderWidth, borderColour, borderRadius, borderStyle, animationDuration, speed, squareWindow, inset, trigger }: ITraceBorderProps = animateBorderProps;
       setComponentString(
-        `<AnimateTraceBorder borderWidth={${borderWidth}} borderColour={"${borderColour}"} borderRadius={${borderRadius}} borderStyle={"${borderStyle}"} animationDuration={${animationDuration}} speed={${speed}} squareWindow={${squareWindow}} inset={${inset}} trigger={"${trigger}"}></AnimationTraceBorder>`
+        `<AnimateTraceBorder borderWidth={${borderWidth}} borderColour={"${borderColour}"} borderRadius={${borderRadius}} borderStyle={"${borderStyle}"} animationDuration={${animationDuration}} speed={${speed}} squareWindow={${squareWindow}} inset={${inset}} trigger={"${trigger}"}></AnimateTraceBorder>`
       );
     }
   }, [animateBorderProps])
