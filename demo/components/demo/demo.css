@@ -17,6 +17,7 @@
   min-height: 500px;
   min-width: 320px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: rgb(223, 225, 226);
@@ -33,6 +34,11 @@
   display: flex;
   justify-content: center;
   align-items: center
+}
+
+.demo-text{
+  margin: 1rem;
+  font-size: small;
 }
 
 .demo-item-m{
