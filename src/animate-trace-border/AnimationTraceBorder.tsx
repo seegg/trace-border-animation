@@ -22,7 +22,7 @@ interface Trigger {
   focus?: boolean
 }
 
-type TraceFn = (width: number, height: number, speed: number) => boolean;
+type TraceFn = (width: number, height: number, speed: number, resetCB?: () => void) => boolean;
 
 const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black', animationDuration = 1000, children, borderStyle = 'solid', squareWindow = false, inset = false, speed, trigger = 'hover' }: ITraceBorderProps) => {
   //Avoid useState in this component when possible to avoid undesirable effects.
@@ -352,12 +352,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       //get ellapse time and multiply by traceSpeed to get border size delta.
       const currentTime = new Date().getTime();
       const speed = traceSpeed.current * (currentTime - previousTime);
-      if (!traceRef.current && !retraceFnRef.current(widthRef.current!, heightRef.current!, speed)) {
+      if (!traceRef.current && !retraceFnRef.current(widthRef.current!, heightRef.current!, speed, reset)) {
         requestAnimationFrame(() => { retraceBorder(currentTime) });
-      }
-      //refresh the border styles at the end of retracing.
-      if (Number((borderTopRef.current! as HTMLElement).style.width.slice(0, -2)) <= borderRadius + borderRadiusBuffer.current) {
-        reset();
       }
     } catch (err) {
       console.error(err);

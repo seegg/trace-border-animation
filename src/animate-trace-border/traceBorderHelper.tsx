@@ -31,7 +31,7 @@ export const build = (top: HTMLDivElement, right: HTMLDivElement, bot: HTMLDivEl
   const borders = { top, left, right, bot };
   return [
     (width: number, height: number, speed: number) => { return traceBorders(borders, height, width, radius, borderWidth, speed, radiusBuffer) },
-    (width: number, height: number, speed: number) => { return retraceBorders(borders, height, width, radius, borderWidth, speed, radiusBuffer) }
+    (width: number, height: number, speed: number, resetCB: () => void) => { return retraceBorders(borders, height, width, radius, borderWidth, speed, radiusBuffer, resetCB) }
   ]
 }
 
@@ -117,7 +117,7 @@ const traceHelper = (speed: number, borderRadius: number, borderWidth: number, r
  * @param speed how much to subtract current border by.
  * @param radiusBuffer value added to stop 
  */
-const retraceBorders = ({ top, right, bot, left }: Borders, height: number, width: number, borderRadius: number, borderWidth: number, speed: number, radiusBuffer: number) => {
+const retraceBorders = ({ top, right, bot, left }: Borders, height: number, width: number, borderRadius: number, borderWidth: number, speed: number, radiusBuffer: number, resetCB: () => void) => {
   const currentLeftHeight = getElementHeight(left);
   const currentBotWidth = getElementWidth(bot)
   const currentRightHeight = getElementHeight(right);
@@ -146,6 +146,7 @@ const retraceBorders = ({ top, right, bot, left }: Borders, height: number, widt
     retrace(top, 'Top', currentTopWidth, width);
     return false;
   }
+  resetCB();
   return true;
 }
 
