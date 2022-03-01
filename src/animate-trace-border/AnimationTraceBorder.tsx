@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import buildTraceFunctions from './traceBorder';
 import { initialiseBorderStyles } from './initialise-styles';
 import { assignStyling as resetBorderStyle } from './util';
