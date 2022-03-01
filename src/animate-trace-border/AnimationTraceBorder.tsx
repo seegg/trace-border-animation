@@ -67,8 +67,9 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const borderColourArr = useMemo(() => {
     let colourArr = borderColour.split(' ');
     if (colourArr.length < 4) {
+      const index = colourArr.length - 1;
       while (colourArr.length < 4) {
-        colourArr.push(colourArr[colourArr.length - 1]);
+        colourArr.push(colourArr[index]);
       }
     } else if (colourArr.length > 4) {
       colourArr = colourArr.slice(0, 4);
