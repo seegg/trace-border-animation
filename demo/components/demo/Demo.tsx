@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { DemoArea } from "../demo-area";
 import { PropOptions } from "../option";
 import { ITraceBorderProps } from "../../type";
 import './demo.css';
