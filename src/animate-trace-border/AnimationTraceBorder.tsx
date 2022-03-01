@@ -94,6 +94,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const borderRadiusBuffer = useRef(0);
 
   useEffect(() => {
+    console.log(widthRef.current);
     //recalculate the borderdimensions on element resize.
     resizeObserver.observe(containerRef.current!);
     initialiseBorderStyles();
@@ -146,7 +147,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     resetBorderStyle(borderBotRef.current, botStyleRef.current);
     resetBorderStyle(borderLeftRef.current, leftStyleRef.current);
     resetBorderStyle(borderRightRef.current, rightStyleRef.current);
-    console.log('reset');
   }
   /**
    * 

@@ -16,7 +16,7 @@ const DemoArea = ({ animateBorderProps }: IDemoAreaProps) => {
 
   return (
     <div className="demo-area">
-      <AnimateTraceBorder {...animateBorderProps}>
+      <AnimateTraceBorder borderWidth={5} borderRadius={5}>
         Trace Borders
         <div className="demo-item" onClick={handleClick}>
           Click to resize
