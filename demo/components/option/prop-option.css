@@ -3,10 +3,14 @@
   flex-wrap: wrap;
   justify-content: center;
   background-color: aliceblue;
+  flex-basis: 150px;
 }
 
 .prop-options-item{
+  display: flex;
+  justify-content: center;
   margin: 5px;
+  flex: 1 1;
 }
 
 @media screen and (min-width: 900px) {
