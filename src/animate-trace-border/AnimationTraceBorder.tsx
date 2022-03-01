@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { build } from './traceBorder';
+import buildTraceFunctions from './traceBorder';
 import * as CSS from 'csstype';
 
 
@@ -105,9 +105,9 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //update the references if any of the style props changes.
   useEffect(() => {
     setContainerDimesion();
-    const traceFuncs = build(borderTopRef.current!, borderRightRef.current!, borderBotRef.current!, borderLeftRef.current!, borderRadius, borderWidth, borderRadiusBuffer.current);
-    traceFnRef.current = traceFuncs[0];
-    retraceFnRef.current = traceFuncs[1];
+    const { trace, retrace } = buildTraceFunctions(borderTopRef.current!, borderRightRef.current!, borderBotRef.current!, borderLeftRef.current!, borderRadius, borderWidth, borderRadiusBuffer.current);
+    traceFnRef.current = trace;
+    retraceFnRef.current = retrace;
     borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : Math.max(borderWidth - 1, 1);
     initialiseBorderStyles();
   }, [animationDuration, borderWidth, borderRadius, borderColour, speed, borderStyle, squareWindow, inset, trigger])
@@ -185,7 +185,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       position: 'relative',
       boxSizing: 'border-box',
       outline: 'none',
-      overflow: 'hidden',
       borderRadius,
       //borders on the outside instead of inside
       ...(!inset && { padding: borderWidth })
