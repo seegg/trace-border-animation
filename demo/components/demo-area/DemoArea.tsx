@@ -11,13 +11,12 @@ const DemoArea = ({ animateBorderProp }: IDemoAreaProps) => {
 
   const handleClick = (evt: React.MouseEvent) => {
     const elem = evt.target as HTMLDivElement;
-    elem.style.height = '300px';
-    elem.style.width = '300px';
+    elem.classList.toggle('demo-item-m');
   }
 
   return (
     <div className="demo-area">
-      <AnimateTraceBorder trigger="focus" animationDuration={3000}>
+      <AnimateTraceBorder trigger="focus" animationDuration={1000}>
         Trace Borders
         <div className="demo-item" onClick={handleClick}>
         </div>

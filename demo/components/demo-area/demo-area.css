@@ -18,6 +18,11 @@
   border: solid 5px lightsalmon;
 }
 
+.demo-item-m{
+  width: 250px;
+  height: 250px;
+}
+
 @media screen and (min-width: 900px) {
   .demo-area{
     width: 700px;

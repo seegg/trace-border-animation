@@ -20,7 +20,7 @@ interface Trigger {
   focus?: boolean
 }
 
-type TraceFn = (width: number, height: number, speed: number) => Boolean;
+type TraceFn = (width: number, height: number, speed: number) => boolean;
 
 const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black', animationDuration = 1000, children, borderStyle = 'solid', squareWindow = false, inset = false, speed, trigger = 'hover' }: ITraceBorderProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -32,16 +32,20 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const heightRef = useRef<number | null>(null);
   const widthRef = useRef<number | null>(null);
 
-  const [trace, setTraceFn] = useState<TraceFn | null>(null);
+  const traceFnRef = useRef<TraceFn | null>(null);
+  const retraceFnRef = useRef<TraceFn | null>(null);
   const [retrace, setRetraceFn] = useState<TraceFn | null>(null);
   // const [traceSpeed, setTraceSpeed] = useState(0);
   const traceSpeed = useRef(0);
+  const completeTrace = useRef(false);
 
-  //keeps track of the triggers than has been triggers. 
+
+  //keeps track of the triggers than has been triggered. 
   //retrace will only be call if this is empty.
   const currentTriggers = useRef<Set<keyof Trigger>>(new Set());
 
   const availableTriggers = ['hover', 'focus'];
+
 
   //extract border colours
   const borderColourArr = useMemo(() => {
@@ -80,9 +84,9 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     resizeObserver.observe(containerRef.current!);
     setContainerDimesion();
     //set trace and retrace functions, onece per render.
-    if (trace === null && retrace === null) {
+    if (traceFnRef.current === null) {
       const traceFuncs = build(borderTopRef.current!, borderRightRef.current!, borderBotRef.current!, borderLeftRef.current!, borderRadius, borderWidth, borderRadiusBuffer);
-      setTraceFn(() => traceFuncs[0]);
+      traceFnRef.current = traceFuncs[0];
       setRetraceFn(() => traceFuncs[1]);
     }
 
@@ -131,7 +135,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     resetBorderStyle(borderBotRef.current, borderBot);
     resetBorderStyle(borderLeftRef.current, borderLeft);
     resetBorderStyle(borderRightRef.current, borderRight);
-    if (traceRef.current) console.log('maybe');
   }
   /**
    * 
@@ -156,12 +159,16 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const resizeObserver = new ResizeObserver(() => {
     setContainerDimesion();
     reset();
+    if (completeTrace.current) {
+      traceBorder();
+    }
   });
 
   //the container to hold the 4 borders
   const container: React.CSSProperties = {
     position: 'relative',
     boxSizing: 'border-box',
+    outline: 'none',
     borderRadius,
     //borders on the outside instead of inside
     ...(!inset && { display: 'flex', justifyContent: 'center', alignItems: 'center', padding: borderWidth })
@@ -280,14 +287,17 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
    */
   const traceBorder = (previousTime: number = new Date().getTime()) => {
     try {
+
       //get ellapse time and multiply by traceSpeed to get border size delta.
       const currentTime = new Date().getTime();
       const speed = traceSpeed.current * (currentTime - previousTime);
-      if (trace === null) return;
-      const complete = trace(widthRef.current!, heightRef.current!, speed);
-      if (traceRef.current && !complete) {
+      if (traceFnRef.current === null) return;
+      const isComplete = traceFnRef.current(widthRef.current!, heightRef.current!, speed);
+      // console.log('got here', isComplete);
+      if (traceRef.current && !isComplete) {
         requestAnimationFrame(() => { traceBorder(currentTime) });
       }
+      completeTrace.current = isComplete as boolean;
     } catch (err) {
       console.error(err);
     }
