@@ -16,6 +16,9 @@
   height: 300px;
   background-color: blanchedalmond;
   border: solid 5px lightsalmon;
+  display: flex;
+  justify-content: center;
+  align-items: center
 }
 
 .demo-item-m{

@@ -19,6 +19,7 @@ const DemoArea = ({ animateBorderProp }: IDemoAreaProps) => {
       <AnimateTraceBorder trigger="focus" animationDuration={1000}>
         Trace Borders
         <div className="demo-item" onClick={handleClick}>
+          Click
         </div>
       </AnimateTraceBorder>
     </div>

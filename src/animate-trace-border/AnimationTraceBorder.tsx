@@ -34,7 +34,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const traceFnRef = useRef<TraceFn | null>(null);
   const retraceFnRef = useRef<TraceFn | null>(null);
-  const [retrace, setRetraceFn] = useState<TraceFn | null>(null);
   // const [traceSpeed, setTraceSpeed] = useState(0);
   const traceSpeed = useRef(0);
   const completeTrace = useRef(false);
@@ -80,22 +79,19 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const borderRadiusBuffer = borderRadius - 1 <= borderWidth ? 0 : Math.max(borderWidth - 1, 1);
 
   useEffect(() => {
-    //recalculate the borderdimensions on resize.
+    //recalculate the borderdimensions on element resize.
     resizeObserver.observe(containerRef.current!);
     setContainerDimesion();
-    //set trace and retrace functions, onece per render.
-    if (traceFnRef.current === null) {
+    //set refrences for trace and retrace functions
+    if (traceFnRef.current === null || retraceFnRef.current === null) {
       const traceFuncs = build(borderTopRef.current!, borderRightRef.current!, borderBotRef.current!, borderLeftRef.current!, borderRadius, borderWidth, borderRadiusBuffer);
       traceFnRef.current = traceFuncs[0];
-      setRetraceFn(() => traceFuncs[1]);
+      retraceFnRef.current = traceFuncs[1];
     }
 
     console.log(containerRef.current.tabIndex);
     //if trigger is focus, make container focusable if it's not already.
-    if (triggers.focus) containerRef.current.tabIndex = 1;
-
-
-
+    if (triggers.focus) containerRef.current.tabIndex = -1;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -312,7 +308,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       //get ellapse time and multiply by traceSpeed to get border size delta.
       const currentTime = new Date().getTime();
       const speed = traceSpeed.current * (currentTime - previousTime);
-      if (!traceRef.current && !retrace!(widthRef.current!, heightRef.current!, speed)) {
+      if (!traceRef.current && !retraceFnRef.current(widthRef.current!, heightRef.current!, speed)) {
         requestAnimationFrame(() => { retraceBorder(currentTime) });
       }
       //refresh the border styles at the end of retracing.
