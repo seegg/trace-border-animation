@@ -112,6 +112,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : borderWidth;
     if (triggers.focus) containerRef.current.tabIndex = -1;
     initialiseStyles();
+    reset();
+    traceBorder();
   }, [animationDuration, borderWidth, borderRadius, borderColour, speed, borderStyle, squareWindow, inset, trigger]);
 
   /**
@@ -270,7 +272,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       {children}
       {/* Elements use to draw the borders on the four sides */}
 
-      {borderTopRef.current || <div id='anim-trace-bT' style={topStyleRef.current} ref={borderTopRef}></div>}
+      <div id='anim-trace-bT' style={topStyleRef.current} ref={borderTopRef}></div>
       <div id='anim-trace-bR' style={rightStyleRef.current} ref={borderRightRef}></div>
       <div id='anim-trace-bB' style={botStyleRef.current} ref={borderBotRef}></div>
       <div id='anim-trace-bL' style={leftStyleRef.current} ref={borderLeftRef}></div>
