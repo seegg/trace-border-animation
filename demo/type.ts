@@ -9,5 +9,4 @@ export interface ITraceBorderProps {
   squareWindow?: boolean,
   inset?: boolean,
   trigger?: string
-
 }

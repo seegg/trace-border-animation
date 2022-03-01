@@ -38,7 +38,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const traceSpeed = useRef(0);
   const completeTrace = useRef(false);
 
-
   //keeps track of the triggers than has been triggered. 
   //retrace will only be call if this is empty.
   const currentTriggers = useRef<Set<keyof Trigger>>(new Set());
@@ -101,7 +100,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
    */
   const setSpeed = () => {
     try {
-      if (speed) {
+      if (speed && speed > 0) {
         traceSpeed.current = (speed / 1000);
       } else {
         const total = (heightRef.current! * 2) + (widthRef.current! * 2) - ((borderRadius + borderRadiusBuffer) * 4);

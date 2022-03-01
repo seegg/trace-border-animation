@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Option } from ".";
+import { ITraceBorderProps } from "../../type";
 import './prop-option.css';
 
 
@@ -28,7 +29,11 @@ interface FinalProp {
 
 }
 
-const PropOptions = () => {
+interface IProps {
+  optionCallBack: (props: ITraceBorderProps) => void;
+}
+
+const PropOptions = ({ optionCallBack }: IProps) => {
 
   const [placeHolderProp, setPlaceHolderProp] = useState<TempProp>(
     {
@@ -44,12 +49,13 @@ const PropOptions = () => {
     }
   );
 
-  const [finalProp, setFinalProp] = useState<FinalProp>(
+  const [finalProp, setFinalProp] = useState<ITraceBorderProps>(
     {
       borderWidth: 5,
       borderRadius: 5,
       borderColour: '#2a5766',
       animationDuration: 1000,
+      speed: 0,
       borderStyle: 'solid',
       squareWindow: false,
       inset: true,
@@ -58,10 +64,25 @@ const PropOptions = () => {
   );
 
   useEffect(() => {
-  })
+    //map the values in temp prop to finalProp, with default values being 0 if input is no valid.
+    const temp: ITraceBorderProps = {
+      ...placeHolderProp,
+      borderWidth: Number(placeHolderProp.borderWidth) || 0,
+      borderRadius: Number(placeHolderProp.borderRadius) || 0,
+      ...(placeHolderProp.animationDuration && { animationDuration: Number(placeHolderProp.animationDuration) || 0, }),
+      speed: Number(placeHolderProp.speed) || 0,
+    };
+
+    setFinalProp(temp);
+
+  }, [placeHolderProp]);
+
+  //pass the finalProp object to parent component whenever it updates.
+  useEffect(() => {
+    optionCallBack(finalProp);
+  }, [finalProp]);
 
   const handleFormChange = (name: string, value: string | boolean) => {
-    console.log(value);
     setPlaceHolderProp({
       ...placeHolderProp,
       [name]: value
@@ -77,10 +98,10 @@ const PropOptions = () => {
         <Option id="border-width" name="borderWidth" title="Border Width" defaultValue={placeHolderProp.borderWidth} placeHolder="" valueType="number" onChangeCB={handleFormChange} />
       </div>
       <div className="prop-options-item">
-        <Option id="border-colour" name="borderColour" title="Border Colour" defaultValue={placeHolderProp.borderColour} placeHolder="" valueType="number" onChangeCB={handleFormChange} />
+        <Option id="border-colour" name="borderColour" title="Border Colour" defaultValue={placeHolderProp.borderColour} placeHolder="" valueType="text" onChangeCB={handleFormChange} />
       </div>
       <div className="prop-options-item">
-        <Option id="border-style" name="borderStyle" title="Border Style" defaultValue={placeHolderProp.borderStyle} placeHolder="" valueType="number" onChangeCB={handleFormChange} />
+        <Option id="border-style" name="borderStyle" title="Border Style" defaultValue={placeHolderProp.borderStyle} placeHolder="" valueType="text" onChangeCB={handleFormChange} />
       </div>
       <div className="prop-options-item">
         <Option id="animation-duration" name="animationDuration" title="Duration" defaultValue={placeHolderProp.animationDuration} placeHolder="overritten by speed" valueType="number" onChangeCB={handleFormChange} />
