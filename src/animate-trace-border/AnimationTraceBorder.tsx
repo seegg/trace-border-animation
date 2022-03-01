@@ -185,6 +185,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       position: 'relative',
       boxSizing: 'border-box',
       outline: 'none',
+      overflow: 'hidden',
       borderRadius,
       //borders on the outside instead of inside
       ...(!inset && { padding: borderWidth })
@@ -199,10 +200,10 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       borderBottomWidth: borderWidth,
       borderRightWidth: borderWidth,
       borderLeftWidth: borderWidth,
-      borderTopStyle: borderStyle as CSS.Property.BorderTopStyle,
-      borderLeftStyle: borderStyle as CSS.Property.BorderTopStyle,
-      borderRightStyle: borderStyle as CSS.Property.BorderTopStyle,
-      borderBottomStyle: borderStyle as CSS.Property.BorderTopStyle,
+      borderTopStyle: borderStyle as CSS.Property.BorderBlockStyle,
+      borderLeftStyle: borderStyle as CSS.Property.BorderBlockStyle,
+      borderRightStyle: borderStyle as CSS.Property.BorderBlockStyle,
+      borderBottomStyle: borderStyle as CSS.Property.BorderBlockStyle,
 
       // borderStyle,
       width: '0',
@@ -232,6 +233,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     const borderTop: React.CSSProperties = {
       ...borderTopBot,
       ...(!squareWindow && { borderBottomStyle: 'none', height: `${borderRadius}px` }),
+      ...(squareWindow && { borderBottomColor: `${borderColourArr[0]}` }),
       borderTopWidth: '0px',
       borderTopStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
       borderTopColor: `${borderColourArr[0]}`,
@@ -244,6 +246,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     const borderLeft: React.CSSProperties = {
       ...borderLeftRight,
       ...(!squareWindow && { borderRightStyle: 'none', width: `${borderRadius}px` }),
+      ...(squareWindow && { borderRightColor: `${borderColourArr[1]}` }),
       borderLeftWidth: '0px',
       borderLeftStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
       borderLeftColor: `${borderColourArr[1]}`,
@@ -255,6 +258,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     const borderBot: React.CSSProperties = {
       ...borderTopBot,
       ...(!squareWindow && { borderTopStyle: 'none', height: `${borderRadius}px` }),
+      ...(squareWindow && { borderTopColor: `${borderColourArr[2]}` }),
       borderBottomWidth: '0px',
       borderBottomStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
       borderBottomColor: `${borderColourArr[2]}`,
@@ -266,6 +270,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     const borderRight: React.CSSProperties = {
       ...borderLeftRight,
       ...(!squareWindow && { borderLeftStyle: 'none', width: `${borderRadius}px` }),
+      ...(squareWindow && { borderLeftColor: `${borderColourArr[3]}` }),
       borderRightWidth: '0px',
       borderRightStyle: `${borderStyle}` as CSS.Property.BorderTopStyle,
       borderRightColor: `${borderColourArr[3]}`,

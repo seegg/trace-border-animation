@@ -127,22 +127,26 @@ const retraceBorders = ({ top, right, bot, left }: Borders, height: number, widt
   const adjustedMinSize = borderRadius + radiusBuffer;
   //wrapper function to keep track of the params that never change.
   const retrace = retraceHelper(speed, borderRadius, borderWidth, radiusBuffer);
+  const transparent = 'transparent';
 
-  //set right adjacent border colour back to transparent before retracing border.
+  //set right adjacent and opposite border colour to transparent before retracing border.
   if (currentLeftHeight > adjustedMinSize) {
-    top.style.borderLeftColor = 'transparent';
+    top.style.borderLeftColor = transparent;
     retrace(left, 'Left', currentLeftHeight, height);
     return false;
   } else if (currentBotWidth > adjustedMinSize) {
-    bot.style.borderLeftColor = 'transparent';
+    bot.style.borderLeftColor = transparent;
+    left.style.borderRightColor = transparent;
     retrace(bot, 'Bottom', currentBotWidth, width);
     return false;
   } else if (currentRightHeight > adjustedMinSize) {
-    right.style.borderBottomColor = 'transparent';
+    right.style.borderBottomColor = transparent;
+    bot.style.borderTopColor = transparent;
     retrace(right, 'Right', currentRightHeight, height);
     return false;
   } else if (currentTopWidth > adjustedMinSize) {
-    top.style.borderRightColor = 'transparent';
+    top.style.borderRightColor = transparent;
+    right.style.borderLeftColor = transparent;
     retrace(top, 'Top', currentTopWidth, width);
     return false;
   }
