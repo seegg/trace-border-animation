@@ -111,7 +111,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     traceFnRef.current = trace;
     retraceFnRef.current = retrace;
     borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : borderWidth;
-    // initialiseBorderStyles();
     initialiseStyles();
   }, [animationDuration, borderWidth, borderRadius, borderColour, speed, borderStyle, squareWindow, inset, trigger])
 
