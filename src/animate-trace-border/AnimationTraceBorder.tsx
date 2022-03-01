@@ -28,6 +28,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //Avoid useState in this component when possible to avoid undesirable effects.
   //use useRef to keep values consistant across rerenders.
 
+  console.log(inset);
+
   //HTML elements representing the 4 sides of the border and the container.
   const containerRef = useRef<HTMLDivElement | null>(null);
   const borderTopRef = useRef<HTMLDivElement | null>(null);
@@ -94,11 +96,13 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const borderRadiusBuffer = useRef(0);
 
   useEffect(() => {
-    console.log(widthRef.current);
     //recalculate the borderdimensions on element resize.
-    resizeObserver.observe(containerRef.current!);
-    initialiseBorderStyles();
+    window.addEventListener('resize', () => { setContainerDimesion(); reset(); });
+    resizeObserver.observe(containerRef.current);
+    // initialiseBorderStyles();
     //if the triggers include focus, add tab index to container.
+    console.log(containerRef.current.getBoundingClientRect().width);
+
     if (triggers.focus) containerRef.current.tabIndex = -1;
   }, []);
 
@@ -169,6 +173,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   };
 
   const resizeObserver = new ResizeObserver(() => {
+    console.log('resized', containerRef.current.getBoundingClientRect().width);
     setContainerDimesion();
     reset();
     if (completeTrace.current) {
@@ -282,8 +287,11 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     reset();
   };
 
+  initialiseBorderStyles();
+
   const handlePointerEnter = (evt: React.PointerEvent) => {
     evt.preventDefault();
+    console.log(containerRef.current.getBoundingClientRect().width);
     if (!triggers.hover) return;
     currentTriggers.current.add('hover');
     traceRef.current = true;
@@ -329,6 +337,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     try {
 
       //get ellapse time and multiply by traceSpeed to get border size delta.
+      console.log(widthRef.current);
       const currentTime = new Date().getTime();
       const speed = traceSpeed.current * (currentTime - previousTime);
       if (traceFnRef.current === null) return;
