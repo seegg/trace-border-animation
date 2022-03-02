@@ -8,11 +8,11 @@ interface IOptionProp {
   valueType: 'text' | 'number' | 'check',
   placeHolder: string,
   id: string,
-  defaultValue?: string | boolean,
+  value?: string | boolean,
   onChangeCB: (name: string, value: string | boolean) => void
 }
 
-const Option = ({ title, name, placeHolder, defaultValue, valueType, id, onChangeCB }: IOptionProp) => {
+const Option = ({ title, name, placeHolder, value, valueType, id, onChangeCB }: IOptionProp) => {
 
 
   const handleChange = (evt: React.ChangeEvent) => {
@@ -39,8 +39,8 @@ const Option = ({ title, name, placeHolder, defaultValue, valueType, id, onChang
           name={name}
           type={valueType === 'check' ? 'checkbox' : 'text'}
           placeholder={placeHolder}
-          value={valueType !== 'check' ? defaultValue?.toString() : ''}
-          checked={valueType === 'check' ? defaultValue as boolean : false}
+          value={valueType !== 'check' ? value?.toString() : ''}
+          checked={valueType === 'check' ? value as boolean : false}
           onChange={handleChange}
         />
 
