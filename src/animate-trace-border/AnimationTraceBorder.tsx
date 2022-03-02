@@ -102,7 +102,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       reset();
       traceBorder();
     }
-  });
+  }, []);
 
   //weird animation artifacts withouth this on Chrome. does nothing on firefox.
   //value is added to initial order size.
@@ -142,7 +142,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
         } else {
           const total = (heightRef.current! * 2) + (widthRef.current! * 2) - ((borderRadius + borderRadiusBuffer.current) * 4);
           traceSpeed.current = (total / animationDuration);
-          console.log(traceSpeed.current);
         }
       }
 

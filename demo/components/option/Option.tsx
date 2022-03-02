@@ -31,7 +31,7 @@ const Option = ({ title, name, placeHolder, defaultValue, valueType, id, onChang
   };
 
   return (
-    <div className="Option">
+    <section className="Option">
       <label className="Option-title" htmlFor={id}>{title}</label>
       <AnimateTraceBorder inset trigger={valueType === 'check' ? 'hover' : 'focus'} borderWidth={3} animationDuration={500}>
         <input
@@ -45,7 +45,7 @@ const Option = ({ title, name, placeHolder, defaultValue, valueType, id, onChang
         />
 
       </AnimateTraceBorder>
-    </div>
+    </section>
   )
 }
 

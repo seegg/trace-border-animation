@@ -35,7 +35,7 @@ const Demo = () => {
   return (
     <div >
       <Header />
-      <div className="Demo">
+      <main className="Demo">
         <PropOptions optionCallBack={getOptions} />
         <div className="demo-area">
           <span></span>{/* use here for alignment reasons. space-between */}
@@ -49,7 +49,7 @@ const Demo = () => {
             <p className="demo-text">{componentString}</p>
           </article>
         </div>
-      </div>
+      </main>
     </div >
   )
 

@@ -72,36 +72,36 @@ const PropOptions = ({ optionCallBack }: IProps) => {
 
   return (
     <div className="prop-options">
-      <div className="prop-options-item">
-        <Option id="border-radius" name="borderRadius" title="Border Radius" defaultValue={placeHolderProp.borderRadius} placeHolder="" valueType="number" onChangeCB={handleFormChange} />
-      </div>
-      <div className="prop-options-item">
-        <Option id="border-width" name="borderWidth" title="Border Width" defaultValue={placeHolderProp.borderWidth} placeHolder="" valueType="number" onChangeCB={handleFormChange} />
-      </div>
-      <div className="prop-options-item">
-        <Option id="border-colour" name="borderColour" title="Border Colour" defaultValue={placeHolderProp.borderColour} placeHolder="" valueType="text" onChangeCB={handleFormChange} />
-      </div>
-      <div className="prop-options-item">
-        <Option id="border-style" name="borderStyle" title="Border Style" defaultValue={placeHolderProp.borderStyle} placeHolder="" valueType="text" onChangeCB={handleFormChange} />
-      </div>
-      <div className="prop-options-item">
-        <Option id="animation-duration" name="animationDuration" title="Duration" defaultValue={placeHolderProp.animationDuration} placeHolder="overritten by speed" valueType="number" onChangeCB={handleFormChange} />
-      </div>
-      <div className="prop-options-item">
-        <Option id="reverse-duration" name="reverseDuration" title="Reverse Duration" defaultValue={placeHolderProp.reverseDuration} placeHolder="overritten by speed" valueType="number" onChangeCB={handleFormChange} />
-      </div>
-      <div className="prop-options-item">
-        <Option id="speed" name="speed" title="Speed" defaultValue={placeHolderProp.speed} placeHolder="px per second" valueType="number" onChangeCB={handleFormChange} />
-      </div>
-      <div className="prop-options-item">
-        <Option id="trigger" name="trigger" title="Triggers" defaultValue={placeHolderProp.trigger} placeHolder="hover focus" valueType="text" onChangeCB={handleFormChange} />
-      </div>
-      <div className="prop-options-item">
-        <Option id="square-window" name="squareWindow" title="Square Window" defaultValue={placeHolderProp.squareWindow} placeHolder="inner border is square" valueType="check" onChangeCB={handleFormChange} />
-      </div>
-      <div className="prop-options-item">
-        <Option id="inset" name="inset" title="Inset" defaultValue={placeHolderProp.inset} placeHolder="" valueType="check" onChangeCB={handleFormChange} />
-      </div>
+      {/* <div className="prop-options-item"> */}
+      <Option id="border-radius" name="borderRadius" title="Border Radius" defaultValue={placeHolderProp.borderRadius} placeHolder="" valueType="number" onChangeCB={handleFormChange} />
+      {/* </div>
+      <div className="prop-options-item"> */}
+      <Option id="border-width" name="borderWidth" title="Border Width" defaultValue={placeHolderProp.borderWidth} placeHolder="" valueType="number" onChangeCB={handleFormChange} />
+      {/* </div>
+      <div className="prop-options-item"> */}
+      <Option id="border-colour" name="borderColour" title="Border Colour" defaultValue={placeHolderProp.borderColour} placeHolder="" valueType="text" onChangeCB={handleFormChange} />
+      {/* </div>
+      <div className="prop-options-item"> */}
+      <Option id="border-style" name="borderStyle" title="Border Style" defaultValue={placeHolderProp.borderStyle} placeHolder="" valueType="text" onChangeCB={handleFormChange} />
+      {/* </div>
+      <div className="prop-options-item"> */}
+      <Option id="animation-duration" name="animationDuration" title="Duration" defaultValue={placeHolderProp.animationDuration} placeHolder="overritten by speed" valueType="number" onChangeCB={handleFormChange} />
+      {/* </div>
+      <div className="prop-options-item"> */}
+      <Option id="reverse-duration" name="reverseDuration" title="Reverse Duration" defaultValue={placeHolderProp.reverseDuration} placeHolder="overritten by speed" valueType="number" onChangeCB={handleFormChange} />
+      {/* </div>
+      <div className="prop-options-item"> */}
+      <Option id="speed" name="speed" title="Speed" defaultValue={placeHolderProp.speed} placeHolder="px per second" valueType="number" onChangeCB={handleFormChange} />
+      {/* </div>
+      <div className="prop-options-item"> */}
+      <Option id="trigger" name="trigger" title="Triggers" defaultValue={placeHolderProp.trigger} placeHolder="hover focus" valueType="text" onChangeCB={handleFormChange} />
+      {/* </div>
+      <div className="prop-options-item"> */}
+      <Option id="square-window" name="squareWindow" title="Square Window" defaultValue={placeHolderProp.squareWindow} placeHolder="inner border is square" valueType="check" onChangeCB={handleFormChange} />
+      {/* </div>
+      <div className="prop-options-item"> */}
+      <Option id="inset" name="inset" title="Inset" defaultValue={placeHolderProp.inset} placeHolder="" valueType="check" onChangeCB={handleFormChange} />
+      {/* </div> */}
 
     </div>
   )
