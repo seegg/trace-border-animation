@@ -1,0 +1,36 @@
+.nav-header{
+  height: 50px;
+  width: auto;
+  padding-right: 30px;
+  display: flex;
+}
+
+.nav-header nav{
+  position: relative;
+  border-radius: 9999px;
+  top: 10px;
+  margin-left: auto;
+  height: 100%;
+  width: fit-content;
+}
+
+.nav-item{
+  position: relative;;
+  height: 50px;
+  width: 50px;
+  border-radius: 5px;
+  background-color: hsl(208, 10%, 50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  right: 0;
+  transition: all 0.25s ease-in-out;
+  z-index: 1;
+}
+
+.nav-item:hover{
+  background-color: black;
+  top: 5px;
+  right: 5px;
+}
