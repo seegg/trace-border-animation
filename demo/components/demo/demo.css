@@ -24,7 +24,7 @@
   min-width: 320px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: rgb(223, 225, 226);
   flex-shrink: 1 1;
