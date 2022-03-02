@@ -10,7 +10,9 @@ export interface ITraceBorderProps {
   borderRadius?: number,
   borderColour?: string,
   animationDuration?: number,
+  reverseDuration?: number,
   speed?: number,
+  reverSpeed?: number,
   borderStyle?: string,
   squareWindow?: boolean,
   inset?: boolean,
@@ -25,7 +27,7 @@ interface Trigger {
 
 type TraceFn = (width: number, height: number, speed: number, resetCB?: () => void) => boolean;
 
-const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black', animationDuration = 1000, children, borderStyle = 'solid', squareWindow = false, inset = false, speed, trigger = 'hover', classNames = '' }: ITraceBorderProps) => {
+const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black', animationDuration = 1000, reverseDuration = 1000, children, borderStyle = 'solid', squareWindow = false, inset = false, speed, reverSpeed, trigger = 'hover', classNames = '' }: ITraceBorderProps) => {
   //Avoid useState in this component when possible to avoid undesirable effects.
   //use useRef to keep values consistant across rerenders.
 
@@ -43,6 +45,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const widthRef = useRef<number | null>(null);
   //tracing speed in px/ms
   const traceSpeed = useRef(0);
+  const retraceSpeed = useRef(0);
   //true when the border is fully drawn.
   const completeTrace = useRef(false);
 

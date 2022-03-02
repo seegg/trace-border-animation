@@ -3,6 +3,7 @@ import { PropOptions } from "../option";
 import { ITraceBorderProps } from "../../type";
 import './demo.css';
 import { AnimateTraceBorder } from "../../../src/animate-trace-border";
+import { Header } from "../header";
 
 const Demo = () => {
 
@@ -30,16 +31,21 @@ const Demo = () => {
   }
 
   return (
-    <div className="Demo">
-      <PropOptions optionCallBack={getOptions} />
-      <div className="demo-area">
-        <AnimateTraceBorder {...animateBorderProps}>
-          Trace Borders
-          <div className="demo-item" onClick={handleClick}>
-            Click to resize
-          </div>
-        </AnimateTraceBorder>
-        <p className="demo-text">{componentString}</p>
+    <div >
+      <Header />
+      <div className="Demo">
+        <PropOptions optionCallBack={getOptions} />
+        <div className="demo-area">
+          <AnimateTraceBorder {...animateBorderProps}>
+            Trace Borders
+            <div className="demo-item" onClick={handleClick}>
+              Click to resize
+            </div>
+          </AnimateTraceBorder>
+          <article>
+            <p className="demo-text">{componentString}</p>
+          </article>
+        </div>
       </div>
     </div >
   )

@@ -9,7 +9,7 @@ export const initialiseBorderStyles = ({ borderRadius, borderWidth, borderStyle,
     outline: 'none',
     borderRadius,
     //borders on the outside instead of inside
-    ...(!inset && { padding: borderWidth })
+    ...(!inset && { padding: squareWindow ? borderWidth * 2 : borderWidth })
   };
 
   //base border styling
