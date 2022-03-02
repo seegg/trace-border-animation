@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Option } from ".";
-import { ITraceBorderProps } from "../../type";
+import { ITraceBorderProps } from "../../../src/animate-trace-border/AnimationTraceBorder";
 import './prop-option.css';
 
 
@@ -9,25 +9,14 @@ interface TempProp {
   borderRadius?: string,
   borderColour?: string,
   animationDuration?: string,
+  reverseDuration?: string,
   speed?: string,
   borderStyle?: string,
   squareWindow?: boolean,
   inset?: boolean,
   trigger?: string
 
-}
-interface FinalProp {
-  borderWidth?: number,
-  borderRadius?: number,
-  borderColour?: string,
-  animationDuration?: number,
-  speed?: number,
-  borderStyle?: string,
-  squareWindow?: boolean,
-  inset?: boolean,
-  trigger?: string
-
-}
+};
 
 interface IProps {
   optionCallBack: (props: ITraceBorderProps) => void;
@@ -42,6 +31,7 @@ const PropOptions = ({ optionCallBack }: IProps) => {
       borderRadius: '5',
       borderColour: '#2a5766',
       animationDuration: '1000',
+      reverseDuration: '1000',
       speed: '',
       borderStyle: 'solid',
       squareWindow: false,
@@ -60,6 +50,7 @@ const PropOptions = ({ optionCallBack }: IProps) => {
       borderWidth: Number(placeHolderProp.borderWidth) || 2,
       borderRadius: Number(placeHolderProp.borderRadius) || 0,
       ...(placeHolderProp.animationDuration && { animationDuration: Number(placeHolderProp.animationDuration) || 500, }),
+      ...(placeHolderProp.reverseDuration && { reverseDuration: Number(placeHolderProp.reverseDuration) }),
       speed: Number(placeHolderProp.speed) || 0,
     };
 
@@ -95,6 +86,9 @@ const PropOptions = ({ optionCallBack }: IProps) => {
       </div>
       <div className="prop-options-item">
         <Option id="animation-duration" name="animationDuration" title="Duration" defaultValue={placeHolderProp.animationDuration} placeHolder="overritten by speed" valueType="number" onChangeCB={handleFormChange} />
+      </div>
+      <div className="prop-options-item">
+        <Option id="reverse-duration" name="reverseDuration" title="Reverse Duration" defaultValue={placeHolderProp.reverseDuration} placeHolder="overritten by speed" valueType="number" onChangeCB={handleFormChange} />
       </div>
       <div className="prop-options-item">
         <Option id="speed" name="speed" title="Speed" defaultValue={placeHolderProp.speed} placeHolder="px per second" valueType="number" onChangeCB={handleFormChange} />

@@ -100,7 +100,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   useEffect(() => {
     //recalculate the borderdimensions on element resize.
-    window.addEventListener('resize', () => { setContainerDimesion(); reset(); });
+    // window.addEventListener('resize', () => { setContainerDimesion(); reset(); });
     resizeObserver.observe(containerRef.current);
     //if the triggers include focus, add tab index to container.
     if (triggers.focus) containerRef.current.tabIndex = -1;
@@ -117,10 +117,10 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     initialiseStyles();
     reset();
     traceBorder();
-  }, [animationDuration, borderWidth, borderRadius, borderColour, speed, borderStyle, squareWindow, inset, trigger]);
+  }, [animationDuration, reverseDuration, borderWidth, borderRadius, borderColour, speed, reverSpeed, borderStyle, squareWindow, inset, trigger]);
 
   /**
-   * set the value to increase the border by each millisecond.
+   * set the trace and retrace speeds.
    */
   const setSpeed = () => {
     const milliInSecond = 1000;
@@ -129,8 +129,12 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       if (speed > 0) {
         traceSpeed.current = (speed / milliInSecond);
       } else {
-        const total = (heightRef.current! * 2) + (widthRef.current! * 2) - ((borderRadius + borderRadiusBuffer.current) * 4);
-        traceSpeed.current = (total / animationDuration);
+        if (animationDuration <= 0 || isNaN(animationDuration)) {
+          traceSpeed.current = Number.MAX_SAFE_INTEGER;
+        } else {
+          const total = (heightRef.current! * 2) + (widthRef.current! * 2) - ((borderRadius + borderRadiusBuffer.current) * 4);
+          traceSpeed.current = (total / animationDuration);
+        }
       }
 
       //set retrace speed

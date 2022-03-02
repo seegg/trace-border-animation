@@ -31,6 +31,6 @@
 
 .nav-item:hover{
   background-color: black;
-  top: 5px;
-  right: 5px;
+  top: -5px;
+  right: -5px;
 }

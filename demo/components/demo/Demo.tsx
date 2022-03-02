@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PropOptions } from "../option";
-import { ITraceBorderProps } from "../../type";
+import { ITraceBorderProps } from "../../../src/animate-trace-border/AnimationTraceBorder";
 import './demo.css';
 import { AnimateTraceBorder } from "../../../src/animate-trace-border";
 import { Header } from "../header";
@@ -11,10 +11,11 @@ const Demo = () => {
   const [componentString, setComponentString] = useState('');
 
   useEffect(() => {
+    //string value for the AnimateTraceBorder component being used.
     if (animateBorderProps !== null) {
-      const { borderWidth, borderColour, borderRadius, borderStyle, animationDuration, speed, squareWindow, inset, trigger }: ITraceBorderProps = animateBorderProps;
+      const { borderWidth, borderColour, borderRadius, borderStyle, animationDuration, reverseDuration, speed, squareWindow, inset, trigger }: ITraceBorderProps = animateBorderProps;
       setComponentString(
-        `<AnimateTraceBorder borderWidth={${borderWidth}} borderColour={"${borderColour}"} borderRadius={${borderRadius}} borderStyle={"${borderStyle}"} animationDuration={${animationDuration}} speed={${speed}} squareWindow={${squareWindow}} inset={${inset}} trigger={"${trigger}"} classNames=''></AnimateTraceBorder>`
+        `<AnimateTraceBorder borderWidth={${borderWidth}} borderColour={"${borderColour}"} borderRadius={${borderRadius}} borderStyle={"${borderStyle}"} animationDuration={${animationDuration}} reverseDuration={${reverseDuration}} speed={${speed}} squareWindow={${squareWindow}} inset={${inset}} trigger={"${trigger}"} classNames=''></AnimateTraceBorder>`
       );
     }
   }, [animateBorderProps])
