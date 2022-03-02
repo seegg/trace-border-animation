@@ -18,6 +18,7 @@ export interface ITraceBorderProps {
   inset?: boolean,
   trigger?: string,
   classNames?: string,
+
 }
 
 interface Trigger {
@@ -66,7 +67,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const availableTriggers = ['hover', 'focus'];
 
-  //extract border colours
+  //extract border colours from input string
   const borderColourArr = useMemo(() => {
     let colourArr = borderColour.trim().split(/\s+/);
     if (colourArr.length < 4) {
@@ -94,6 +95,15 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     return triggers;
   }, [trigger.trim()]);
 
+  //start the animation on rerender if it wasn't cancelled.
+  useEffect(() => {
+    if (traceRef.current) {
+      setSpeed();
+      reset();
+      traceBorder();
+    }
+  });
+
   //weird animation artifacts withouth this on Chrome. does nothing on firefox.
   //value is added to initial order size.
   const borderRadiusBuffer = useRef(borderWidth);
@@ -108,15 +118,13 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   //update the references if any of the style props changes.
   useEffect(() => {
+    initialiseStyles();
     setContainerDimesion();
+    borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : borderWidth;
     const { trace, retrace } = buildTraceFunctions(borderTopRef.current!, borderRightRef.current!, borderBotRef.current!, borderLeftRef.current!, borderRadius, borderWidth, borderRadiusBuffer.current);
     traceFnRef.current = trace;
     retraceFnRef.current = retrace;
-    borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : borderWidth;
     if (triggers.focus) containerRef.current.tabIndex = -1;
-    initialiseStyles();
-    reset();
-    traceBorder();
   }, [animationDuration, reverseDuration, borderWidth, borderRadius, borderColour, speed, reverSpeed, borderStyle, squareWindow, inset, trigger]);
 
   /**
@@ -201,16 +209,15 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
    */
   const traceBorder = (previousTime: number = new Date().getTime()) => {
     try {
-
+      if (traceFnRef.current === null) return;
       //get ellapse time and multiply by traceSpeed to get border size delta.
       const currentTime = new Date().getTime();
       const speed = traceSpeed.current * (currentTime - previousTime);
-      if (traceFnRef.current === null) return;
       const isComplete = traceFnRef.current(widthRef.current!, heightRef.current!, speed);
-
       if (traceRef.current && !isComplete) {
         requestAnimationFrame(() => { traceBorder(currentTime) });
       }
+
       completeTrace.current = isComplete;
     } catch (err) {
       console.error(err);
@@ -235,6 +242,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   }
 
   initialiseStyles();
+
 
   const handlePointerEnter = (evt: React.PointerEvent) => {
     evt.preventDefault();

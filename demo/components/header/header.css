@@ -41,7 +41,7 @@
 }
 
 .nav-item-bg:hover{
-  background-color: rgb(238, 173, 173);  
-  transition: background-color 0.5s linear 0.5s;
+  background-color: white;  
+  transition: background-color 0.2s linear 0.2s;
 }
 

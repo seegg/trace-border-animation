@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import './option.css'
 import { AnimateTraceBorder } from '../../../src/animate-trace-border';
 
@@ -14,13 +14,13 @@ interface IOptionProp {
 
 const Option = ({ title, name, placeHolder, defaultValue, valueType, id, onChangeCB }: IOptionProp) => {
 
-  const numberRegex = /^(^$|0|[1-9]\d*)(\.\d*)?$/;
 
   const handleChange = (evt: React.ChangeEvent) => {
     const { name, value, checked } = evt.target as HTMLInputElement;
 
     if (valueType === 'number') {
-      if (!numberRegex.test(value)) return;
+      //test to see if it's a number empty string or string with a dot at the end.
+      if (!/^(^$|0|[1-9]\d*)(\.\d*)?$/.test(value)) return;
     }
 
     if (valueType === 'check') {
@@ -28,7 +28,7 @@ const Option = ({ title, name, placeHolder, defaultValue, valueType, id, onChang
     } else {
       onChangeCB(name, value);
     }
-  }
+  };
 
   return (
     <div className="Option">

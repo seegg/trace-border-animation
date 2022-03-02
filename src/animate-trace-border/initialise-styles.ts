@@ -1,7 +1,6 @@
 import { ITraceBorderProps } from "./AnimationTraceBorder";
 
 export const initialiseBorderStyles = ({ borderRadius, borderWidth, borderStyle, inset, squareWindow, }: ITraceBorderProps, borderRadiusBuffer: React.MutableRefObject<number>, borderColourArr: string[],) => {
-
   //the container to hold the 4 borders
   const container: React.CSSProperties = {
     position: 'relative',
@@ -67,10 +66,10 @@ export const initialiseBorderStyles = ({ borderRadius, borderWidth, borderStyle,
   const borderLeft: React.CSSProperties = {
     ...borderLeftRight,
     ...(!squareWindow && { borderRightStyle: 'none', width: `${borderRadius}px` }),
-    ...(squareWindow && { borderRightColor: `${borderColourArr[1]}` }),
+    ...(squareWindow && { borderRightColor: `${borderColourArr[3]}` }),
     borderLeftWidth: '0px',
     borderLeftStyle: `${borderStyle}` as any,
-    borderLeftColor: `${borderColourArr[1]}`,
+    borderLeftColor: `${borderColourArr[3]}`,
     borderBottomLeftRadius: `${borderRadius}px`,
     left: '0',
     bottom: '0',
@@ -91,10 +90,10 @@ export const initialiseBorderStyles = ({ borderRadius, borderWidth, borderStyle,
   const borderRight: React.CSSProperties = {
     ...borderLeftRight,
     ...(!squareWindow && { borderLeftStyle: 'none', width: `${borderRadius}px` }),
-    ...(squareWindow && { borderLeftColor: `${borderColourArr[3]}` }),
+    ...(squareWindow && { borderLeftColor: `${borderColourArr[1]}` }),
     borderRightWidth: '0px',
     borderRightStyle: `${borderStyle}` as any,
-    borderRightColor: `${borderColourArr[3]}`,
+    borderRightColor: `${borderColourArr[1]}`,
     borderTopRightRadius: `${borderRadius}px`,
     right: '0',
     top: '0',

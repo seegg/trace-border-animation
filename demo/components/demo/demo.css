@@ -45,8 +45,8 @@
 .demo-text{
   margin: 1rem;
   font-size: small;
-  max-height: 300px;
-  overflow-y: scroll;
+  max-height: 150px;
+  overflow-y: auto;
 }
 
 .demo-item-m{
