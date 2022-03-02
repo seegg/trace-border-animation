@@ -15,7 +15,7 @@ const Demo = () => {
     if (animateBorderProps !== null) {
       const { borderWidth, borderColour, borderRadius, borderStyle, animationDuration, reverseDuration, speed, squareWindow, inset, trigger }: ITraceBorderProps = animateBorderProps;
       setComponentString(
-        `<AnimateTraceBorder borderWidth={${borderWidth}} borderColour={"${borderColour}"} borderRadius={${borderRadius}} borderStyle={"${borderStyle}"} animationDuration={${animationDuration}} reverseDuration={${reverseDuration}} speed={${speed}} squareWindow={${squareWindow}} inset={${inset}} trigger={"${trigger}"} classNames=''></AnimateTraceBorder>`
+        `<AnimateTraceBorder borderWidth={${borderWidth}} borderColour={"${borderColour}"} borderRadius={${borderRadius}} borderStyle={"${borderStyle}"} animationDuration={${animationDuration}} reverseDuration={${reverseDuration}} speed={${speed}} reverSpeed={} squareWindow={${squareWindow}} inset={${inset}} trigger={"${trigger}"} classNames=''></AnimateTraceBorder>`
       );
     }
   }, [animateBorderProps])
