@@ -14,8 +14,8 @@ export interface ITraceBorderProps {
   borderStyle?: string,
   squareWindow?: boolean,
   inset?: boolean,
-  trigger?: string
-
+  trigger?: string,
+  classNames?: string,
 }
 
 interface Trigger {
@@ -25,7 +25,7 @@ interface Trigger {
 
 type TraceFn = (width: number, height: number, speed: number, resetCB?: () => void) => boolean;
 
-const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black', animationDuration = 1000, children, borderStyle = 'solid', squareWindow = false, inset = false, speed, trigger = 'hover' }: ITraceBorderProps) => {
+const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black', animationDuration = 1000, children, borderStyle = 'solid', squareWindow = false, inset = false, speed, trigger = 'hover', classNames = '' }: ITraceBorderProps) => {
   //Avoid useState in this component when possible to avoid undesirable effects.
   //use useRef to keep values consistant across rerenders.
 
@@ -259,6 +259,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   return (
 
     <div
+      className=''
       ref={containerRef}
       style={containerStyleRef.current}
       onPointerEnter={handlePointerEnter}

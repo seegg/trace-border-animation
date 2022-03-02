@@ -13,7 +13,7 @@ const Demo = () => {
     if (animateBorderProps !== null) {
       const { borderWidth, borderColour, borderRadius, borderStyle, animationDuration, speed, squareWindow, inset, trigger }: ITraceBorderProps = animateBorderProps;
       setComponentString(
-        `<AnimateTraceBorder borderWidth={${borderWidth}} borderColour={"${borderColour}"} borderRadius={${borderRadius}} borderStyle={"${borderStyle}"} animationDuration={${animationDuration}} speed={${speed}} squareWindow={${squareWindow}} inset={${inset}} trigger={"${trigger}"}></AnimateTraceBorder>`
+        `<AnimateTraceBorder borderWidth={${borderWidth}} borderColour={"${borderColour}"} borderRadius={${borderRadius}} borderStyle={"${borderStyle}"} animationDuration={${animationDuration}} speed={${speed}} squareWindow={${squareWindow}} inset={${inset}} trigger={"${trigger}"} classNames=''></AnimateTraceBorder>`
       );
     }
   }, [animateBorderProps])
@@ -41,7 +41,7 @@ const Demo = () => {
         </AnimateTraceBorder>
         <p className="demo-text">{componentString}</p>
       </div>
-    </div>
+    </div >
   )
 
 }

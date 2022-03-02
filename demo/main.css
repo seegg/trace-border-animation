@@ -3,3 +3,9 @@
 
   font-family: 'Noto Sans', sans-serif;
 }
+
+.red-bg{
+  background-color: red;
+  width: 100%;
+  height: 100%;
+}
