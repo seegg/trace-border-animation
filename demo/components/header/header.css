@@ -45,3 +45,12 @@
   transition: background-color 0.2s linear 0.2s;
 }
 
+nav > ol{
+  list-style-type: none;
+}
+
+nav > ol li{
+  float: right;
+  margin-left: 5px;
+};
+

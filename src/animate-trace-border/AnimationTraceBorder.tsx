@@ -3,7 +3,6 @@ import buildTraceFunctions from './traceBorder';
 import { initialiseBorderStyles } from './initialise-styles';
 import { assignStyling as resetBorderStyle } from './util';
 
-
 export interface ITraceBorderProps {
   children?: React.ReactNode,
   borderWidth?: number,
@@ -18,7 +17,6 @@ export interface ITraceBorderProps {
   inset?: boolean,
   trigger?: string,
   classNames?: string,
-
 }
 
 interface Trigger {
@@ -97,12 +95,13 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   //start the animation on rerender if it wasn't cancelled.
   useEffect(() => {
-    if (traceRef.current) {
-      setSpeed();
-      reset();
-      traceBorder();
-    }
-  }, []);
+    // if (traceRef.current) {
+    //   animationDuration = 5000;
+    //   setSpeed();
+    //   reset();
+    //   traceBorder();
+    // }
+  });
 
   //weird animation artifacts withouth this on Chrome. does nothing on firefox.
   //value is added to initial order size.
@@ -118,14 +117,20 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   //update the references if any of the style props changes.
   useEffect(() => {
-    initialiseStyles();
     setContainerDimesion();
     borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : borderWidth;
-    const { trace, retrace } = buildTraceFunctions(borderTopRef.current!, borderRightRef.current!, borderBotRef.current!, borderLeftRef.current!, borderRadius, borderWidth, borderRadiusBuffer.current);
+    const { trace, retrace } = buildTraceFunctions(borderTopRef.current!, borderRightRef.current!,
+      borderBotRef.current!, borderLeftRef.current!,
+      borderRadius, borderWidth, borderRadiusBuffer.current);
     traceFnRef.current = trace;
     retraceFnRef.current = retrace;
     if (triggers.focus) containerRef.current.tabIndex = -1;
-  }, [animationDuration, reverseDuration, borderWidth, borderRadius, borderColour, speed, reverSpeed, borderStyle, squareWindow, inset, trigger]);
+  },
+    [
+      animationDuration, reverseDuration, borderWidth, borderRadius,
+      borderColour, speed, reverSpeed, borderStyle,
+      squareWindow, inset, trigger
+    ]);
 
   /**
    * set the trace and retrace speeds.
@@ -140,7 +145,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
         if (animationDuration <= 0 || isNaN(animationDuration)) {
           traceSpeed.current = Number.MAX_SAFE_INTEGER;
         } else {
-          const total = (heightRef.current! * 2) + (widthRef.current! * 2) - ((borderRadius + borderRadiusBuffer.current) * 4);
+          const total = (heightRef.current! * 2) + (widthRef.current! * 2)
+            - ((borderRadius + borderRadiusBuffer.current) * 4);
           traceSpeed.current = (total / animationDuration);
         }
       }
@@ -149,7 +155,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       if (reverSpeed > 0) {
         retraceSpeed.current = (reverSpeed / milliInSecond);
       } else if (reverseDuration > 0) {
-        const total = (heightRef.current! * 2) + (widthRef.current! * 2) - ((borderRadius + borderRadiusBuffer.current) * 4);
+        const total = (heightRef.current! * 2) + (widthRef.current! * 2)
+          - ((borderRadius + borderRadiusBuffer.current) * 4);
         retraceSpeed.current = (total / reverseDuration);
       } else {
         //fall back if no reverse speed or duration is supply
@@ -164,7 +171,9 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
    * wrapper for initialise border styles.
    */
   const initialiseStyles = () => {
-    const { container, borderTop, borderBot, borderLeft, borderRight } = initialiseBorderStyles({ borderRadius, borderStyle, borderWidth, inset, squareWindow }, borderRadiusBuffer, borderColourArr);
+    const { container, borderTop, borderBot, borderLeft, borderRight } =
+      initialiseBorderStyles({ borderRadius, borderStyle, borderWidth, inset, squareWindow },
+        borderRadiusBuffer, borderColourArr);
     containerStyleRef.current = container;
     topStyleRef.current = borderTop;
     rightStyleRef.current = borderRight;
