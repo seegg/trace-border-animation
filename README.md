@@ -1,6 +1,6 @@
 # trace-border-animation
 
-##[demo](https://seegg.github.io/trace-border-animation/demo/)
+## [demo](https://seegg.github.io/trace-border-animation/demo/)
 A ReactJS wrapper component to animate tracing a border around wrapped contents.
 
 ```
