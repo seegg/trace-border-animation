@@ -27,7 +27,7 @@ interface Trigger {
 
 type TraceFn = (width: number, height: number, speed: number, resetCB?: () => void) => boolean;
 
-const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black', animationDuration = 1000, reverseDuration = 1000, children, borderStyle = 'solid', squareWindow = false, inset = false, speed, reverSpeed, trigger = 'hover', classNames = '' }: ITraceBorderProps) => {
+const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black', animationDuration = 1000, reverseDuration, children, borderStyle = 'solid', squareWindow = false, inset = false, speed, reverSpeed, trigger = 'hover', classNames = '' }: ITraceBorderProps) => {
   //Avoid useState in this component when possible to avoid undesirable effects.
   //use useRef to keep values consistant across rerenders.
 
@@ -123,12 +123,25 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
    * set the value to increase the border by each millisecond.
    */
   const setSpeed = () => {
+    const milliInSecond = 1000;
     try {
-      if (speed && speed > 0) {
-        traceSpeed.current = (speed / 1000);
+      //set trace speed
+      if (speed > 0) {
+        traceSpeed.current = (speed / milliInSecond);
       } else {
         const total = (heightRef.current! * 2) + (widthRef.current! * 2) - ((borderRadius + borderRadiusBuffer.current) * 4);
         traceSpeed.current = (total / animationDuration);
+      }
+
+      //set retrace speed
+      if (reverSpeed > 0) {
+        retraceSpeed.current = (reverSpeed / milliInSecond);
+      } else if (reverseDuration > 0) {
+        const total = (heightRef.current! * 2) + (widthRef.current! * 2) - ((borderRadius + borderRadiusBuffer.current) * 4);
+        retraceSpeed.current = (total / reverseDuration);
+      } else {
+        //fall back if no reverse speed or duration is supply
+        retraceSpeed.current = traceSpeed.current;
       }
     } catch (err) {
       console.error(err);
@@ -208,7 +221,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       if (currentTriggers.current.size > 0) return;
       //get ellapse time and multiply by traceSpeed to get border size delta.
       const currentTime = new Date().getTime();
-      const speed = traceSpeed.current * (currentTime - previousTime);
+      const speed = retraceSpeed.current * (currentTime - previousTime);
       if (!traceRef.current && !retraceFnRef.current(widthRef.current!, heightRef.current!, speed, reset)) {
         requestAnimationFrame(() => { retraceBorder(currentTime) });
       }
