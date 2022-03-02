@@ -35,3 +35,13 @@
   right: -5px;
 }
 
+.nav-item-bg{
+  background-color: transparent;
+  transition: all 0.1s linear;
+}
+
+.nav-item-bg:hover{
+  background-color: rgb(238, 173, 173);  
+  transition: background-color 0.5s linear 0.5s;
+}
+

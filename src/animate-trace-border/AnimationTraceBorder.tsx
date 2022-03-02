@@ -279,7 +279,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   return (
 
     <div
-      className=''
+      className={classNames}
       ref={containerRef}
       style={containerStyleRef.current}
       onPointerEnter={handlePointerEnter}

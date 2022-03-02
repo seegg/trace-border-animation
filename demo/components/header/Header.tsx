@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <header className="nav-header">
       <nav>
-        <AnimateTraceBorder animationDuration={500} reverseDuration={500} borderWidth={2} inset borderColour="black">
+        <AnimateTraceBorder animationDuration={500} reverseDuration={1000} borderWidth={2} borderColour="black" classNames="nav-item-bg" inset>
           <div className="nav-item">
             <a href="https://github.com/seegg/trace-border-animation"><img src="https://raw.githubusercontent.com/seegg/seegg.github.io/main/images/GitHub-Mark-Light-32px.png" alt="github logo" /></a>
           </div>
