@@ -47,8 +47,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //tracing speed in px/ms
   const traceSpeed = useRef(0);
   const retraceSpeed = useRef(0);
-  //true when the border is fully drawn.
-  const completeTrace = useRef(false);
   //speed and duration references
   const speedRef = useRef(0);
   const revSpeedRef = useRef(0);
@@ -228,9 +226,9 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const resizeObserver = new ResizeObserver(() => {
     setContainerDimesion();
     reset();
-    // if (completeTrace.current) {
-    traceBorder();
-    // }
+    if (traceRef.current) {
+      traceBorder();
+    }
   });
 
   /**
@@ -246,8 +244,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       if (traceRef.current && !isComplete) {
         requestAnimationFrame(() => { traceBorder(currentTime) });
       }
-
-      completeTrace.current = isComplete;
     } catch (err) {
       console.error(err);
     }
