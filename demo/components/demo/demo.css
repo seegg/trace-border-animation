@@ -43,7 +43,9 @@
   border: solid 5px lightsalmon;
   display: flex;
   justify-content: center;
-  align-items: center
+  align-items: center;
+  user-select: none;
+  font-size: medium;
 }
 
 .demo-text{
@@ -56,6 +58,7 @@
 .demo-item-m{
   width: 250px;
   height: 250px;
+  font-size: small;
 }
 
 @media screen and (min-width: 900px) {

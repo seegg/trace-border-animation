@@ -145,6 +145,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //start the animation on rerender if it wasn't cancelled.
   useEffect(() => {
     if (traceRef.current && retrace) {
+      traceSpeed.current = 0.6;
       traceBorder();
     }
   });
@@ -227,9 +228,9 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const resizeObserver = new ResizeObserver(() => {
     setContainerDimesion();
     reset();
-    if (completeTrace.current) {
-      traceBorder();
-    }
+    // if (completeTrace.current) {
+    traceBorder();
+    // }
   });
 
   /**

@@ -28,13 +28,14 @@ const Demo = () => {
   }
 
   const handleClick = (evt: React.MouseEvent) => {
+    evt.stopPropagation();
+    evt.preventDefault();
     const elem = evt.target as HTMLDivElement;
     elem.classList.toggle('demo-item-m');
   }
 
   return (
     <>
-      {/* <Header /> */}
       <main className="Demo">
         <PropOptions optionCallBack={getOptions} />
         <section className="demo-area">

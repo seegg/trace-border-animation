@@ -96,7 +96,7 @@ const PropOptions = ({ optionCallBack }: IProps) => {
     <section className="prop-options">
       {/* Manully add in options for consistant ordering */}
       <Option {...optionItems.borderRadius} />
-      <Option {...optionItems.borderWidth} />
+      {/* <Option {...optionItems.borderWidth} />
       <Option {...optionItems.borderColour} />
       <Option {...optionItems.borderStyle} />
       <Option {...optionItems.animationDuration} />
@@ -104,7 +104,7 @@ const PropOptions = ({ optionCallBack }: IProps) => {
       <Option {...optionItems.speed} />
       <Option {...optionItems.trigger} />
       <Option {...optionItems.squareWindow} />
-      <Option {...optionItems.inset} />
+      <Option {...optionItems.inset} /> */}
     </section>
   )
 
