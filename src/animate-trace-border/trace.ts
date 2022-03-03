@@ -66,7 +66,8 @@ const traceHelper = (speed: number, borderRadius: number, borderWidth: number, r
       current = finalSize;
     }
     //calculate and set the border radius base on how much distance current border is to final border size.
-    elem.style[radiusDict[side]] = Math.max(borderRadius - (finalSize - current), 0) + 'px';
+    const remainder = borderRadius - (finalSize - current);
+    elem.style[radiusDict[side]] = Math.max(remainder, 0) + 'px';
     //set the borderwidth
     elem.style[`border${side}Width`] = borderWidth + 'px';
     //set height or width 
