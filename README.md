@@ -2,6 +2,7 @@
 
 ## [demo](https://seegg.github.io/trace-border-animation/demo/)
 A configurable ReactJS wrapper component to animate tracing a border around wrapped contents.
+The component also accepts css classes to manipulate the container element.
 
 An example:
 ```

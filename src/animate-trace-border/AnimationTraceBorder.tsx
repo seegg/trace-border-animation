@@ -119,6 +119,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     revanimateDurationRef.current = reverseDuration;
     speedRef.current = speed;
     revSpeedRef.current = reverseSpeed;
+    setSpeed();
   }, [animationDuration, reverseDuration, speed, reverseSpeed]);
 
   //update the references when any of the style props changes.
@@ -142,26 +143,26 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //start the animation on rerender if it wasn't cancelled.
   useEffect(() => {
     if (traceRef.current) {
-      traceBorder(new Date().getTime());
+      traceBorder();
     }
   });
 
   /**
    * set the trace and retrace speeds.
    */
-  const setSpeed = (multiplier: number = 1) => {
+  const setSpeed = () => {
     const milliInSecond = 1000;
     try {
       //set trace speed
       if (speedRef.current > 0) {
-        traceSpeed.current = (speedRef.current * multiplier / milliInSecond);
+        traceSpeed.current = (speedRef.current / milliInSecond);
       } else {
         if (animateDurationRef.current <= 0 || isNaN(animateDurationRef.current)) {
           traceSpeed.current = Number.MAX_SAFE_INTEGER;
         } else {
           const total = (heightRef.current! * 2) + (widthRef.current! * 2)
             - ((borderRadius + borderRadiusBuffer.current) * 4);
-          traceSpeed.current = (total / (animateDurationRef.current * multiplier));
+          traceSpeed.current = (total / (animateDurationRef.current));
         }
       }
 
@@ -185,9 +186,11 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
    * wrapper for initialise border styles.
    */
   const initialiseStyles = () => {
+
     const { container, borderTop, borderBot, borderLeft, borderRight } =
       initialiseBorderStyles({ borderRadius, borderStyle, borderWidth, inset, squareWindow },
         borderRadiusBuffer, borderColourArr);
+
     containerStyleRef.current = container;
     topStyleRef.current = borderTop;
     rightStyleRef.current = borderRight;
