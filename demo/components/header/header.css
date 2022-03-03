@@ -16,21 +16,30 @@
 
 .nav-item{
   position: relative;;
-  height: 50px;
-  width: 50px;
+  height: 35px;
+  width: 35px;
   border-radius: 5px;
   background-color: hsl(208, 10%, 50%);
+  box-shadow: 1px 1px 2px 1px hsl(0, 0%, 20%);
   display: flex;
   justify-content: center;
   align-items: center;
   top: 0;
   right: 0;
-  transition: all 0.25s ease-in-out;
+  transition: all 0.25s linear;
   z-index: 1;
+}
+
+@media screen and (min-width: 732px) {
+  .nav-item{
+    height: 50px;
+    width: 50px;
+  }
 }
 
 .nav-item:hover{
   background-color: black;
+  box-shadow: none;
   top: -5px;
   right: -5px;
 }
@@ -41,7 +50,6 @@
 }
 
 .nav-item-bg:hover{
-  background-color: white;  
   transition: background-color 0.2s linear 0.2s;
 }
 
@@ -53,4 +61,3 @@ nav > ol li{
   float: right;
   margin-left: 5px;
 };
-

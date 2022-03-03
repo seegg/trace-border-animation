@@ -26,10 +26,10 @@ const PropOptions = ({ optionCallBack }: IProps) => {
   );
 
   //convert place holder into proper values.
-  const [finalProp, setFinalProp] = useState<ITraceBorderProps | null>(null);
+  const [borderProps, setborderProps] = useState<ITraceBorderProps | null>(null);
 
   useEffect(() => {
-    // map the values in temp prop to finalProp, with default values input is not valid.
+    // map the values in temp prop to borderProps, with default values input is not valid.
     const props: ITraceBorderProps = {};
     for (const item in optionItems) {
       const { value } = optionItems[item];
@@ -39,14 +39,14 @@ const PropOptions = ({ optionCallBack }: IProps) => {
       props[item] =
         optionItems[item as keyof IOptionItems].valueType === 'number' ? Number(value) || numFallback : value;
     }
-    setFinalProp(props);
+    setborderProps(props);
 
   }, [optionItems]);
 
-  //pass the finalProp object to parent component whenever it updates.
+  //pass the props for border tracing component whenever it updates.
   useEffect(() => {
-    optionCallBack(finalProp);
-  }, [finalProp]);
+    optionCallBack(borderProps);
+  }, [borderProps]);
 
   /**
    * call back function for Option component
@@ -62,7 +62,7 @@ const PropOptions = ({ optionCallBack }: IProps) => {
   };
 
   return (
-    <div className="prop-options">
+    <section className="prop-options">
       {/* Manully add in options for consistant ordering */}
       <Option {...optionItems.borderRadius} />
       <Option {...optionItems.borderWidth} />
@@ -74,7 +74,7 @@ const PropOptions = ({ optionCallBack }: IProps) => {
       <Option {...optionItems.trigger} />
       <Option {...optionItems.squareWindow} />
       <Option {...optionItems.inset} />
-    </div>
+    </section>
   )
 
 }

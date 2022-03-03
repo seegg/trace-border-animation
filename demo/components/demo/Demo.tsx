@@ -33,11 +33,11 @@ const Demo = () => {
   }
 
   return (
-    <div >
-      <Header />
+    <>
+      {/* <Header /> */}
       <main className="Demo">
         <PropOptions optionCallBack={getOptions} />
-        <div className="demo-area">
+        <section className="demo-area">
           <span></span>{/* use here for alignment reasons. space-between */}
           <AnimateTraceBorder {...animateBorderProps}>
             Trace Borders
@@ -46,11 +46,11 @@ const Demo = () => {
             </div>
           </AnimateTraceBorder>
           <article>
-            <p className="demo-text">{componentString}</p>
+            <p className="demo-text"><code>{componentString}</code></p>
           </article>
-        </div>
+        </section>
       </main>
-    </div >
+    </>
   )
 
 }

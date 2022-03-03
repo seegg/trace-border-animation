@@ -16,6 +16,9 @@
     flex-direction: row;
     box-shadow: 3px 3px 3px 3px gray;
   }
+  .demo-area{
+    width: 700px;
+  }
 }
 
 .demo-area{
@@ -44,7 +47,7 @@
 
 .demo-text{
   margin: 1rem;
-  font-size: small;
+  font-size: medium;
   max-height: 150px;
   overflow-y: auto;
 }
@@ -55,7 +58,5 @@
 }
 
 @media screen and (min-width: 900px) {
-  .demo-area{
-    width: 700px;
-  }
+  
 }

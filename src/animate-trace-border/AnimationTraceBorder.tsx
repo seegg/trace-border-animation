@@ -11,7 +11,7 @@ export interface ITraceBorderProps {
   animationDuration?: number,
   reverseDuration?: number,
   speed?: number,
-  reverSpeed?: number,
+  reverseSpeed?: number,
   borderStyle?: string,
   squareWindow?: boolean,
   inset?: boolean,
@@ -26,9 +26,9 @@ interface Trigger {
 
 type TraceFn = (width: number, height: number, speed: number, resetCB?: () => void) => boolean;
 
-const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black', animationDuration = 1000, reverseDuration, children, borderStyle = 'solid', squareWindow = false, inset = false, speed, reverSpeed, trigger = 'hover', classNames = '' }: ITraceBorderProps) => {
-  //Avoid useState in this component when possible to avoid undesirable effects.
-  //use useRef to keep values consistant across rerenders.
+const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black',
+  animationDuration = 1000, reverseDuration, children, borderStyle = 'solid',
+  squareWindow = false, inset = false, speed, reverseSpeed, trigger = 'hover', classNames = '' }: ITraceBorderProps) => {
 
   //HTML elements representing the 4 sides of the border and the container.
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -47,6 +47,12 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const retraceSpeed = useRef(0);
   //true when the border is fully drawn.
   const completeTrace = useRef(false);
+  //speed and duration references
+  const speedRef = useRef(0);
+  const revSpeedRef = useRef(0);
+  const animateDurationRef = useRef(0);
+  const revanimateDurationRef = useRef(0);
+
 
   //references for the styles of the four borders and the container to keep it consistant.
   const containerStyleRef = useRef<React.CSSProperties | null>(null);
@@ -93,32 +99,33 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     return triggers;
   }, [trigger.trim()]);
 
-  //start the animation on rerender if it wasn't cancelled.
-  useEffect(() => {
-    // if (traceRef.current) {
-    //   animationDuration = 5000;
-    //   setSpeed();
-    //   reset();
-    //   traceBorder();
-    // }
-  });
 
   //weird animation artifacts withouth this on Chrome. does nothing on firefox.
   //value is added to initial order size.
   const borderRadiusBuffer = useRef(borderWidth);
 
   useEffect(() => {
-    //recalculate the borderdimensions on element resize.
-    // window.addEventListener('resize', () => { setContainerDimesion(); reset(); });
+    //recalculate container width and height when container resizes.
     resizeObserver.observe(containerRef.current);
-    //if the triggers include focus, add tab index to container.
-    if (triggers.focus) containerRef.current.tabIndex = -1;
+
+    return () => {
+      resizeObserver.disconnect();
+    };
   }, []);
 
-  //update the references if any of the style props changes.
+  //update speed and duration settings when they change.
   useEffect(() => {
-    setContainerDimesion();
+    animateDurationRef.current = animationDuration;
+    revanimateDurationRef.current = reverseDuration;
+    speedRef.current = speed;
+    revSpeedRef.current = reverseSpeed;
+  }, [animationDuration, reverseDuration, speed, reverseSpeed]);
+
+  //update the references when any of the style props changes.
+  useEffect(() => {
     borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : borderWidth;
+    initialiseStyles();
+    setContainerDimesion();
     const { trace, retrace } = buildTraceFunctions(borderTopRef.current!, borderRightRef.current!,
       borderBotRef.current!, borderLeftRef.current!,
       borderRadius, borderWidth, borderRadiusBuffer.current);
@@ -127,33 +134,40 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     if (triggers.focus) containerRef.current.tabIndex = -1;
   },
     [
-      animationDuration, reverseDuration, borderWidth, borderRadius,
-      borderColour, speed, reverSpeed, borderStyle,
+      borderWidth, borderRadius,
+      borderColour, borderStyle,
       squareWindow, inset, trigger
     ]);
+
+  //start the animation on rerender if it wasn't cancelled.
+  useEffect(() => {
+    if (traceRef.current) {
+      traceBorder(new Date().getTime());
+    }
+  });
 
   /**
    * set the trace and retrace speeds.
    */
-  const setSpeed = () => {
+  const setSpeed = (multiplier: number = 1) => {
     const milliInSecond = 1000;
     try {
       //set trace speed
-      if (speed > 0) {
-        traceSpeed.current = (speed / milliInSecond);
+      if (speedRef.current > 0) {
+        traceSpeed.current = (speedRef.current * multiplier / milliInSecond);
       } else {
-        if (animationDuration <= 0 || isNaN(animationDuration)) {
+        if (animateDurationRef.current <= 0 || isNaN(animateDurationRef.current)) {
           traceSpeed.current = Number.MAX_SAFE_INTEGER;
         } else {
           const total = (heightRef.current! * 2) + (widthRef.current! * 2)
             - ((borderRadius + borderRadiusBuffer.current) * 4);
-          traceSpeed.current = (total / animationDuration);
+          traceSpeed.current = (total / (animateDurationRef.current * multiplier));
         }
       }
 
       //set retrace speed
-      if (reverSpeed > 0) {
-        retraceSpeed.current = (reverSpeed / milliInSecond);
+      if (reverseSpeed > 0) {
+        retraceSpeed.current = (reverseSpeed / milliInSecond);
       } else if (reverseDuration > 0) {
         const total = (heightRef.current! * 2) + (widthRef.current! * 2)
           - ((borderRadius + borderRadiusBuffer.current) * 4);
@@ -222,6 +236,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       //get ellapse time and multiply by traceSpeed to get border size delta.
       const currentTime = new Date().getTime();
       const speed = traceSpeed.current * (currentTime - previousTime);
+      console.log('ellapsed', currentTime - previousTime);
       const isComplete = traceFnRef.current(widthRef.current!, heightRef.current!, speed);
       if (traceRef.current && !isComplete) {
         requestAnimationFrame(() => { traceBorder(currentTime) });
