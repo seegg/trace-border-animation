@@ -22,6 +22,7 @@
 }
 
 .demo-area{
+  padding-top: 30px;
   height: auto;
   min-height: 500px;
   min-width: 320px;

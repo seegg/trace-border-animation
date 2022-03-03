@@ -33,7 +33,10 @@ const Option = ({ title, name, placeHolder, value, valueType, id, onChangeCB }: 
   return (
     <section className="Option">
       <label className="Option-title" htmlFor={id}>{title}</label>
-      <AnimateTraceBorder inset trigger={valueType === 'check' ? 'hover' : 'focus'} borderWidth={3} animationDuration={500}>
+      <AnimateTraceBorder
+        inset trigger={valueType === 'check' ? 'hover' : 'focus'}
+        borderWidth={3} animationDuration={500} retrace
+      >
         <input
           className={`${'Option-input'}${valueType === 'check' ? ' Option-input-check' : ''}`}
           name={name}

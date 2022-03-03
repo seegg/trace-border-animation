@@ -58,6 +58,7 @@
   height: 32px;
   width: 32px;
   border-radius: 50%;
+  animation: fade-in 5s ease-in 0s 1;
 }
 
 nav > ol{

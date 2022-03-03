@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AnimateTraceBorder } from "../../../src/animate-trace-border";
 import './header.css';
 
@@ -14,6 +14,26 @@ interface INavItemProps {
 const HeaderNavItem =
   ({ link, animateDuration = 500, animateRevDuration = 1000, animateWidth = 2, animateColour = 'black', image = null }: INavItemProps) => {
 
+    const [imageIcon, setImageIcon] = useState<HTMLImageElement | null>(null);
+
+    useEffect(() => {
+      const imageElem = new Image();
+
+      const handler = () => {
+        setImageIcon(imageElem);
+      }
+
+      if (image?.src && !imageIcon) {
+        imageElem.src = image.src;
+        imageElem.alt = image.alt || 'navigation Icon';
+        imageElem.addEventListener('load', handler);
+        //clean up
+        return () => {
+          imageElem.removeEventListener('load', handler);
+        }
+      }
+
+    }, []);
 
     return (
       <AnimateTraceBorder
@@ -24,11 +44,10 @@ const HeaderNavItem =
         borderColour={animateColour}
         classNames="nav-item-bg">
         <a href={link} className="nav-item">
-          {image && <img src="https://raw.githubusercontent.com/seegg/seegg.github.io/main/images/GitHub-Mark-Light-32px.png"
-            className="nav-item-img" alt={image.alt || 'navigation icon'} />}
+          {imageIcon && <img src={imageIcon.src} alt={imageIcon.alt} className={imageIcon.classList.toString()}></img>}
         </a>
       </AnimateTraceBorder>
-    )
+    );
 
   };
 
