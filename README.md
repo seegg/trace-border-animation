@@ -20,8 +20,9 @@ Trying to fighure out how to properly emulate the border radius while animating 
 ```
 verticalRadius = current/finalRadius * current;
 horizontalRadius = current;
+cornerRadius = verticalRadius horizontalRadius;
 ```
-Switch vertical and horizontal components for different different corners.
+Switch vertical and horizontal components around for different different corners.
 
 
 ![Trace border](demo/images/radiuses.png?raw=true)
