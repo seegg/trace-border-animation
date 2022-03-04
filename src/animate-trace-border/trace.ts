@@ -69,18 +69,17 @@ const traceHelper = (speed: number, borderRadius: number, borderWidth: number, r
     }
 
     //calculate and set the border radius base on how much distance current border is to final border size.
-    const remainder = Math.max(borderRadius - (finalSize - current), 0);
-
-
-    let crossRadius = remainder;
-    if (remainder > 0) {
-      //x and y coordinate of the intersection
-      // const [, , { x, y }] =
-      //   circleUtils.getCircLineIntersect(borderRadius, remainder, borderRadius - 1, remainder - 1, 0, 0, borderRadius);
-      crossRadius = remainder / borderRadius * remainder;
+    const mainRadius = Math.max(borderRadius - (finalSize - current), 0);
+    let crossRadius = mainRadius;
+    if (mainRadius > 0) {
+      //offset for border radius.
+      crossRadius = mainRadius / borderRadius * mainRadius;
     }
 
-    elem.style[radiusDict[side]] = crossRadius + 'px ' + remainder + 'px';
+    const radiusString = side === 'Top' || side === 'Bottom' ?
+      mainRadius + 'px ' + crossRadius + 'px' : crossRadius + 'px ' + mainRadius + 'px';
+
+    elem.style[radiusDict[side]] = radiusString;
     //set the borderwidth
     elem.style[`border${side}Width`] = borderWidth + 'px';
     //set height or width 
