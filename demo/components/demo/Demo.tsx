@@ -3,7 +3,6 @@ import { PropOptions } from "../option";
 import { ITraceBorderProps } from "../../../src/animate-trace-border/AnimationTraceBorder";
 import './demo.css';
 import { AnimateTraceBorder } from "../../../src/animate-trace-border";
-import { Header } from "../header";
 
 const Demo = () => {
 
