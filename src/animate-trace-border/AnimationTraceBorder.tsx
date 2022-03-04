@@ -145,6 +145,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //start the animation on rerender if it wasn't cancelled.
   useEffect(() => {
     if (traceRef.current && retrace) {
+      //cancel animation frame to prevent doubling up.
+      reset();
       cancelAnimationFrame(currentAnimationFrame.current);
       traceBorder();
     }
