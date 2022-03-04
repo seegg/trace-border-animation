@@ -159,8 +159,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     const milliInSecond = 1000;
     try {
       //set trace speed
-      if (speedRef.current > 0) {
-        traceSpeed.current = (speedRef.current / milliInSecond);
+      if (revSpeedRef.current > 0) {
+        traceSpeed.current = (revSpeedRef.current / milliInSecond);
       } else {
         if (animateDurationRef.current <= 0 || isNaN(animateDurationRef.current)) {
           traceSpeed.current = Number.MAX_SAFE_INTEGER;
@@ -172,12 +172,12 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       }
 
       //set retrace speed
-      if (reverseSpeed > 0) {
-        retraceSpeed.current = (reverseSpeed / milliInSecond);
-      } else if (reverseDuration > 0) {
+      if (revSpeedRef.current > 0) {
+        retraceSpeed.current = (revSpeedRef.current / milliInSecond);
+      } else if (revanimateDurationRef.current > 0) {
         const total = (heightRef.current! * 2) + (widthRef.current! * 2)
           - ((borderRadius + borderRadiusBuffer.current) * 4);
-        retraceSpeed.current = (total / reverseDuration);
+        retraceSpeed.current = (total / revanimateDurationRef.current);
       } else {
         //fall back if no reverse speed or duration is supply
         retraceSpeed.current = traceSpeed.current;
@@ -231,6 +231,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     //canel any queued animation frame so they don't double up.
     cancelAnimationFrame(currentAnimationFrame.current);
     setContainerDimesion();
+    console.log(reverseDuration);
     reset();
     if (traceRef.current) {
       traceBorder();
