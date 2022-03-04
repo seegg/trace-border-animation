@@ -67,7 +67,6 @@ const retraceHelper = (speed: number, borderRadius: number, borderWidth: number,
     if (current <= borderRadius + radiusBuffer) {
       current = borderRadius + radiusBuffer;
       elem.style[`border${side}Width`] = '0px';
-      // elem.style[side === 'Left' || side === 'Right' ? 'height' : 'width'] = borderRadius + radiusBuffer + 'px';
     } else {
       elem.style[`border${side}Width`] = borderWidth + 'px';
     }
@@ -79,12 +78,11 @@ const retraceHelper = (speed: number, borderRadius: number, borderWidth: number,
       //offset for border radius.
       crossRadius = mainRadius / borderRadius * mainRadius;
     }
-
+    //horizonal and vertical components for border radius.
     const radiusString = side === 'Top' || side === 'Bottom' ?
       mainRadius + 'px ' + crossRadius + 'px' : crossRadius + 'px ' + mainRadius + 'px';
 
     elem.style[radiusDict[side]] = radiusString;
-
 
     elem.style[side === 'Left' || side === 'Right' ? 'height' : 'width'] = current + 'px';
   }
