@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>figuring out border radius</title>
+  <style>
+    :root {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .container {
+      margin-left: 200px;
+      position: relative;
+      width: 500px;
+      height: 500px;
+    }
+
+    .full {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 200px;
+      width: 150px;
+      border-top-left-radius: 100px 100px;
+      border-left: solid 25px rgb(0, 0, 0);
+      border-top: solid 25px rgba(0, 0, 0, 0.2);
+      background-color: rgba(83, 97, 83, 0.5);
+      box-sizing: border-box;
+    }
+
+    .half {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 175px;
+      width: 150px;
+      border-top-left-radius: 56.25px 75px;
+      border-left: solid 5px green;
+      border-top: solid 5px rgba(0, 199, 0, 0.2);
+      background-color: rgba(0, 128, 0, 0.2);
+      box-sizing: border-box;
+    }
+
+    .quarter {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 100px;
+      width: 150px;
+      border-top-left-radius: 0px;
+      border-left: solid 25px red;
+      border-top: solid 25px rgba(61, 35, 0, 0.2);
+      background-color: rgba(128, 73, 0, 0.2);
+      box-sizing: border-box;
+    }
+
+    .quarter2 {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 190px;
+      width: 150px;
+      border-top-left-radius: 0px;
+      border-left: solid 55px rgba(255, 0, 0, 0.3);
+      border-top: solid 55px rgba(61, 35, 0, 0.2);
+      background-color: rgba(128, 73, 0, 0.2);
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="full"></div>
+    <div class="half"></div>
+    <div class="quarter2"></div>
+    <div class="quarter"></div>
+  </div>
+</body>
+
+</html>

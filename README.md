@@ -14,3 +14,14 @@ An example:
 ```
 
 ![Trace border](demo/images/img1.png?raw=true)
+
+
+Trying to fighure out how to properly emulate the border radius while animating and connecting it to seperate borders was a doozy. But it turns out simple ratios was good enough. 
+```
+verticalRadius = current/finalRadius * current;
+horizontalRadius = current;
+```
+Switch vertical and horizontal components for different different corners.
+
+
+![Trace border](demo/images/radiuses.png?raw=true)
