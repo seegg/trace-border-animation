@@ -16,7 +16,7 @@ export interface ITraceBorderProps {
   squareWindow?: boolean,
   inset?: boolean,
   trigger?: string,
-  retrace?: boolean,
+  traceOnRerender?: boolean,
   classNames?: string,
 }
 
@@ -30,7 +30,7 @@ type TraceFn = (width: number, height: number, speed: number, resetCB?: () => vo
 const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black',
   animationDuration = 1000, reverseDuration, children, borderStyle = 'solid',
   squareWindow = false, inset = false, speed, reverseSpeed, trigger = 'hover',
-  classNames = '', retrace = false }: ITraceBorderProps) => {
+  classNames = '', traceOnRerender = false }: ITraceBorderProps) => {
 
   //HTML elements representing the 4 sides of the border and the container.
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -144,7 +144,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   //start the animation on rerender if it wasn't cancelled.
   useEffect(() => {
-    if (traceRef.current && retrace) {
+    if (traceRef.current && traceOnRerender) {
       //cancel animation frame to prevent doubling up.
       reset();
       cancelAnimationFrame(currentAnimationFrame.current);
