@@ -67,11 +67,25 @@ const retraceHelper = (speed: number, borderRadius: number, borderWidth: number,
     if (current <= borderRadius + radiusBuffer) {
       current = borderRadius + radiusBuffer;
       elem.style[`border${side}Width`] = '0px';
-      elem.style[side === 'Left' || side === 'Right' ? 'height' : 'width'] = borderRadius + radiusBuffer + 'px';
+      // elem.style[side === 'Left' || side === 'Right' ? 'height' : 'width'] = borderRadius + radiusBuffer + 'px';
     } else {
       elem.style[`border${side}Width`] = borderWidth + 'px';
     }
-    elem.style[radiusDict[side]] = Math.max(borderRadius - (finalSize - current), 0) + 'px';
+
+    //calculate and set the border radius base on how much distance current border is to final border size.
+    const mainRadius = Math.max(borderRadius - (finalSize - current), 0);
+    let crossRadius = mainRadius;
+    if (mainRadius > 0) {
+      //offset for border radius.
+      crossRadius = mainRadius / borderRadius * mainRadius;
+    }
+
+    const radiusString = side === 'Top' || side === 'Bottom' ?
+      mainRadius + 'px ' + crossRadius + 'px' : crossRadius + 'px ' + mainRadius + 'px';
+
+    elem.style[radiusDict[side]] = radiusString;
+
+
     elem.style[side === 'Left' || side === 'Right' ? 'height' : 'width'] = current + 'px';
   }
   return retrace;
