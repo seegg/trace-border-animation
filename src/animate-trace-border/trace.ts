@@ -1,5 +1,7 @@
 import { Borders, borderRadiusDict, BorderSide } from "./traceBorder";
 import { getElementHeight, getElementWidth } from './util';
+import { circleUtils } from "./util";
+
 
 /**
  * trace the outer edge of an element or a group of elements.
@@ -65,9 +67,20 @@ const traceHelper = (speed: number, borderRadius: number, borderWidth: number, r
     if (current > finalSize) {
       current = finalSize;
     }
+
     //calculate and set the border radius base on how much distance current border is to final border size.
-    const remainder = borderRadius - (finalSize - current);
-    elem.style[radiusDict[side]] = Math.max(remainder, 0) + 'px';
+    const remainder = Math.max(borderRadius - (finalSize - current), 0);
+
+
+    let crossRadius = remainder;
+    if (remainder > 0) {
+      //x and y coordinate of the intersection
+      // const [, , { x, y }] =
+      //   circleUtils.getCircLineIntersect(borderRadius, remainder, borderRadius - 1, remainder - 1, 0, 0, borderRadius);
+      crossRadius = remainder / borderRadius * remainder;
+    }
+
+    elem.style[radiusDict[side]] = crossRadius + 'px ' + remainder + 'px';
     //set the borderwidth
     elem.style[`border${side}Width`] = borderWidth + 'px';
     //set height or width 

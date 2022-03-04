@@ -27,7 +27,7 @@ export const assignStyling = (border: HTMLElement | null, styleProperties: React
   }
 };
 
-export const circleUtils = () => {
+export const circleUtils = (() => {
 
   interface Point {
     x: number,
@@ -63,7 +63,12 @@ export const circleUtils = () => {
     return angleBetween2DVector(mid.x - start.x, mid.y - start.y, end.x - mid.x, end.y - mid.y);
   }
 
-
+  /**
+   *wrapper for circleLineIntersec
+   */
+  function getCircLineIntersect(x1, y1, x2, y2, x, y, r) {
+    return circleLineIntersect({ x: x1, y: y1 }, { x: x2, y: y2 }, { x, y, r });
+  }
 
   /**
    * @returns The number of points and the points themselves where the line intersects with the circle. 
@@ -71,8 +76,8 @@ export const circleUtils = () => {
    */
   function circleLineIntersect(lineStart: Point, lineEnd: Point, circle: Circle): [number, Point | null, Point | null] {
     //translate the coordinates of the line with the center of the circle as origin.
-    const translatedStart = { x: lineStart.x - circle.x, y: lineStart.y - circle.y };
-    const translatedEnd = { x: lineEnd.x - circle.x, y: lineEnd.y - circle.y };
+    const translatedStart = { x: +lineStart.x - +circle.x, y: +lineStart.y - +circle.y };
+    const translatedEnd = { x: +lineEnd.x - +circle.x, y: +lineEnd.y - +circle.y };
 
     // console.log(translatedStart, translatedEnd);
     const dx = translatedEnd.x - translatedStart.x;
@@ -116,6 +121,7 @@ export const circleUtils = () => {
     angleBetween2DVector,
     angleBetween3Points,
     distanceBetween2Points,
+    getCircLineIntersect,
     circleLineIntersect,
   };
-};
+})();
