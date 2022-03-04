@@ -53,6 +53,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const animateDurationRef = useRef(0);
   const revanimateDurationRef = useRef(0);
 
+  //reference to keep track of current animation frame for canceling during rerenders.
+  const currentAnimationFrame = useRef(0);
 
   //references for the styles of the four borders and the container to keep it consistant.
   const containerStyleRef = useRef<React.CSSProperties | null>(null);
@@ -143,7 +145,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //start the animation on rerender if it wasn't cancelled.
   useEffect(() => {
     if (traceRef.current && retrace) {
-      traceSpeed.current = 0.6;
+      cancelAnimationFrame(currentAnimationFrame.current);
       traceBorder();
     }
   });
@@ -224,6 +226,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   //recalculate borderdimensions if element resizes.
   const resizeObserver = new ResizeObserver(() => {
+    //canel any queued animation frame so they don't double up.
+    cancelAnimationFrame(currentAnimationFrame.current);
     setContainerDimesion();
     reset();
     if (traceRef.current) {
@@ -242,7 +246,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       const speed = traceSpeed.current * (currentTime - previousTime);
       const isComplete = traceFnRef.current(widthRef.current!, heightRef.current!, speed);
       if (traceRef.current && !isComplete) {
-        requestAnimationFrame(() => { traceBorder(currentTime) });
+        currentAnimationFrame.current = requestAnimationFrame(() => { traceBorder(currentTime) });
       }
     } catch (err) {
       console.error(err);
