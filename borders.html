@@ -83,9 +83,11 @@
     }
 
     .corner {
-      position: relative;
+      position: absolute;
       box-sizing: border-box;
-      height: 150px;
+      top: 0;
+      left: 0;
+      height: 75px;
       width: 300px;
       background-color: antiquewhite;
     }
@@ -95,13 +97,13 @@
       box-sizing: border-box;
       top: 0;
       left: 0;
-      height: 300px;
-      width: 300px;
+      height: 150px;
+      width: 150px;
       border: 20px solid transparent;
-      border-radius: 150px;
+      border-top-left-radius: 150px;
       border-top-color: black;
-      transform: rotate(-45deg);
-      animation: rotate 3s linear 0s;
+      /* transform: rotate(-45deg); */
+      /* animation: rotate 3s linear 0s; */
     }
 
     .border {

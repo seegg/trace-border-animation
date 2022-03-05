@@ -153,7 +153,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       //cancel animation frame to prevent doubling up.
       reset();
       cancelAnimationFrame(currentAnimationFrame.current);
-      // traceBorder();
       traceBorder();
     }
   });
@@ -244,26 +243,39 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     }
   });
 
-  const traceBorder = (isTrace = true, prevTime = new Date().getTime()) => {
-
+  /**
+   * Trace the border
+   */
+  const traceBorder = (previousTime: number = new Date().getTime()) => {
     try {
-
+      // if (traceFnRef.current === null) return;
+      //get ellapse time and multiply by traceSpeed to get border size delta.
       const currentTime = new Date().getTime();
-      const speed = (currentTime - prevTime) * traceSpeed.current;
-      const traceFn = isTrace ? traceFnRef.current : retraceFnRef.current;
-      const isComplete = traceFn(widthRef.current, heightRef.current, speed);
-
-      if (!isComplete) {
-        //currently (tracing and traceRef) or (retracing and traceRef false)
-        if ((isTrace && traceRef.current) || (!isTrace && !traceRef.current)) {
-          currentAnimationFrame.current = requestAnimationFrame(() => { traceBorder(isTrace, currentTime) });
-        }
+      const speed = traceSpeed.current * (currentTime - previousTime);
+      const isComplete = traceFnRef.current(widthRef.current!, heightRef.current!, speed);
+      if (traceRef.current && !isComplete) {
+        currentAnimationFrame.current = requestAnimationFrame(() => { traceBorder(currentTime) });
       }
-
     } catch (err) {
       console.error(err);
     }
+  }
 
+  /**
+   * Backtrace from tracing the border
+   */
+  const retraceBorder = (previousTime: number = new Date().getTime()) => {
+    try {
+      if (currentTriggers.current.size > 0) return;
+      //get ellapse time and multiply by traceSpeed to get border size delta.
+      const currentTime = new Date().getTime();
+      const speed = retraceSpeed.current * (currentTime - previousTime);
+      if (!traceRef.current && !retraceFnRef.current(widthRef.current!, heightRef.current!, speed, reset)) {
+        requestAnimationFrame(() => { retraceBorder(currentTime) });
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   initialiseStyles();
@@ -282,7 +294,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     if (!triggers.hover) return;
     currentTriggers.current.delete('hover');
     traceRef.current = false;
-    traceBorder(false);
+    retraceBorder();
   };
 
   const handlePointerCancel = (evt: React.PointerEvent) => {
@@ -291,14 +303,14 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     currentTriggers.current.delete('hover');
     currentTriggers.current.delete('focus');
     traceRef.current = false;
-    traceBorder(false);
+    retraceBorder();
   };
 
   const handleBlur = (evt: React.FocusEvent) => {
     evt.preventDefault();
     currentTriggers.current.delete('focus');
     traceRef.current = false;
-    traceBorder(false);
+    retraceBorder();
   }
 
   const handleFocus = (evt: React.FocusEvent) => {

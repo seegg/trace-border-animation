@@ -42,14 +42,14 @@ const App = () => {
         <Demo />
       </div>
 
-      {/* <div>
+      <div>
         <input type="text" id='input' />
         <button onClick={handleClick}>calc</button>
       </div>
       <div>
         <input type="text" id='input2' />
         <button onClick={handleClick2}>calc</button>
-      </div> */}
+      </div>
     </div>
   )
 
