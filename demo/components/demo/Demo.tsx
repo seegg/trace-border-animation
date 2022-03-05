@@ -14,11 +14,29 @@ const Demo = () => {
     if (animateBorderProps !== null) {
       const { borderWidth, borderColour, borderRadius, borderStyle, animationDuration, reverseDuration, speed, squareWindow, inset, trigger }: ITraceBorderProps = animateBorderProps;
 
+      const bWidth = formatComponentString('borderWidth', borderWidth, borderWidth > 0);
+      const bColour = formatComponentString('borderColour', borderColour, !!borderColour);
+      const bRadius = formatComponentString('borderRadius', borderRadius, borderRadius > 0);
+      const bStyle = formatComponentString('borderStyle', borderStyle, !!borderStyle);
+      const duration = formatComponentString('animationDuration', animationDuration, animationDuration > 0);
+      const revDuration = formatComponentString('reverseDuration', reverseDuration, reverseDuration > 0);
+      const speedStr = formatComponentString('speed', speed, speed > 0);
+      const revSpeed = formatComponentString('reverseSpeed', '', false);
+      const sqWindow = formatComponentString('squareWindow', squareWindow, true);
+      const insetStr = formatComponentString('inset', inset, true);
+      const triggerStr = formatComponentString('trigger', trigger, true);
+      const classNames = formatComponentString('classNames', '', true);
+
       setComponentString(
-        `<AnimateTraceBorder borderWidth={${borderWidth}} borderColour={"${borderColour}"} borderRadius={${borderRadius}} borderStyle={"${borderStyle}"} animationDuration={${animationDuration}} reverseDuration={${reverseDuration}} speed={${speed}} reverSpeed={} squareWindow={${squareWindow}} inset={${inset}} trigger={"${trigger}"} classNames=''></AnimateTraceBorder>`
+        `<AnimateTraceBorder ${bWidth} ${bStyle} ${bColour} ${bRadius} ${bColour} ${duration} ${revDuration}${speedStr} ${revSpeed} ${sqWindow} ${insetStr} ${triggerStr} ${classNames}></AnimateTraceBorder>`
       );
     }
   }, [animateBorderProps])
+
+  const formatComponentString = (name: string, value: any, condition: boolean) => {
+    return condition ? `${name}={${value}}` : '';
+  }
+
   /**
    * get the constructed options from PropOptions
    */
