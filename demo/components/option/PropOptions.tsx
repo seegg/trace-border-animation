@@ -103,8 +103,11 @@ const PropOptions = ({ optionCallBack }: IProps) => {
       <Option {...optionItems.reverseDuration} />
       <Option {...optionItems.speed} />
       <Option {...optionItems.trigger} />
-      <Option {...optionItems.squareWindow} />
-      <Option {...optionItems.inset} />
+      <section className="check-options">
+        <Option {...optionItems.squareWindow} />
+        <Option {...optionItems.inset} />
+
+      </section>
     </section>
   )
 

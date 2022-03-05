@@ -18,6 +18,7 @@ export interface ITraceBorderProps {
   trigger?: string,
   traceOnRerender?: boolean,
   classNames?: string,
+  traceAllSidesSameTime?: boolean
 }
 
 interface Trigger {
@@ -30,7 +31,7 @@ type TraceFn = (width: number, height: number, speed: number, resetCB?: () => vo
 const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black',
   animationDuration = 1000, reverseDuration, children, borderStyle = 'solid',
   squareWindow = false, inset = false, speed, reverseSpeed, trigger = 'hover',
-  classNames = '', traceOnRerender = false }: ITraceBorderProps) => {
+  classNames = '', traceOnRerender = false, traceAllSidesSameTime = false }: ITraceBorderProps) => {
 
   //HTML elements representing the 4 sides of the border and the container.
   const container = useRef<HTMLDivElement | null>(null);
@@ -140,15 +141,18 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : borderWidth;
     initialiseStyles();
     setContainerDimesion();
-    const { trace, retrace } = buildTraceFunctions(borderTop.current!, borderRight.current!,
-      borderBot.current!, borderLeft.current!,
-      borderRadius, borderWidth, borderRadiusBuffer.current);
+    const { trace, retrace } = buildTraceFunctions(
+      borderTop.current!, borderRight.current!,
+      borderBot.current!, borderLeft.current!, borderRadius, borderWidth, borderRadiusBuffer.current,
+      traceAllSidesSameTime
+    );
     traceFn.current = trace;
     retraceFn.current = retrace;
     if (triggers.focus) container.current.tabIndex = -1;
   },
     [
-      borderWidth, borderRadius, borderColour, borderStyle, squareWindow, inset, trigger
+      borderWidth, borderRadius, borderColour, borderStyle,
+      squareWindow, inset, trigger, traceAllSidesSameTime
     ]);
 
   //start the animation on rerender if it wasn't cancelled.

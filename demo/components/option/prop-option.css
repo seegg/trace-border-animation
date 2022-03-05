@@ -13,6 +13,11 @@
   flex: 1 1;
 }
 
+.check-options{
+  display: flex;
+  flex-wrap: wrap;
+}
+
 @media screen and (min-width: 900px) {
   .prop-options{
     flex-direction: column;

@@ -30,7 +30,10 @@ export const borderRadiusDict: { [key: string]: RadiusPosition } = {
  * @param borderWidth border width
  * @param radiusBuffer const value added to initial border size to stop janky animation on chrome
  */
-const build = (top: HTMLDivElement, right: HTMLDivElement, bot: HTMLDivElement, left: HTMLDivElement, radius: number, borderWidth: number, radiusBuffer: number) => {
+const build = (top: HTMLDivElement, right: HTMLDivElement,
+  bot: HTMLDivElement, left: HTMLDivElement,
+  radius: number, borderWidth: number,
+  radiusBuffer: number, traceAllSidesSameTime: boolean) => {
   const borders = { top, left, right, bot };
 
   /**
@@ -41,7 +44,7 @@ const build = (top: HTMLDivElement, right: HTMLDivElement, bot: HTMLDivElement, 
    * @returns whether tracing is finish or not.
    */
   const trace = (width: number, height: number, speed: number) => {
-    return traceBorders(borders, height, width, radius, borderWidth, speed, radiusBuffer);
+    return traceBorders(borders, height, width, radius, borderWidth, speed, radiusBuffer), traceAllSidesSameTime;
   };
 
   /**

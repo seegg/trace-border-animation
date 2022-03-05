@@ -12,7 +12,7 @@ import { circleUtils } from "./util";
  * @param speed how much to increase width or height by.
  * @param radiusBuffer const value added to initial border size to stop janky animation on chrome
  */
-export const traceBorders = ({ top, right, bot, left }: Borders, height: number, width: number, borderRadius: number, borderWidth: number, speed: number, radiusBuffer: number) => {
+export const traceBorders = ({ top, right, bot, left }: Borders, height: number, width: number, borderRadius: number, borderWidth: number, speed: number, radiusBuffer: number, allSidesSameTime = true) => {
   const currentLeftHeight = getElementHeight(left);
   const currentBotWidth = getElementWidth(bot)
   const currentRightHeight = getElementHeight(right);
@@ -23,24 +23,44 @@ export const traceBorders = ({ top, right, bot, left }: Borders, height: number,
   //draw the borders from top left corner clockwise.
   //after each section of border is drawn, switch its right adjacent border colour
   //from transparaent to hide the 1px gap between connecting borders.
+  let isDone = true;
   if (currentTopWidth < width) {
     trace(top, 'Top', currentTopWidth, width);
-    return false;
-  } else if (currentRightHeight < height) {
-    top.style.borderRightColor = top.style.borderTopColor;
-    trace(right, 'Right', currentRightHeight, height);
-    return false;
-  } else if (currentBotWidth < width) {
-    right.style.borderBottomColor = right.style.borderRightColor;
-    trace(bot, 'Bottom', currentBotWidth, width);
-    return false;
-  } else if (currentLeftHeight < height) {
-    bot.style.borderLeftColor = bot.style.borderBottomColor;
-    trace(left, 'Left', currentLeftHeight, height);
-    return false;
+    if (!allSidesSameTime) return false;
+    isDone = false;
   }
-  top.style.borderLeftColor = top.style.borderTopColor;
-  return true;
+  if (currentRightHeight < height) {
+    trace(right, 'Right', currentRightHeight, height);
+    isDone = false;
+    if (!allSidesSameTime) {
+      top.style.borderRightColor = top.style.borderTopColor;
+      return false;
+    }
+  }
+  if (currentBotWidth < width) {
+    trace(bot, 'Bottom', currentBotWidth, width);
+    isDone = false;
+    if (!allSidesSameTime) {
+      right.style.borderBottomColor = right.style.borderRightColor;
+      return false;
+    }
+  }
+  if (currentLeftHeight < height) {
+    trace(left, 'Left', currentLeftHeight, height);
+    isDone = false;
+    if (!allSidesSameTime) {
+      bot.style.borderLeftColor = bot.style.borderBottomColor;
+      return false;
+    }
+  }
+  if (!allSidesSameTime) top.style.borderLeftColor = top.style.borderTopColor;
+  if (isDone) {
+    top.style.borderRightColor = top.style.borderTopColor;
+    right.style.borderBottomColor = right.style.borderRightColor;
+    bot.style.borderLeftColor = bot.style.borderBottomColor;
+    top.style.borderLeftColor = top.style.borderTopColor;
+  }
+  return isDone;
 };
 
 
