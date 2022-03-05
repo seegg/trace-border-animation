@@ -26,13 +26,6 @@ const Demo = () => {
     setAnimateBorderProps(propsObj);
   }
 
-  const handleClick = (evt: React.MouseEvent) => {
-    evt.stopPropagation();
-    evt.preventDefault();
-    const elem = evt.target as HTMLDivElement;
-    elem.classList.toggle('demo-item-m');
-  }
-
   return (
     <>
       <main className="Demo">
@@ -41,8 +34,7 @@ const Demo = () => {
           <span></span>{/* use here for alignment reasons. space-between */}
           <AnimateTraceBorder {...animateBorderProps}>
             Trace Borders
-            <div className="demo-item" onClick={handleClick}>
-              Click to resize
+            <div className="demo-item">
             </div>
           </AnimateTraceBorder>
           <article>
