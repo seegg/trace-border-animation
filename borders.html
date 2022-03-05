@@ -83,11 +83,12 @@
     }
 
     .corner {
+      /* overflow: hidden; */
       position: absolute;
       box-sizing: border-box;
       top: 0;
       left: 0;
-      height: 75px;
+      height: 150x;
       width: 300px;
       background-color: antiquewhite;
     }
@@ -99,11 +100,8 @@
       left: 0;
       height: 150px;
       width: 150px;
-      border: 20px solid transparent;
-      border-top-left-radius: 150px;
-      border-top-color: black;
       /* transform: rotate(-45deg); */
-      /* animation: rotate 3s linear 0s; */
+      animation: rotate 3s linear 0s;
     }
 
     .border {
@@ -116,7 +114,8 @@
       border: 20px solid transparent;
       border-top-left-radius: 150px;
       border-top-color: black;
-      border-left-color: green;
+      border-left-color: transparent;
+      border-bottom: none;
     }
   </style>
 </head>
@@ -131,7 +130,7 @@
 
   <div class="corner">
     <div class="inner-c">
-      <!-- <div class="border"></div> -->
+      <div class="border"></div>
     </div>
   </div>
 </body>
