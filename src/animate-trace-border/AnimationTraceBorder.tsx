@@ -73,6 +73,10 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
 
   const availableTriggers = ['hover', 'focus'];
 
+  //weird animation artifacts withouth this on Chrome. does nothing on firefox.
+  //value is added to initial order size.
+  const borderRadiusBuffer = useRef(borderWidth);
+
   //extract border colours from input string
   const borderColourArr = useMemo(() => {
     let colourArr = borderColour.trim().split(/\s+/);
@@ -101,15 +105,22 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     return triggers;
   }, [trigger.trim()]);
 
-
-  //weird animation artifacts withouth this on Chrome. does nothing on firefox.
-  //value is added to initial order size.
-  const borderRadiusBuffer = useRef(borderWidth);
-
   useEffect(() => {
     //recalculate container width and height when container resizes.
+    const resizeObserver = new ResizeObserver(() => {
+      //canel any queued animation frame so they don't double up.
+      cancelAnimationFrame(currentAnimationFrame.current);
+      setContainerDimesion();
+      console.log(reverseDuration);
+      reset();
+      if (isTracing.current) {
+        traceBorder();
+      }
+    });
+
     resizeObserver.observe(container.current);
 
+    //clean up.
     return () => {
       resizeObserver.disconnect();
     };
@@ -137,9 +148,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     if (triggers.focus) container.current.tabIndex = -1;
   },
     [
-      borderWidth, borderRadius,
-      borderColour, borderStyle,
-      squareWindow, inset, trigger
+      borderWidth, borderRadius, borderColour, borderStyle, squareWindow, inset, trigger
     ]);
 
   //start the animation on rerender if it wasn't cancelled.
@@ -225,18 +234,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     resetBorderStyle(borderLeft.current, styleLeft.current);
     resetBorderStyle(borderRight.current, styleRight.current);
   }
-
-  //recalculate borderdimensions if element resizes.
-  const resizeObserver = new ResizeObserver(() => {
-    //canel any queued animation frame so they don't double up.
-    cancelAnimationFrame(currentAnimationFrame.current);
-    setContainerDimesion();
-    console.log(reverseDuration);
-    reset();
-    if (isTracing.current) {
-      traceBorder();
-    }
-  });
 
   /**
    * Trace the border
