@@ -11,15 +11,7 @@
   }
 }
 
-@media screen and (min-width: 900px) {
-  .Demo{
-    flex-direction: row;
-    box-shadow: 3px 3px 3px 3px gray;
-  }
-  .demo-area{
-    width: 700px;
-  }
-}
+
 
 .demo-area{
   padding-top: 30px;
@@ -31,7 +23,18 @@
   justify-content: space-between;
   align-items: center;
   background-color: rgb(223, 225, 226);
-  flex-shrink: 1 1;
+  flex-shrink: 1;
+  flex-grow: 1;
+}
+
+@media screen and (min-width: 900px) {
+  .Demo{
+    flex-direction: row;
+    box-shadow: 3px 3px 3px 3px gray;
+  }
+  .demo-area{
+    min-width: 700px;
+  }
 }
 
 

@@ -53,6 +53,7 @@ const Demo = () => {
           <AnimateTraceBorder {...animateBorderProps}>
             Trace Borders
             <div className="demo-item">
+              resizable
             </div>
           </AnimateTraceBorder>
           <article>

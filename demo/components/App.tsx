@@ -36,7 +36,7 @@ const App = () => {
   }
 
   return (
-    <div className="App">
+    <>
       <div>
         <Header />
         <Demo />
@@ -50,7 +50,7 @@ const App = () => {
         <input type="text" id='input2' />
         <button onClick={handleClick2}>calc</button>
       </div> */}
-    </div>
+    </>
   )
 
 }

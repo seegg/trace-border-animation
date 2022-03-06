@@ -29,7 +29,7 @@ interface Trigger {
 type TraceFn = (width: number, height: number, speed: number, resetCB?: () => void) => boolean;
 
 const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour = 'black',
-  animationDuration = 1000, reverseDuration, children, borderStyle = 'solid',
+  animationDuration = 500, reverseDuration, children, borderStyle = 'solid',
   squareWindow = false, inset = false, speed, reverseSpeed, trigger = 'hover',
   classNames = '', traceOnRerender = false, traceAllSidesSameTime = false }: ITraceBorderProps) => {
 
@@ -112,7 +112,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
       //canel any queued animation frame so they don't double up.
       cancelAnimationFrame(currentAnimationFrame.current);
       setContainerDimesion();
-      console.log(reverseDuration);
       reset();
       if (isTracing.current) {
         traceBorder();
@@ -139,8 +138,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //update the references when any of the style props changes.
   useEffect(() => {
     borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : borderWidth;
-    initialiseStyles();
     setContainerDimesion();
+    initialiseStyles();
     const { trace, retrace } = buildTraceFunctions(
       borderTop.current!, borderRight.current!,
       borderBot.current!, borderLeft.current!, borderRadius, borderWidth, borderRadiusBuffer.current,
