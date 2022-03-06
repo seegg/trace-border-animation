@@ -174,8 +174,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     const milliInSecond = 1000;
     try {
       //set trace speed
-      if (revSpeedRef.current > 0) {
-        traceSpeed.current = (revSpeedRef.current / milliInSecond);
+      if (speedRef.current > 0) {
+        traceSpeed.current = (speedRef.current / milliInSecond);
       } else {
         if (animateDurationRef.current <= 0 || isNaN(animateDurationRef.current)) {
           traceSpeed.current = Number.MAX_SAFE_INTEGER;
