@@ -25,7 +25,7 @@ const Demo = () => {
       const sqWindow = formatComponentString('squareWindow', squareWindow, true);
       const insetStr = formatComponentString('inset', inset, true);
       const triggerStr = formatComponentString('trigger', trigger, true);
-      const classNames = formatComponentString('classNames', '', true);
+      const classNames = "classNames=''";
 
       setComponentString(
         `<AnimateTraceBorder ${bWidth} ${bStyle} ${bColour} ${bRadius} ${bColour} ${duration} ${revDuration}${speedStr} ${revSpeed} ${sqWindow} ${insetStr} ${triggerStr} ${classNames}></AnimateTraceBorder>`

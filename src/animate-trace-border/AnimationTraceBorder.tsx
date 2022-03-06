@@ -53,6 +53,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const revSpeedRef = useRef(0);
   const animateDurationRef = useRef(0);
   const revanimateDurationRef = useRef(0);
+  const radiusRef = useRef({ actual: borderRadius, clamped: 0 });
 
   //reference to keep track of current animation frame for canceling during rerenders.
   const currentAnimationFrame = useRef(0);
@@ -138,20 +139,22 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   //update the references when any of the style props changes.
   useEffect(() => {
     borderRadiusBuffer.current = borderRadius - 1 <= borderWidth ? 0 : borderWidth;
+    radiusRef.current.actual = borderRadius;
     setContainerDimesion();
     initialiseStyles();
     const { trace, retrace } = buildTraceFunctions(
       borderTop.current!, borderRight.current!,
-      borderBot.current!, borderLeft.current!, borderRadius, borderWidth, borderRadiusBuffer.current,
+      borderBot.current!, borderLeft.current!, radiusRef.current.clamped, borderWidth, borderRadiusBuffer.current,
       traceAllSidesSameTime
     );
     traceFn.current = trace;
     retraceFn.current = retrace;
     if (triggers.focus) container.current.tabIndex = -1;
+    console.log('buffers and stuff');
   },
     [
       borderWidth, borderRadius, borderColour, borderStyle,
-      squareWindow, inset, trigger, traceAllSidesSameTime
+      squareWindow, inset, trigger, traceAllSidesSameTime,
     ]);
 
   //start the animation on rerender if it wasn't cancelled.
@@ -178,7 +181,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
           traceSpeed.current = Number.MAX_SAFE_INTEGER;
         } else {
           const total = (containerHeight.current! * 2) + (containerWidth.current! * 2)
-            - ((borderRadius + borderRadiusBuffer.current) * 4);
+            - ((radiusRef.current.clamped + borderRadiusBuffer.current) * 4);
           traceSpeed.current = (total / (animateDurationRef.current));
         }
       }
@@ -188,7 +191,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
         retraceSpeed.current = (revSpeedRef.current / milliInSecond);
       } else if (revanimateDurationRef.current > 0) {
         const total = (containerHeight.current! * 2) + (containerWidth.current! * 2)
-          - ((borderRadius + borderRadiusBuffer.current) * 4);
+          - ((radiusRef.current.clamped + borderRadiusBuffer.current) * 4);
         retraceSpeed.current = (total / revanimateDurationRef.current);
       } else {
         //fall back if no reverse speed or duration is supply
@@ -205,7 +208,7 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
   const initialiseStyles = () => {
 
     const { container, borderTop, borderBot, borderLeft, borderRight } =
-      initialiseBorderStyles({ borderRadius, borderStyle, borderWidth, inset, squareWindow },
+      initialiseBorderStyles({ borderRadius: radiusRef.current.clamped, borderStyle, borderWidth, inset, squareWindow },
         borderRadiusBuffer, borderColourArr);
 
     styleContainer.current = container;
@@ -227,6 +230,8 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     containerWidth.current = Number(boundingRect.width.toFixed(3));
     containerHeight.current = Number(boundingRect.height.toFixed(3));
 
+    radiusRef.current.clamped =
+      Math.min(Math.min(containerWidth.current / 2, containerHeight.current / 2), radiusRef.current.actual);
     setSpeed();
   };
 

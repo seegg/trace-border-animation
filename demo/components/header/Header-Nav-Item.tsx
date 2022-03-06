@@ -12,7 +12,7 @@ interface INavItemProps {
 }
 
 const HeaderNavItem =
-  ({ link, animateDuration = 500, animateRevDuration = 1000,
+  ({ link, animateDuration = 500, animateRevDuration = 100,
     animateWidth = 2, animateColour = 'black', image = null }: INavItemProps) => {
 
     const [imageIcon, setImageIcon] = useState<HTMLImageElement | null>(null);
