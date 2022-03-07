@@ -12,12 +12,12 @@ const Header = () => {
           <li>
             <HeaderNavItem
               link='https://github.com/seegg/trace-border-animation'
-              image=
-              {{
-                src: "https://raw.githubusercontent.com/seegg/seegg.github.io/main/images/GitHub-Mark-Light-32px.png",
-                alt: 'github logo'
-              }}
-              animateColour="black"
+              image={
+                {
+                  src: "https://raw.githubusercontent.com/seegg/seegg.github.io/main/images/GitHub-Mark-Light-32px.png",
+                  alt: 'github logo'
+                }
+              }
             />
           </li>
           <li>

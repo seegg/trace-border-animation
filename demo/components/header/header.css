@@ -40,7 +40,7 @@
 
 .nav-item:hover{
   background-color: black;
-  box-shadow: -5px 5px 0px 0px  rgba(51, 51, 51,0.4);
+  box-shadow: -4px 4px 0px 0px  rgba(51, 51, 51,0.4);
   top: -5px;
   right: -5px;
 }
