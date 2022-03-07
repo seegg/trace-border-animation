@@ -106,7 +106,6 @@ const PropOptions = ({ optionCallBack }: IProps) => {
       <section className="check-options">
         <Option {...optionItems.squareWindow} />
         <Option {...optionItems.inset} />
-
       </section>
     </section>
   )

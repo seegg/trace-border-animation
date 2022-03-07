@@ -1,7 +1,7 @@
 .prop-options{
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: start;
   background-color: aliceblue;
   flex-basis: 150px;
 }
@@ -10,7 +10,6 @@
   display: flex;
   justify-content: center;
   margin: 5px;
-  flex: 1 1;
 }
 
 .check-options{
@@ -23,7 +22,7 @@
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: start;
-    align-items: center;
+    align-items: flex-start;
     width: 150px;
     padding: 1rem;
   }

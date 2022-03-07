@@ -49,7 +49,7 @@ const Demo = () => {
       <main className="Demo">
         <PropOptions optionCallBack={getOptions} />
         <section className="demo-area">
-          <span></span>{/* use here for alignment reasons. space-between */}
+          <div></div>{/* use here for alignment reasons. space-between */}
           <AnimateTraceBorder {...animateBorderProps}>
             Trace Borders
             <div className="demo-item">
