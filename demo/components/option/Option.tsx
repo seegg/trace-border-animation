@@ -40,7 +40,6 @@ const Option = ({ title, name, placeHolder, value, valueType, id, onChangeCB }: 
         animationDuration={500}
         borderRadius={5}
         traceOnRerender
-        borderColour="darkRed"
       >
         <input
           className={`${'Option-input'}${valueType === 'check' ? ' Option-input-check' : ''}`}

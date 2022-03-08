@@ -42,6 +42,7 @@ const HeaderNavItem =
         reverseDuration={animateRevDuration}
         borderWidth={animateWidth}
         inset
+        trigger="hover focus"
         borderColour={animateColour}
         classNames="nav-item-bg">
         <a href={link} className="nav-item">
