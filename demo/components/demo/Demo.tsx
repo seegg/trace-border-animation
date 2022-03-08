@@ -22,8 +22,8 @@ const Demo = () => {
       const revSpeed = formatComponentString('reverseSpeed', '', false);
       const sqWindow = formatComponentString('squareWindow', squareWindow, true);
       const insetStr = formatComponentString('inset', inset, true);
-      const bColour = `borderColour='${borderColour}`;
-      const triggerStr = `trigger='${trigger}`
+      const bColour = `borderColour='${borderColour}'`;
+      const triggerStr = `trigger='${trigger}'`
       const bStyle = `borderStyle='${borderStyle}'`;
       const classNames = "classNames=''";
 
