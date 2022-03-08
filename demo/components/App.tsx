@@ -41,8 +41,8 @@ const App = () => {
         <Header />
         <Demo />
       </div>
-      {/* 
-      <div>
+
+      {/* <div>
         <input type="text" id='input' />
         <button onClick={handleClick}>calc</button>
       </div>

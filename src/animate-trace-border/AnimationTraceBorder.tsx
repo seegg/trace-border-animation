@@ -150,7 +150,6 @@ const AnimationTraceBorder = ({ borderWidth = 2, borderRadius = 5, borderColour 
     traceFn.current = trace;
     retraceFn.current = retrace;
     if (triggers.focus) container.current.tabIndex = -1;
-    console.log('buffers and stuff');
   },
     [
       borderWidth, borderRadius, borderColour, borderStyle,

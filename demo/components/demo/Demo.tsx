@@ -15,16 +15,16 @@ const Demo = () => {
       const { borderWidth, borderColour, borderRadius, borderStyle, animationDuration, reverseDuration, speed, squareWindow, inset, trigger }: ITraceBorderProps = animateBorderProps;
 
       const bWidth = formatComponentString('borderWidth', borderWidth, borderWidth > 0);
-      const bColour = formatComponentString('borderColour', borderColour, !!borderColour);
       const bRadius = formatComponentString('borderRadius', borderRadius, borderRadius > 0);
-      const bStyle = formatComponentString('borderStyle', borderStyle, !!borderStyle);
       const duration = formatComponentString('animationDuration', animationDuration, animationDuration > 0);
       const revDuration = formatComponentString('reverseDuration', reverseDuration, reverseDuration > 0);
       const speedStr = formatComponentString('speed', speed, speed > 0);
       const revSpeed = formatComponentString('reverseSpeed', '', false);
       const sqWindow = formatComponentString('squareWindow', squareWindow, true);
       const insetStr = formatComponentString('inset', inset, true);
-      const triggerStr = formatComponentString('trigger', trigger, true);
+      const bColour = `borderColour='${borderColour}`;
+      const triggerStr = `trigger='${trigger}`
+      const bStyle = `borderStyle='${borderStyle}'`;
       const classNames = "classNames=''";
 
       setComponentString(
