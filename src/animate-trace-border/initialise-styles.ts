@@ -5,6 +5,7 @@ export const initialiseBorderStyles =
   ({ borderRadius, borderWidth, borderStyle, inset, squareWindow, }: ITraceBorderProps,
     borderRadiusBuffer: React.MutableRefObject<number>, borderColourArr: string[],) => {
 
+
     //the container to hold the 4 borders
     const container: CSSProperties = {
       position: 'relative',
