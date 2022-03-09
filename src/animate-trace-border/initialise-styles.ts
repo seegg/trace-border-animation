@@ -5,53 +5,6 @@ export const initialiseBorderStyles =
   ({ borderRadius, borderWidth, borderStyle, inset, squareWindow, }: ITraceBorderProps,
     borderRadiusBuffer: React.MutableRefObject<number>, borderColourArr: string[],) => {
 
-    //the wrapper elements for the borders
-    const wrapper: CSSProperties = {
-      position: 'absolute',
-      overflow: 'hidden',
-      boxSizing: 'border-box',
-      outline: 'none',
-    };
-
-    const topBtoWrapper: CSSProperties = {
-      ...wrapper,
-      height: borderRadius + 'px',
-      width: '100%',
-    };
-
-    const leftRightWrapper: CSSProperties = {
-      ...wrapper,
-      height: '100%',
-      width: borderRadius + 'px'
-    };
-
-    const topWrapper: CSSProperties = {
-      ...topBtoWrapper,
-      top: 0,
-      left: 0
-    }
-
-    const rightWrapper: CSSProperties = {
-      ...wrapper,
-      right: 0,
-      top: 0,
-    }
-
-    const botWrapper: CSSProperties = {
-      ...wrapper,
-      bottom: 0,
-      right: 0
-    }
-
-    const leftWrapper: CSSProperties = {
-      ...wrapper,
-      left: 0,
-      top: 0
-    }
-
-
-
-
     //the container to hold the 4 borders
     const container: CSSProperties = {
       position: 'relative',
@@ -158,9 +111,5 @@ export const initialiseBorderStyles =
       borderBot,
       borderLeft,
       borderRight,
-      topWrapper,
-      rightWrapper,
-      botWrapper,
-      leftWrapper
     }
   };

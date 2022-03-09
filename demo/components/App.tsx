@@ -16,7 +16,7 @@ const App = () => {
       const p2 = input[1].split(',');
       const circ = input[2].split(',');
       //@ts-ignore
-      console.log(circleUtils.circleLineIntersect({ x: p1[0], y: p1[1] }, { x: p2[0], y: p2[1] }, { x: circ[0], y: circ[1], r: circ[2] }))
+      console.table(circleUtils.circleLineIntersect({ x: p1[0], y: p1[1] }, { x: p2[0], y: p2[1] }, { x: circ[0], y: circ[1], r: circ[2] }))
     } catch (err) {
 
     }
