@@ -14,7 +14,7 @@ const Header = () => {
               link='https://github.com/seegg/trace-border-animation'
               image={
                 {
-                  src: "https://raw.githubusercontent.com/seegg/seegg.github.io/main/images/GitHub-Mark-Light-32px.png",
+                  src: "./images/github-32px.png",
                   alt: 'github logo'
                 }
               }
