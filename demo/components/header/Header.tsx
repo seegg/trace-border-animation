@@ -21,7 +21,7 @@ const Header = () => {
             />
           </li>
           <li>
-            <HeaderNavItem link="#" />
+            <HeaderNavItem link="https://seegg.github.io" icon="home" />
           </li>
         </ol>
       </nav>

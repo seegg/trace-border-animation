@@ -8,12 +8,13 @@ interface INavItemProps {
   animateRevDuration?: number,
   animateWidth?: number,
   animateColour?: string,
-  image?: { src: string, alt?: string | null } | null
+  image?: { src: string, alt?: string | null } | null,
+  icon?: string | null
 }
 
 const HeaderNavItem =
   ({ link, animateDuration = 500, animateRevDuration = 100,
-    animateWidth = 2, animateColour = 'black', image = null }: INavItemProps) => {
+    animateWidth = 2, animateColour = 'black', image = null, icon = null }: INavItemProps) => {
 
     const [imageIcon, setImageIcon] = useState<HTMLImageElement | null>(null);
 
@@ -47,6 +48,7 @@ const HeaderNavItem =
         classNames="nav-item-bg">
         <a href={link} className="nav-item">
           {imageIcon && <img src={imageIcon.src} alt={imageIcon.alt} className={imageIcon.classList.toString()}></img>}
+          {(!imageIcon && icon) && <span className="material-icons" style={{ color: "white", fontSize: "36px" }}>{icon}</span>}
         </a>
       </AnimateTraceBorder>
     );
