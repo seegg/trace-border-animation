@@ -1,4 +1,4 @@
-.Demo{
+.Demo {
   display: flex;
   flex-direction: column-reverse;
   justify-content: center;
@@ -6,14 +6,14 @@
 }
 
 @media screen and (min-width: 600px) {
-  .Demo{
+  .Demo {
     box-shadow: 2px 2px 2px 3px gray;
   }
 }
 
 
 
-.demo-area{
+.demo-area {
   padding-top: 30px;
   height: auto;
   min-height: 500px;
@@ -28,17 +28,18 @@
 }
 
 @media screen and (min-width: 900px) {
-  .Demo{
+  .Demo {
     flex-direction: row;
     box-shadow: 3px 3px 3px 3px gray;
   }
-  .demo-area{
+
+  .demo-area {
     min-width: 700px;
   }
 }
 
-
-.demo-item{
+.demo-item {
+  position: relative;
   overflow: auto;
   border-radius: 10px;
   width: 300px;
@@ -53,19 +54,25 @@
   resize: both;
 }
 
-.demo-text{
+.demo-text {
   margin: 1rem;
   font-size: medium;
   max-height: 150px;
   overflow-y: auto;
 }
 
-.demo-item-m{
+.demo-item-m {
   width: 250px;
   height: 250px;
   font-size: small;
 }
 
-@media screen and (min-width: 900px) {
-  
+.demo-trace-heading {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 10px;
+  margin: 0;
 }
+
+@media screen and (min-width: 900px) {}

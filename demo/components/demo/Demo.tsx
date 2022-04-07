@@ -51,8 +51,8 @@ const Demo = () => {
         <section className="demo-area">
           <div></div>{/* use here for alignment reasons. space-between */}
           <AnimateTraceBorder {...animateBorderProps}>
-            Trace Borders
             <div className="demo-item">
+              <h5 className="demo-trace-heading">Trace Borders</h5>
               resizable
             </div>
           </AnimateTraceBorder>
