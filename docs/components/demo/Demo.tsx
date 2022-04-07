@@ -57,6 +57,7 @@ const Demo = () => {
             </div>
           </AnimateTraceBorder>
           <article>
+            <p className="demo-text">Customisable border tracing animation component. Each component is completely independent from one another so you can have multiple different animations on the same page without having to touch any additon CSS or JS.</p>
             <p className="demo-text"><code>{componentString}</code></p>
           </article>
         </section>
