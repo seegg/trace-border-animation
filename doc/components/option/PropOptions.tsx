@@ -14,15 +14,15 @@ const PropOptions = ({ optionCallBack }: IProps) => {
   const [optionItems, setOptionItems] = useState<IOptionItems>(
     {
       borderWidth: {
-        id: 'border-width', value: '5', name: 'borderWidth', title: 'Border Width',
+        id: 'border-width', value: '5', name: 'borderWidth', title: 'Width',
         placeHolder: '', valueType: 'number', onChangeCB
       },
       borderRadius: {
-        id: 'border-radius', value: '5', name: 'borderRadius', title: 'Border Radius',
+        id: 'border-radius', value: '5', name: 'borderRadius', title: 'Radius',
         placeHolder: '', valueType: 'number', onChangeCB
       },
       borderColour: {
-        id: 'border-colour', value: '#2a5766', name: 'borderColour', title: 'Border Colour',
+        id: 'border-colour', value: '#2a5766', name: 'borderColour', title: 'Colour',
         placeHolder: 'up to four colours', valueType: 'text', onChangeCB
       },
       animationDuration: {
@@ -38,7 +38,7 @@ const PropOptions = ({ optionCallBack }: IProps) => {
         placeHolder: 'px per second', valueType: 'number', onChangeCB
       },
       borderStyle: {
-        id: 'border-style', value: 'solid', name: 'borderStyle', title: 'Border Style',
+        id: 'border-style', value: 'solid', name: 'borderStyle', title: 'Style',
         placeHolder: '', valueType: 'text', onChangeCB
       },
       squareWindow: {
